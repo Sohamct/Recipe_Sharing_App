@@ -1,9 +1,15 @@
 import React from 'react'
+import {useNavigate} from 'react-router-dom';
 
 export const RecipeItem = ({id, title}) => {
+    const navigate = useNavigate();
+
+    const goToSpecificRecipe = () => {
+        navigate(`/recipe/${id}`)
+    }
     return (
-        <div>
-            <div className="card mb-2" style={{ width: '28rem' }}>
+
+            <div className="card mb-2" style={{ width: '26rem', cursor: 'pointer' }} onClick={goToSpecificRecipe}>
                 <div className="card-body">
                     <h5 className="card-title">recipe id: {id}</h5>
                     <p className="card-text">{title}</p>
@@ -17,6 +23,6 @@ export const RecipeItem = ({id, title}) => {
                     <button className="btn btn-info">Follow</button>
                 </div>
             </div>
-        </div>
+        
     )
 }

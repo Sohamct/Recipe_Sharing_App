@@ -27,10 +27,15 @@ export const recipeSlice = createSlice({
             if(existingRecipe){
                 existingRecipe.title = updatedTitle
             }
+        },
+        getRecipeById: (state, action) => {
+            const id = action.payload;
+            const recipe = state.recipes.find(r => r.id === id)
+            return recipe
         }
     }
 })
 
-export const {addRecipe, removeRecipe} = recipeSlice.actions
+export const {addRecipe, removeRecipe, getRecipeById} = recipeSlice.actions
 
 export default recipeSlice.reducer   // to inform the store (registering reducers)

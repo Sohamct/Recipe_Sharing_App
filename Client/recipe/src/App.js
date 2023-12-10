@@ -2,26 +2,28 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import { RootLayout } from './components/RootLayout';
+import { RootLayout } from './components/Recipes/RootLayout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Signup } from './components/Auth/Signup';
 import { Login } from './components/Auth/Login';
-import { Recipes } from './components/Recipes/Recipes';
-import { MyRecipe } from './components/MyRecipe/MyRecipe';
-import { RecipeShow, loader as RecipeLoader } from './components/Recipes/RecipeList/RecipeItem/RecipeShow';
-import { CreateRecipe } from './components/MyRecipe/CreateRecipe/CreateRecipe';
+import { RecipeShow} from './components/Recipes/RecipeList/RecipeItem/RecipeShow';
+import { CreateRecipe } from './components/Recipes/CreateRecipe/CreateRecipe';
+import { RecipeStart } from './components/Recipes/RecipeStart/RecipeStart';
+import { RecipeEdit } from './components/Recipes/RecipeEdit/RecipeEdit';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Navigate to="/recipe" replace />} />
       <Route path="/recipe" element={<RootLayout />}>
-        <Route index element={<Recipes />} />
-        <Route path=":id" element={<RecipeShow />} loader={RecipeLoader} />
+        <Route index element={<RecipeStart />} />
+        <Route path=":id" element={<RecipeShow />}/>
+        <Route path="newrecipe" element={<CreateRecipe />}/>
+        <Route path=":id/edit" element={<RecipeEdit />}/>
       </Route>
       <Route path="/newrecipe" element={<RootLayout />}>
         <Route index element={<CreateRecipe />} />
-        <Route path=":id" element={<RecipeShow />} loader={RecipeLoader} />
+        <Route path=":id" element={<RecipeShow />} />
       </Route>
       <Route path="/favourite-recipe" element={<div>Favourite Recipe</div>} />
       <Route path="/login" element={<Login />} />
