@@ -8,7 +8,8 @@ import { Signup } from './components/Auth/Signup';
 import { Login } from './components/Auth/Login';
 import { Recipes } from './components/Recipes/Recipes';
 import { MyRecipe } from './components/MyRecipe/MyRecipe';
-import { RecipeShow, loader as RecipeLoader } from './components/Recipes/RecipeList/RecipeItem.js/RecipeShow';
+import { RecipeShow, loader as RecipeLoader } from './components/Recipes/RecipeList/RecipeItem/RecipeShow';
+import { CreateRecipe } from './components/MyRecipe/CreateRecipe/CreateRecipe';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,8 +19,8 @@ const router = createBrowserRouter(
         <Route index element={<Recipes />} />
         <Route path=":id" element={<RecipeShow />} loader={RecipeLoader} />
       </Route>
-      <Route path="/myrecipe" element={<RootLayout />}>
-        <Route index element={<MyRecipe />} />
+      <Route path="/newrecipe" element={<RootLayout />}>
+        <Route index element={<CreateRecipe />} />
         <Route path=":id" element={<RecipeShow />} loader={RecipeLoader} />
       </Route>
       <Route path="/favourite-recipe" element={<div>Favourite Recipe</div>} />

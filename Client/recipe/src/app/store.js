@@ -1,4 +1,4 @@
-import {ConfigureStore, configureStore} from '@reduxjs/toolkit' // core redux
+import {configureStore} from '@reduxjs/toolkit' // core redux
 
 import recipeReducer from '../features/recipe/recipeSlice'
 

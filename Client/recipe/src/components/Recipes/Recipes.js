@@ -1,7 +1,7 @@
 import React from 'react';
 import { FilterRecipe } from './FilterRecipe/FilterRecipe';
 import { RecipeList } from './RecipeList/RecipeList';
-import { RecipeShow } from './RecipeList/RecipeItem.js/RecipeShow';
+import { RecipeShow } from './RecipeList/RecipeItem/RecipeShow';
 import { useParams } from 'react-router-dom';
 
 export const Recipes = () => {

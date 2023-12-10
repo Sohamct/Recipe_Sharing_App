@@ -45,7 +45,7 @@ export const FilterRecipe= ({ onFilter }) => {
           </div>
   
           <div className="col-md-4">
-            <button className="btn btn-primary" onClick={""}>Filter</button>
+            <button className="btn btn-primary">Filter</button>
           </div>
         </div>
       </div>

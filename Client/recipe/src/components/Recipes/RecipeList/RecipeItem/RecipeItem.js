@@ -1,12 +1,12 @@
 import React from 'react'
 
-export const RecipeItem = () => {
+export const RecipeItem = ({id, title}) => {
     return (
         <div>
             <div className="card mb-2" style={{ width: '28rem' }}>
                 <div className="card-body">
-                    <h5 className="card-title">user1</h5>
-                    <p className="card-text">Recipe Title</p>
+                    <h5 className="card-title">recipe id: {id}</h5>
+                    <p className="card-text">{title}</p>
                     <span className="card-text">12 min ago</span>
                 </div>
                 <img src="https://tse3.mm.bing.net/th?id=OIP.ZZsn6lD6PCjocBzx1tuu1QHaEo&pid=Api&P=0&h=180" className="card-img-top" alt="Recipe Image" />
