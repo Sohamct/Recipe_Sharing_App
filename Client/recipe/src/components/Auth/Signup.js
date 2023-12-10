@@ -39,8 +39,7 @@ export const Signup = () => {
         );
 
         if (signupResponse.success) {
-            toast.success(signupResponse.message, {autoClose: 2000, theme: "colored"});
-            // Redirect or navigate to the login page, or perform any other action upon successful signup
+            
             toast.success('Account created successfully', {
                 position: "top-right",
                 autoClose: 5000,
@@ -50,8 +49,8 @@ export const Signup = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "colored",
-                })()
-
+            });
+        
             navigate('/login');
         } else {
             toast.error(signupResponse.message, {autoClose: 2000, theme: "colored"});

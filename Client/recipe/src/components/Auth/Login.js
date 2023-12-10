@@ -1,12 +1,13 @@
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import AuthService from './Auth.service'
 
 
 export const Login = () => {
     const notify = () => toast.success("Logged in successfully!", {autoClose: 2000, theme: "colored"});
+    const navigate = useNavigate();
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -19,6 +20,7 @@ export const Login = () => {
             if(loginResponse.success){
                 console.log(loginResponse.message)
                 notify();
+                navigate('/')
             }else{
                 console.log(loginResponse.message)
                 toast.error(loginResponse.message, {autoClose: 2000, theme: "colored"});
@@ -60,7 +62,6 @@ export const Login = () => {
                     Login
                 </button>
             </form>
-            <ToastContainer/>
         </div>
     );
 }
