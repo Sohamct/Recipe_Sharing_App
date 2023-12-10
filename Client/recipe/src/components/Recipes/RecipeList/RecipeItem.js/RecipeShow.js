@@ -1,8 +1,9 @@
 import React from 'react'
+import { RecipeItem } from './RecipeItem';
 
 export const RecipeShow = () => {
   return (
-    <div>RecipeShow</div>
+    <div><RecipeItem id={1} title={"Pizza"}/></div>
   )
 }
 
@@ -12,5 +13,5 @@ export function loader({params}){
 }
 
 function getRecipe(){
-
+  // through backend api
 }

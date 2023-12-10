@@ -1,19 +1,24 @@
 import React from 'react';
-import { RecipeList } from './RecipeList/RecipeList';
 import { FilterRecipe } from './FilterRecipe/FilterRecipe';
+import { RecipeList } from './RecipeList/RecipeList';
 import { RecipeShow } from './RecipeList/RecipeItem.js/RecipeShow';
+import { useParams } from 'react-router-dom';
 
 export const Recipes = () => {
+  const { id } = useParams();
+
   return (
     <div className="container">
-      <FilterRecipe/>
+      <FilterRecipe />
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <RecipeList />
         </div>
-        <div className="col-md-6">
-        <RecipeShow/>
-        </div>
+        {id && (
+          <div className="col-md-8">
+            <RecipeShow />
+          </div>
+        )}
       </div>
     </div>
   );
