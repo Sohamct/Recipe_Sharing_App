@@ -15,11 +15,11 @@ export const RootLayout = () => {
       <div className="container" style={containerStyle}>
       <FilterRecipe />
       <div className="row">
-        <div className="col-md-4">
+        <div className="col-md-6">
           <RecipeList />
         </div>
         
-          <div className="col-md-8">
+          <div className="col-md-6">
             <main>
               <Outlet/>
             </main>

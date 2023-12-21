@@ -13,13 +13,11 @@ app.use(cors({
     credentials: true
   }));
 
-
-app.listen(5500, () => {
-    console.log("Server started on port: 5501")
-})
-
 app.use('/api/auth', require('./Routes/auth'))
+app.use('/api/recipe', require('./Routes/recipe'))
 
 app.listen(5501, () => {
   console.log("Server is started")
+
+    console.log("Server started on port: 5501")
 })

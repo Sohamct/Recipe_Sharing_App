@@ -1,22 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { RecipeItem } from './RecipeItem/RecipeItem';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
 
 export const RecipeList = () => {
-  const location = useLocation();
+    const location = useLocation();
+    const dispatch = useDispatch();
+    const recipesState = useSelector((state) => state.recipes);
+    // Determine isOwner based on the current location
+    const isOwner = location.pathname === '/myrecipe';
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await dispatch(fetchRecipesAsync());
+                console.log(recipesState.recipes)
 
-  const recipes =  useSelector((state) => state.recipes)
+            } catch (error) {
+                console.error('Error fetching recipes:', error);
+            }
+        };
 
-  // Determine isOwner based on the current location
-  const isOwner = location.pathname === '/myrecipe';
+        fetchData();
+    }, [dispatch]);
 
+    if (recipesState.status === 'loading') {
+        return <h3>Loading...</h3>;
+    }
 
-  return (
-    <div>
-      {recipes.map((recipe) => (
-        <RecipeItem key={recipe.id} {...recipe} isOwner={isOwner} />
-      ))}
-    </div>
-  );
+    if (recipesState.status === 'failed') {
+        return <p>Error: {recipesState.error.fetchError}</p>;
+    }
+
+    const recipes = recipesState.recipes || [];
+
+    return (
+        <div>
+            {recipes.map((recipe) => (
+                <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner} />
+            ))}
+        </div>
+    );
 };

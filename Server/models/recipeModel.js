@@ -1,30 +1,23 @@
 const mongoose = require('mongoose')
 
 
-const recipeModel = new mongoose.Schema({
-    user: {
+const ingredientSchema = new mongoose.Schema({
+    ingredient_name: { type: String, required: true },
+    quantity: { type: Number, required: true },
+    quantity_type: { type: String, enum: ['ml', 'litre', 'gm', 'kg'], required: true },
+  });
+
+  const recipeSchema = new mongoose.Schema({
+    image: { type: String }, 
+    title: { type: String, required: true },
+    description: { type: String },
+    ingredients: [{ type: ingredientSchema }],
+    owner: { 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    title: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
+        ref: 'User',
         required: true
     },
-    recipeImage: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: String,
-        default: Date.now
-    },
-    ingredient: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ingredient'
-    }
-})
-module.exports = mongoose.model('Recipe', recipeModel)
+    date: { type: Date, default: Date.now },
+  });
+  
+module.exports = mongoose.model('Recipe', recipeSchema)

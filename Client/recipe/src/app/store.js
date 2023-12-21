@@ -1,8 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit' // core redux
-
-import recipeReducer from '../features/recipe/recipeSlice'
+import recipeReducer from '../features/recipe/Slice/recipe_slice'
 
 
 export const store = configureStore({
-    reducer: recipeReducer
+    reducer:{
+        recipes: recipeReducer,
+    }
+
 })

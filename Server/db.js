@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const mongoUri = 'mongodb://127.0.0.1:27017/recipe'
+// const mongoUri = "mongodb+srv://kevint11:Kevinmongodb%4010@cluster0.tdcbq1g.mongodb.net/"
 
 const connectToMongo = async () => {
     try{
