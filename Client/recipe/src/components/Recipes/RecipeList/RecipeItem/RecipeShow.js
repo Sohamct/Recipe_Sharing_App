@@ -1,15 +1,46 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { selectRecipeById } from '../../../../features/recipe/Slice/recipe_slice'; // Adjust the path accordingly
+import useChatStore from '../../../../features/recipe/chatStore';
+
 
 export const RecipeShow = () => {
+  const {chatList, addChat, removeChat, setChatList} = useChatStore(
+    (state) => ({
+      chatList: state.chatList,
+      removeChat: state.removeChat,
+      addChat: state.addChat
+    })
+  )
   const params = useParams();
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const navigate = useNavigate()
   const recipe = recipes.find((r) => r._id === params.id)
   // console.log(recipe)
+
+  const handleChatSubmit = () => {
+    if (!chatText) {
+      return alert("please add chat-text");
+    }
+
+    // chatList = chatList.filter((chat) => chat.recipeId === params.id)
+    // const filteredChats = chatList.filter((chat) => chat.recipeId === params.id);
+
+    const newChat = {
+      id: Math.ceil(Math.random() * 1000000),
+      text: chatText,
+      recipeId: params.id,
+    };
+  
+    addChat(newChat);
+    // setChatList((prevChatList) => [...prevChatList, newChat]);
+    setChatText("");
+  }
+  
+  const [chatText, setChatText] = useState("")
+  console.log("Chat is rendered")
+
   if (!recipe) {
     return <div>Recipe not found</div>;
   }
@@ -59,8 +90,33 @@ export const RecipeShow = () => {
         </div>
 
         <div className="mt-3">
-          <input type="text" className="form-control" placeholder="Type your message" />
-          <button className="btn btn-primary mt-2">Submit Chat</button>
+          <input
+           className="form-control" 
+           value={chatText} onChange={(e)=>setChatText(e.target.value)} 
+           placeholder="Type your message" />
+          <button className="btn btn-primary mt-2" 
+          onClick={()=>{
+            handleChatSubmit()
+          }}>Add Chat</button>
+        </div>
+
+        <div className="mt-3">
+          <h6 className="card-subtitle list-group-flush">
+            <ul className="list-grroup list-group-flush">
+              {chatList.map((chat, i) => {
+                return (
+                  <li key={i} className="list-group-item">
+                    {chat.text}
+                    <span className='mx-5' 
+                    style={{
+                      cursor: 'pointer',
+                      color: 'red',
+                    }}onClick={() => removeChat(chat.id)}>X</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </h6>
         </div>
       </div>
     </div>

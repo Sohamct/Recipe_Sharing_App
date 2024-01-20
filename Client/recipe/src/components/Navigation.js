@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link} from "react-router-dom";
 import LogoutInfoPage from "./Auth/LogoutInfoPage";
 
+
+
 export const Navigation = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
