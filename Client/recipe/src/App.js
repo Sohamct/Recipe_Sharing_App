@@ -10,6 +10,7 @@ import { RecipeShow} from './components/Recipes/RecipeList/RecipeItem/RecipeShow
 import { CreateRecipe } from './components/Recipes/CreateRecipe/CreateRecipe';
 import { RecipeStart } from './components/Recipes/RecipeStart/RecipeStart';
 import { RecipeEdit } from './components/Recipes/RecipeEdit/RecipeEdit';
+import LogoutInfoPage from './components/Auth/LogoutInfoPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       <Route path="/favourite-recipe" element={<div>Favourite Recipe</div>} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/logout" element={<LogoutInfoPage/>}/>
     </Route>
   )
 );
