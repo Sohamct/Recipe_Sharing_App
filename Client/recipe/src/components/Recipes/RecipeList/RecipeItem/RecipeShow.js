@@ -24,8 +24,8 @@ export const RecipeShow = () => {
       return alert("please add chat-text");
     }
 
-    chatList = chatList.filter((chat) => chat.recipeId === params.id)
-    const filteredChats = chatList.filter((chat) => chat.recipeId === params.id);
+    // chatList = chatList.filter((chat) => chat.recipeId === params.id)
+    // const filteredChats = chatList.filter((chat) => chat.recipeId === params.id);
 
     const newChat = {
       id: Math.ceil(Math.random() * 1000000),
@@ -34,7 +34,7 @@ export const RecipeShow = () => {
     };
   
     addChat(newChat);
-    setChatList((prevChatList) => [...prevChatList, newChat]);
+    // setChatList((prevChatList) => [...prevChatList, newChat]);
     setChatText("");
   }
   
