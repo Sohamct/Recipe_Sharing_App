@@ -7,7 +7,7 @@ const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
 // Route-1: create a user using: '/api/auth/createrecipe'
-router.post('/createrecipe', [validateRecipe, fetchUser], async (req, resp) => {
+router.post('/createrecipe', [fetchUser, validateRecipe], async (req, resp) => {
   console.log('Creating new recipe', req.body, req.header);
   try {
     const errors = validationResult(req);

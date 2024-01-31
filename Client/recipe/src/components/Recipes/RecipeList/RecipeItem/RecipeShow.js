@@ -1,45 +1,47 @@
 import React, {useState} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import useChatStore from '../../../../features/recipe/chatStore';
-
+import useCommentStore from '../../../../features/comment/_commentStore';
+import { Comment } from './Comment';
 
 export const RecipeShow = () => {
-  const {chatList, addChat, removeChat, setChatList} = useChatStore(
+  const {CommentList, addComment, removeComment, fetchComments} = useCommentStore(
     (state) => ({
-      chatList: state.chatList,
-      removeChat: state.removeChat,
-      addChat: state.addChat
+      CommentList: state.CommentList,
+      removeComment: state.removeComment,
+      addComment: state.addComment,
+      fetchComments : state.fetchComments
     })
   )
   const params = useParams();
+  fetchComments(params.id);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const navigate = useNavigate()
   const recipe = recipes.find((r) => r._id === params.id)
   // console.log(recipe)
 
-  const handleChatSubmit = () => {
-    if (!chatText) {
-      return alert("please add chat-text");
+  const handleCommentSubmit = () => {
+    if (!CommentText) {
+      return alert("please add Comment-text");
     }
 
-    // chatList = chatList.filter((chat) => chat.recipeId === params.id)
-    // const filteredChats = chatList.filter((chat) => chat.recipeId === params.id);
+    // CommentList = CommentList.filter((Comment) => Comment.recipeId === params.id)
+    // const filteredComments = CommentList.filter((Comment) => Comment.recipeId === params.id);
 
-    const newChat = {
-      id: Math.ceil(Math.random() * 1000000),
-      text: chatText,
-      recipeId: params.id,
+    const newComment = {
+      text: CommentText,
+      _to: params.id,
+      repliedTo: 'recipe'
     };
   
-    addChat(newChat);
-    // setChatList((prevChatList) => [...prevChatList, newChat]);
-    setChatText("");
+    addComment(newComment);
+    // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
+    setCommentText("");
   }
   
-  const [chatText, setChatText] = useState("")
-  console.log("Chat is rendered")
+  const [CommentText, setCommentText] = useState("")
+  console.log("Comment is rendered")
 
   if (!recipe) {
     return <div>Recipe not found</div>;
@@ -81,8 +83,8 @@ export const RecipeShow = () => {
 
         <div className="mt-3">
           <button className="btn btn-primary me-2">Like</button>
-          <button className="btn btn-info me-2" onClick={() => navigate('/chat')}>
-            Chat
+          <button className="btn btn-info me-2" onClick={() => navigate('/Comment')}>
+            Comment
           </button>
           <i className="far fa-heart me-2"></i>
           <button className="btn btn-success me-2">Follow</button>
@@ -92,29 +94,18 @@ export const RecipeShow = () => {
         <div className="mt-3">
           <input
            className="form-control" 
-           value={chatText} onChange={(e)=>setChatText(e.target.value)} 
+           value={CommentText} onChange={(e)=>setCommentText(e.target.value)} 
            placeholder="Type your message" />
           <button className="btn btn-primary mt-2" 
           onClick={()=>{
-            handleChatSubmit()
-          }}>Add Chat</button>
+            handleCommentSubmit()
+          }}>Add Comment</button>
         </div>
 
         <div className="mt-3">
           <h6 className="card-subtitle list-group-flush">
             <ul className="list-grroup list-group-flush">
-              {chatList.map((chat, i) => {
-                return (
-                  <li key={i} className="list-group-item">
-                    {chat.text}
-                    <span className='mx-5' 
-                    style={{
-                      cursor: 'pointer',
-                      color: 'red',
-                    }}onClick={() => removeChat(chat.id)}>X</span>
-                  </li>
-                )
-              })}
+              <Comment CommentList={CommentList} removeComment={removeComment} addComment={addComment}/>
             </ul>
           </h6>
         </div>
