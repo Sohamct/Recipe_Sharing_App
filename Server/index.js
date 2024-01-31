@@ -15,6 +15,7 @@ app.use(cors({
 
 app.use('/api/auth', require('./Routes/auth'))
 app.use('/api/recipe', require('./Routes/recipe'))
+app.use('/api/comment', require('./Routes/comment'))
 
 app.listen(5501, () => {
   console.log("Server is started")

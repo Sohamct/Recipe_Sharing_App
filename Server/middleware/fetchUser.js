@@ -6,7 +6,7 @@ const fetchUser = (req, res, next) => {
     console.log(JWT_SECRET)
     try {
         const token = req.header('auth-token');
-        console.log(token)
+        console.log("token: ",token)
         if (!token) {
             return res.status(401).json({ error: "Please login to RecipeBook System" });
         }
