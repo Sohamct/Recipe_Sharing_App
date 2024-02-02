@@ -1,20 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 
 export const RecipeShow = () => {
-  const {CommentList, addComment, removeComment, fetchComments} = useCommentStore(
+  const {CommentList, addComment, removeComment, fetchComment} = useCommentStore(
     (state) => ({
       CommentList: state.CommentList,
       removeComment: state.removeComment,
       addComment: state.addComment,
-      fetchComments : state.fetchComments
+      fetchComment : state.fetchComment
     })
   )
   const params = useParams();
-  fetchComments(params.id);
+
+
+  useEffect(
+    () => {  
+      fetchComment(params.id);
+      console.log("===============================---------",CommentList, "{================================")
+    }, [params])
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const navigate = useNavigate()

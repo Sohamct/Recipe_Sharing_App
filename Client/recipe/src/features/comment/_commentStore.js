@@ -13,12 +13,13 @@ const useCommentStore = create(
           set((state) => ({
             CommentList: [newComment, ...state.CommentList],
           }));
+          // console.log(CommentList);
 
         }catch(error){
           console.log("Error while adding comment!: ", error.message)
         }
       },
-      fetchComments: async (recipe_id) => {
+      fetchComment: async (recipe_id) => {
         try {
           const comments = await fetchComments(recipe_id);
           set({ CommentList: comments });
