@@ -23,12 +23,12 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
     if (!req.user) {
       return resp.status(401).json({ message: 'Unauthorized access' });
     }
+    const recipeId = '65bcac3e76dfff0a2699e588'
     try{
-        var to;
         if(repliedTo == "recipe"){
             to = await Recipe.find({ _id: _to });
         }else{
-             to = await Comment.find({ _id: _to });
+          comment = await Comment.find({_to : recipeId});
         }
     }catch(err){
       return resp.status(401).json({ message: 'Unexpected reply' });
@@ -50,22 +50,24 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
 });
 
 
-router.get('/fetchComments',  fetchUser, async (req, resp) => {
-  console.log('fetching Comments',req.headers);
+router.get('/fetchComments/:id', fetchUser, async (req, resp) => {
+  // console.log('====================fetching Comments=============================================================================', req.headers);
+  console.log("Request is comming..................");
   try {
-
     if (!req.user) {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
-    
-    const comments = await Comment.find({_to: req.query.id});
-    console.log(comments)
+
+    const comments = await Comment.find({ _to: req.params.id });
+    console.log(comments);
     resp.status(201).json({ message: 'Comments fetched successfully', data: comments });
   } catch (error) {
     console.error(error);
     resp.status(500).send('Unexpected error occurred');
   }
 });
+
+
 
 
 module.exports = router;
