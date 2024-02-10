@@ -23,27 +23,27 @@ export const Navigation = () => {
     <div className="relative w-full bg-white">
      <div className="flex w-full items-center justify-between px-0 py-3 sm:px-6 lg:px-8">
    <ul className="pl-0">
-        <ul class="inline-flex space-x-8">
+        <ul className="inline-flex space-x-8">
           <li>
             <Link to="/" className="text-lg font-bold text-blue-900  hover:text-blue-800 no-underline">
               Recipe Book
             </Link>
           </li>
           <li>
-            <Link to="/recipe" class="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline">
+            <Link to="/recipe" className="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline">
               Recipe
             </Link>
           </li>
           <li>
-            <Link to="/" class="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline">Favourite recipe
+            <Link to="/" className="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline">Favourite recipe
             </Link>
           </li>
           <li>
-            <Link to="/newrecipe" class="text-lg font-semibold text-blue-900  hover:text-blue-800 no-underline">Add Recipe
+            <Link to="/newrecipe" className="text-lg font-semibold text-blue-900  hover:text-blue-800 no-underline">Add Recipe
             </Link>
           </li>
           <li>
-            <Link to="/myrecipe" class="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline">
+            <Link to="/myrecipe" className="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline">
               My Recipe
             </Link>
           </li>

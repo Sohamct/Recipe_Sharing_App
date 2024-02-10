@@ -5,22 +5,28 @@ import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 
 export const RecipeShow = () => {
-  const {CommentList, addComment, removeComment, fetchComment} = useCommentStore(
+  const [CommentText, setCommentText] = useState("")
+  const debouncedText = useDebounce(CommentText, 300); // 300ms
+
+  const {commentByRecipe, addComment, removeComment, fetchComment, clearCommentsForRecipe} = useCommentStore(
     (state) => ({
-      CommentList: state.CommentList,
+      commentByRecipe: state.commentByRecipe,
       removeComment: state.removeComment,
       addComment: state.addComment,
-      fetchComment : state.fetchComment
+      fetchComment : state.fetchComment,
+      clearCommentsForRecipe: state.clearCommentsForRecipe
     })
   )
   const params = useParams();
 
-
-  useEffect(
-    () => {  
+  useEffect(() => {  
+    if(commentByRecipe[params.id] === undefined){
       fetchComment(params.id);
-      console.log("===============================---------",CommentList, "{================================")
-    }, [params])
+    }
+
+      console.log(debouncedText);
+      console.log("==================+++++++++++++++", commentByRecipe)
+    }, [params.id])
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const navigate = useNavigate()
@@ -41,12 +47,11 @@ export const RecipeShow = () => {
       repliedTo: 'recipe'
     };
   
-    addComment(newComment);
+    addComment(params.id, newComment);
     // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
     setCommentText("");
   }
-  
-  const [CommentText, setCommentText] = useState("")
+
   console.log("Comment is rendered")
 
   if (!recipe) {
@@ -54,9 +59,6 @@ export const RecipeShow = () => {
   }
 
   const { _id, title, description, date, ingredients } = recipe;
-
-  // console.log(recipe);
-  // console.log(params);
 
   return (
     <div className="card mb-3">
@@ -101,7 +103,7 @@ export const RecipeShow = () => {
           <input
            className="form-control" 
            value={CommentText} onChange={(e)=>setCommentText(e.target.value)} 
-           placeholder="Type your message" />
+           placeholder="Type here..." />
           <button className="btn btn-primary mt-2" 
           onClick={()=>{
             handleCommentSubmit()
@@ -111,7 +113,7 @@ export const RecipeShow = () => {
         <div className="mt-3">
           <h6 className="card-subtitle list-group-flush">
             <ul className="list-grroup list-group-flush">
-              <Comment CommentList={CommentList} removeComment={removeComment} addComment={addComment}/>
+              <Comment recipeId={params.id} commentByRecipe={commentByRecipe} removeComment={removeComment} addComment={addComment}/>
             </ul>
           </h6>
         </div>
@@ -119,3 +121,18 @@ export const RecipeShow = () => {
     </div>
   );
 };
+
+
+function useDebounce(value, delay){
+  const [debounceValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    }
+  }, [value, delay])
+  return debounceValue;
+}

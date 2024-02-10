@@ -5,13 +5,17 @@ import { addComment, fetchComments } from '../../app/service/CommentApi';
 const useCommentStore = create(
   devtools(
     persist((set) => ({
-      CommentList: [],
-      addComment: async (Comment) => {
+      commentByRecipe: {},
+
+      addComment: async (recipeId, Comment) => {
         try{
-          console.log(Comment)
+          // console.log(Comment)
           const newComment = await addComment(Comment);
+          console.log(newComment)
           set((state) => ({
-            CommentList: [newComment, ...state.CommentList],
+            commentByRecipe: {
+              ...state.commentByRecipe, [recipeId] : [newComment.data, ...state.commentByRecipe[recipeId] || []]
+            }
           }));
           // console.log(CommentList);
 
@@ -19,29 +23,34 @@ const useCommentStore = create(
           console.log("Error while adding comment!: ", error.message)
         }
       },
-      fetchComment: async (recipe_id) => {
+      fetchComment: async (recipeId) => {
         try {
-          const comments = await fetchComments(recipe_id);
-          set({ CommentList: comments });
+            const comments = await fetchComments(recipeId);
+            console.log(comments.data)
+            set((state) => ({
+            commentByRecipe: {
+              ...state.commentByRecipe, [recipeId]:comments.data
+            }
+          }));
+          
         } catch (error) {
-          // Handle error, maybe show a notification to the user
+          console.log("Error occurred while fetching comments:", error);
         }
       },
-      removeComment: (CommentId) => {
+      removeComment: (recipeId, commentId) => {
         set((state) => ({
-          CommentList: state.CommentList.filter((c) => c.id !== CommentId),
+          commentByRecipe: {
+            ...state.commentByRecipe, [recipeId]: state.commentByRecipe[recipeId].filter((c) => c._id !== commentId)
+          }
         }));
       },
-      toggleCourseStatus: (CommentId) => {
+      clearCommentsForRecipe: (recipeId)=>{
         set((state) => ({
-          CommentList: state.CommentList.map((Comment) =>
-            Comment.id === CommentId ? { ...Comment, completed: !Comment.completed } : Comment
-          ),
-        }));
-      },
-      setCommentList: (newCommentList) => {
-        set({ CommentList: newCommentList });
-      },
+          commentByRecipe: {
+            ...state.commentByRecipe, [recipeId] : []
+          }
+        }))
+      }
     }), {
       name: "Comments",
     })
@@ -49,38 +58,3 @@ const useCommentStore = create(
 );
 
 export default useCommentStore;
-
-// import {create} from 'zustand';
-// import { devtools, persist } from 'zustand/middleware'; // to check info in browser
-// // persist: to store info in browser
-
-
-// const CommentStore = (set) => ({
-//     CommentList: [], // initially
-//     addComment: (Comment) => {
-//         set((state) => ({
-//             CommentList : [Comment, ...state.CommentList],
-//         }))
-//     },
-//     removeComment: (CommentId) => {
-//         set((state) => ({
-//             CommentList: state.CommentList.filter((c) => c.id !== CommentId)
-//         }))
-//     },
-//     toggleCourseStatus: (CommentId) => {
-//         set((state) => ({
-//             CommentList: state.CommentList.map((Comment) => Comment.id === CommentId ? {...Comment, completed: !Comment.completed} : Comment)
-//         }))
-//     }
-
-// })
-
-// const useCommentStore = create(
-//     devtools(
-//         persist(CommentStore, {
-//             name: "Comments",
-//         })
-//     )
-// )
-
-// export default useCommentStore;

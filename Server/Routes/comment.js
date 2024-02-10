@@ -52,12 +52,12 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
 
 router.get('/fetchComments/:id', fetchUser, async (req, resp) => {
   // console.log('====================fetching Comments=============================================================================', req.headers);
-  console.log("Request is comming..................");
+  console.log("Fetch Request is comming..................");
   try {
     if (!req.user) {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
-
+    console.log(req.params.id)
     const comments = await Comment.find({ _to: req.params.id });
     console.log(comments);
     resp.status(201).json({ message: 'Comments fetched successfully', data: comments });
