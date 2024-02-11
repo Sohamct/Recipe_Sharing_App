@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createRecipeAsync } from '../../../features/recipe/Slice/recipe_slice';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { Navigation } from '../../Navigation';
 
 
 export const CreateRecipe = () => {
 
   const dispatch = useDispatch();
-  const {status, error} = useSelector((state) => state.recipes)
-  const notify1 = () => toast.success("Recipe created successfully", {autoClose: 2000, theme: "colored"});
+  const { status, error } = useSelector((state) => state.recipes)
+  const notify1 = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     image: '',
     ingredients: [
-      { ingredient_name: '', quantity: '', quantity_type: 'ml' } 
+      { ingredient_name: '', quantity: '', quantity_type: 'ml' }
     ]
   });
 
@@ -62,8 +63,8 @@ export const CreateRecipe = () => {
     e.preventDefault();
 
     const isValid = formData.ingredients.every(ingredient => {
-      return ingredient.ingredient_name.trim() !== '' 
-      && ingredient.quantity.trim() !== '';
+      return ingredient.ingredient_name.trim() !== ''
+        && ingredient.quantity.trim() !== '';
     });
 
     if (!isValid) {
@@ -73,21 +74,21 @@ export const CreateRecipe = () => {
 
     console.log('Form submitted:', formData);
     dispatch(createRecipeAsync(formData))
-    .then((response) => {
-      console.log(response)
-      // Reset the form data
-      setFormData({
-        title: '',
-        description: '',
-        image: '',
-        ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
+      .then((response) => {
+        console.log(response)
+        // Reset the form data
+        setFormData({
+          title: '',
+          description: '',
+          image: '',
+          ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
+        });
+      })
+      .catch((error) => {
+        console.error('Error creating recipe:', error);
       });
-    })
-    .catch((error) => {
-      console.error('Error creating recipe:', error);
-    });
-    
-    
+
+
   };
   const isFormEmpty = () => {
     return (
@@ -100,75 +101,118 @@ export const CreateRecipe = () => {
       )
     );
   };
-useEffect(() => {
-  if (status.create === 'succeeded') {
-    console.log('Recipe created successfully');
-    notify1();
-  } else if (status.create === 'failed') {
-    console.error(error.createError);
-    toast.error(error.createError, { autoClose: 2000, theme: "colored" }); // Notify failure
-  }
-}, [status, error.createError]);
+  useEffect(() => {
+    if (status.create === 'succeeded') {
+      console.log('Recipe created successfully');
+      notify1();
+    } else if (status.create === 'failed') {
+      console.error(error.createError);
+      toast.error(error.createError, { autoClose: 2000, theme: "colored" }); // Notify failure
+    }
+  }, [status, error.createError]);
 
   return (
     <div>
+      <div>
+        <Navigation />
+      </div>
+      <div className="max-w-3xl mx-auto p-6 bg-slate-100 rounded-md shadow-md ">
+        <h2 className="text-xl font-semibold mb-4">Create New Recipe</h2>
+        <form onSubmit={handleSubmit} >
+          <div className="mb-4">
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title:</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={_handleChange}
+              className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Steps:</label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={_handleChange}
+              rows="5"
+              className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image URL:</label>
+            <input
+              type="text"
+              id="image"
+              name="image"
+              value={formData.image}
+              onChange={_handleChange}
+              className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block py-2 text-sm font-medium text-gray-700">Ingredients:</label>
+            {formData.ingredients.map((ingredient, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  type="text"
+                  placeholder="Ingredient Name"
+                  name="ingredient_name"
+                  value={ingredient.ingredient_name}
+                  onChange={(e) => handleChange(e, index)}
+                  className="px-4 py-2 mr-2 w-1/2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  name="quantity"
+                  value={ingredient.quantity}
+                  onChange={(e) => handleChange(e, index)}
+                  className="px-4 py-2 mr-2 w-1/4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <select
+                  name="quantity_type"
+                  value={ingredient.quantity_type}
+                  onChange={(e) => handleChange(e, index)}
+                  className="px-4 py-2 mr-2 w-1/4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="ml">ml</option>
+                  <option value="litre">litre</option>
+                  <option value="gm">gm</option>
+                  <option value="kg">kg</option>
+                </select>
+                <button
+                  type="button"
+                  className="px-3 py-1 text-red-500 rounded-md hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
+                  onClick={() => handleRemoveIngredient(index)}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="block px-3 py-2 text-sm text-white bg-green-500 rounded-md hover:bg-green-600"
+              onClick={handleAddIngredient}
+            >
+              Add Ingredient
+            </button>
+          </div>
 
-      <h2>Create new recipe</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="title">Title:</label>
-          <input type="text" className="form-control" id="title" name="title" value={formData.title} onChange={_handleChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Steps:</label>
-          <textarea className="form-control" id="description" name="description" value={formData.description} onChange={_handleChange} rows="6" />
-        </div>
-        <div className="form-group">
-          <label htmlFor="image">Image URL:</label>
-          <input type="text" className="form-control" id="image" name="image" value={formData.image} onChange={_handleChange} />
-        </div>
-        <div className="form-group">
-          <label>Ingredients:</label>
-          {formData.ingredients.map((ingredient, index) => (
-            <div key={index} className="d-flex align-items-center">
-              <input
-                type="text"
-                className="form-control mr-2"
-                placeholder="Ingredient Name"
-                name="ingredient_name"
-                value={ingredient.ingredient_name}
-                onChange={(e) => handleChange(e, index)}
-              />
-              <input
-                type="number"
-                className="form-control mr-2"
-                placeholder="Quantity"
-                name="quantity"
-                value={ingredient.quantity}
-                onChange={(e) => handleChange(e, index)}
-              />
-              <select
-                className="form-control mr-2"
-                name="quantity_type"
-                value={ingredient.quantity_type}
-                onChange={(e) => handleChange(e, index)}
-              >
-                <option value="ml">ml</option>
-                <option value="litre">litre</option>
-                <option value="gm">gm</option>
-                <option value="kg">kg</option>
-              </select>
-              <button type="button" className="btn btn-danger" onClick={() => handleRemoveIngredient(index)}>
-              X</button>
-            </div>
-          ))}
-          <button type="button" className="btn btn-success mt-2" onClick={handleAddIngredient}>
-            Add Ingredient
+          <button
+            type="submit"
+            className="block px-3 py-2 text-sm text-white font-medium bg-blue-500 rounded-md hover:bg-blue-600"
+            disabled={isFormEmpty()}
+          >
+            Submit
           </button>
-        </div>
 
-        <button type="submit" className="btn btn-primary" disabled={isFormEmpty()}>Submit</button>
-      </form>
+        </form>
+      </div>
+
     </div>
+
   )
 }

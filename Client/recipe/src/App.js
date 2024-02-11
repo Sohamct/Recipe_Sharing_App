@@ -8,7 +8,7 @@ import { Signup } from './components/Auth/Signup';
 import { Login } from './components/Auth/Login';
 import { RecipeShow} from './components/Recipes/RecipeList/RecipeItem/RecipeShow';
 import { CreateRecipe } from './components/Recipes/CreateRecipe/CreateRecipe';
-import { RecipeStart } from './components/Recipes/RecipeStart/RecipeStart';
+// import { RecipeStart } from './components/Recipes/RecipeStart/RecipeStart';
 import { RecipeEdit } from './components/Recipes/RecipeEdit/RecipeEdit';
 import LogoutInfoPage from './components/Auth/LogoutInfoPage';
 
@@ -17,19 +17,14 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/" element={<Navigate to="/recipe" replace />} />
       <Route path="/recipe" element={<RootLayout />}>
-        <Route index element={<RecipeStart />} />
-        <Route path=":id" element={<RecipeShow />}/>
-        <Route path="newrecipe" element={<CreateRecipe />}/>
         <Route path=":id/edit" element={<RecipeEdit />}/>
       </Route>
-      <Route path="/newrecipe" element={<RootLayout />}>
-        <Route index element={<CreateRecipe />} />
-        <Route path=":id" element={<RecipeShow />}/>
-      </Route>
+      <Route path="newrecipe" element={<CreateRecipe />} />
       <Route path="/favourite-recipe" element={<div>Favourite Recipe</div>} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/logout" element={<LogoutInfoPage/>}/>
+      <Route path="viewrecipe/:id" element={<RecipeShow />}/>
     </Route>
   )
 );

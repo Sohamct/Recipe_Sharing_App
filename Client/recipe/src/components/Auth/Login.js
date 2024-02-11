@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import React from "react";
 import AuthService from "./Auth.service";
+import React, { useEffect } from "react";
 
 
 export const Login = () => {
@@ -17,6 +17,15 @@ export const Login = () => {
     navigate('/signup');
   }
 
+ 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      alert('You are already logged in');
+      navigate('/');
+    }
+  }, []);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -29,7 +38,7 @@ export const Login = () => {
       if (loginResponse.success) {
         console.log(loginResponse.message);
         notify();
-        navigate("/");
+        navigate("/recipe");
       } else {
         console.log(loginResponse.message);
         toast.error(loginResponse.message, {
@@ -76,5 +85,3 @@ export const Login = () => {
     </div>
   );
 };
-
-

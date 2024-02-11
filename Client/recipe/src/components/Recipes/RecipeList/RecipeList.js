@@ -35,8 +35,8 @@ export const RecipeList = () => {
     const recipes = recipesState.recipes || [];
 
     return (
-        <div>
-            {recipes.map((recipe) => (
+        <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 gap-8">
+             {recipes.map((recipe) => (
                 <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner} />
             ))}
         </div>

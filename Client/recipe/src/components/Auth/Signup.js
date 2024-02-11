@@ -2,7 +2,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -75,6 +75,14 @@ export const Signup = () => {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      alert('You are already logged in');
+      navigate('/');
+    }
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
