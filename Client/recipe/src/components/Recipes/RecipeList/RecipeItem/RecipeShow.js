@@ -1,33 +1,26 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchRecipesAsync } from '../../../../features/recipe/Slice/recipe_slice'; // Import your fetch action
-import { Navigation } from '../../../Navigation';
+import { selectRecipeById } from '../../../../features/recipe/Slice/recipe_slice'; // Adjust the path accordingly
 
 export const RecipeShow = () => {
+  const {CommentList, addComment, removeComment, fetchComment} = useCommentStore(
+    (state) => ({
+      CommentList: state.CommentList,
+      removeComment: state.removeComment,
+      addComment: state.addComment,
+      fetchComment : state.fetchComment
+    })
+  )
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const recipeId = params.id;
 
-  // Fetch recipes from the Redux store
   const recipes = useSelector((state) => state.recipes.recipes);
-  const loading = useSelector((state) => state.recipes.status === 'loading');
-
-  // Fetch recipes when the component mounts or the recipe ID changes
-  useEffect(() => {
-    dispatch(fetchRecipesAsync());
-  }, [dispatch, recipeId]);
-
-  // Find the specific recipe by ID
-  const recipe = recipes.find((r) => r._id === recipeId);
-
-  // If the data is still loading, show a loading indicator
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  // If recipe is not found, redirect to a different page
+  const navigate = useNavigate()
+  const recipe = recipes.find((r) => r._id === params.id)
+  // console.log(recipe)
   if (!recipe) {
     navigate('/not-found');
     return null; // Prevent rendering anything else
@@ -61,40 +54,25 @@ export const RecipeShow = () => {
               ))}
             </ul>
 
-            <div className="mt-4">
-              <h6 className="text-lg font-semibold">Steps:</h6>
-              <ol className="list-decimal list-inside">
-                {Array.isArray(description) ? (
-                  description.map((step, index) => (
-                    <li key={index} className="text-gray-700">
-                      {step}
-                    </li>
-                  ))
-                ) : (
-                  <li className="text-gray-700">{description}</li>
-                )}
-              </ol>
-            </div>
+        {/* Add your steps here */}
+        <h6 className="card-subtitle mt-3 mb-2 text-muted">Steps:</h6>
+        <ol>
+          {description}
+        </ol>
 
-            <div className="mt-6 flex items-center space-x-4">
-              <button className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">Like</button>
-              <button className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600" onClick={() => navigate('/chat')}>
-                Chat
-              </button>
-              <i className="far fa-heart text-gray-700"></i>
-              <button className="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600">Follow</button>
-              <button className="px-4 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600">Add to Favorite</button>
-            </div>
+        <div className="mt-3">
+          <button className="btn btn-primary me-2">Like</button>
+          <button className="btn btn-info me-2" onClick={() => navigate('/chat')}>
+            Chat
+          </button>
+          <i className="far fa-heart me-2"></i>
+          <button className="btn btn-success me-2">Follow</button>
+          <button className="btn btn-warning me-2">Add to Favorite</button>
+        </div>
 
-            <div className="mt-6">
-              <input type="text" className="border border-gray-300 rounded-md p-2 w-full mb-2" placeholder="Type your message" />
-              <button className="mt-2 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">Submit Chat</button>
-                  <div>
-
-              <button className="flex justify-end mt-2 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">Back </button>
-                  </div>
-            </div>
-          </div>
+        <div className="mt-3">
+          <input type="text" className="form-control" placeholder="Type your message" />
+          <button className="btn btn-primary mt-2">Submit Chat</button>
         </div>
       </div>
 

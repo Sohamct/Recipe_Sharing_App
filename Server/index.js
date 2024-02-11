@@ -8,13 +8,14 @@ connectToMongo()
 app.use(express.json())
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    // origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true
   }));
 
 app.use('/api/auth', require('./Routes/auth'))
 app.use('/api/recipe', require('./Routes/recipe'))
+app.use('/api/comment', require('./Routes/comment'))
 
 app.listen(5501, () => {
   console.log("Server is started")
