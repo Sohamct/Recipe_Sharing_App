@@ -14,20 +14,17 @@ export const RootLayout = () => {
       <Navigation />
       <div className="container" style={containerStyle}>
       <FilterRecipe />
-      <div className="row">
-        <div className="col-md-6">
+        <div>
           <RecipeList />
         </div>
         
-          <div className="col-md-6">
+          {/* <div className="">
             <main>
               <Outlet/>
             </main>
-          </div>
+          </div> */}
         
       </div>
-    </div>
-      
     </div>
   );
 };
