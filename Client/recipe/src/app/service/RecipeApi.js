@@ -46,5 +46,28 @@ const api = {
       throw new Error('Failed to fetch recipes'); // Throw a generic error if something goes wrong
     }
   },
+  
+  searchRecipesAsync: async (searchTerm) => {
+    try {
+      const response = await fetch(`${uri}/search?q=${encodeURIComponent(searchTerm)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        return data.results || []; // Return the search results or an empty array if the 'results' property is not present
+      } else {
+        throw new Error(data.error || 'Unknown error'); // Throw an error with the specific error message from the server or a default message
+      }
+    } catch (error) {
+      throw new Error(`Failed to search recipes: ${error.message}`); // Throw a generic error if something goes wrong
+    }
+  },
 };
+
 export default api;
