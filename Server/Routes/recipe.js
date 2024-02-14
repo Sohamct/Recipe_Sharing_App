@@ -58,4 +58,18 @@ router.get('/fetchrecipes',  fetchUser, async (req, resp) => {
   }
 });
 
+router.get('/search', async (req, res) => {
+  try {
+    const searchTerm = req.query.q; // Get the search term from query parameters
+
+    // Use the searchTerm to query your backend data
+    const searchResults = await Recipe.find({ title: { $regex: searchTerm, $options: 'i' } });
+
+    res.json({ results: searchResults });
+  } catch (error) {
+    console.error('Error searching recipes:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

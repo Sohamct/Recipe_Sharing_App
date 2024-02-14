@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { addComment, fetchComments } from '../../app/service/CommentApi';
 
-const useCommentStore = create(
+export const useCommentStore = create(
   devtools(
     persist((set) => ({
       CommentList: [],
@@ -47,8 +47,6 @@ const useCommentStore = create(
     })
   )
 );
-
-export default useCommentStore;
 
 // import {create} from 'zustand';
 // import { devtools, persist } from 'zustand/middleware'; // to check info in browser

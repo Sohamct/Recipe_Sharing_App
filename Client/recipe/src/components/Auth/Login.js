@@ -25,7 +25,7 @@ export const Login = () => {
       alert('You are already logged in');
       navigate('/');
     }
-  }, []);
+  }, [navigate]);
 
   const handleClick = async (e) => {
     e.preventDefault();
