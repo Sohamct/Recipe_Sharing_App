@@ -1,28 +1,46 @@
-import React from 'react'
-import {useNavigate} from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export const RecipeItem = ({_id, title, description, owner}) => {
-    const navigate = useNavigate();
-    const goToSpecificRecipe = () => {
-        navigate(`/recipe/${_id}`)
-    }
-    return (
+export const RecipeItem = ({ _id, title, owner }) => {
+  const navigate = useNavigate();
+  const goToSpecificRecipe = () => {
+    navigate(`/viewrecipe/${_id}`);
+  };
 
-            <div className="card mb-2" style={{ width: '37rem', cursor: 'pointer' }} onClick={goToSpecificRecipe}>
-                <div className="card-body">
-                    <h5 className="card-title">recipe id: {_id}</h5>
-                    <p className="card-text">{title}</p>
-                    <span className="card-text">By: {owner}</span>
-                    <span className="card-text">12 min ago</span>
-                </div>
-                <img src="https://tse3.mm.bing.net/th?id=OIP.ZZsn6lD6PCjocBzx1tuu1QHaEo&pid=Api&P=0&h=180" className="card-img-top" alt="Recipe Image" />
-                <p>{description}</p>
-                <div className="card-footer d-flex justify-content-between align-items-center">
-                    <button className="btn btn-primary">Like</button>
-                    <i className="far fa-heart"></i> {/* Add to favorite icon */}
-                    <button className="btn btn-info">Follow</button>
-                </div>
-            </div>
-        
-    )
-}
+  return (
+    <div className='container'>
+      <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+        <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
+          <img
+            src={require('../../../../assets/pizza.jpg')}
+            alt="card-image"
+            className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+          />
+        </div>
+        <div className="p-4 mt-2">
+          <h5 className="block mb-2 font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900">
+            Recipe ID: {_id}
+          </h5>
+          <p className="block font-sans font-semibold text-sm leading-relaxed text-inherit">
+            {title}
+          </p>
+          <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
+            By {owner}
+          </p>
+          <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
+            12 min ago
+          </p>
+        </div>
+        <div className="p-4 pt-0">
+          <button
+            className="select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-2 px-4 rounded-md bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 hover:bg-gray-800 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+            type="button"
+            onClick={goToSpecificRecipe}
+          >
+            View Recipe
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

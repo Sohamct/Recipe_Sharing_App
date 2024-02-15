@@ -25,6 +25,7 @@ export const fetchComments = async (recipe_id) => {
 
 export const addComment = async (newComment) => {
     try {
+        console.log(newComment)
         const response = await fetch(`${uri}/addComment`, {
             method: 'POST',
             headers: {
@@ -34,7 +35,7 @@ export const addComment = async (newComment) => {
             body: JSON.stringify(newComment),
         });
 
-        console.log(response); // Add this line
+        console.log(response);
 
         if (!response.ok) {
             throw new Error(`Failed to add comment. Status: ${response.status}`);

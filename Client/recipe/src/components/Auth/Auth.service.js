@@ -13,18 +13,20 @@ const AuthService = {
 
             if (!resp.ok) {
                 const data = await resp.json();
+                console.log("Response is not ok");
+                console.log(data)
                 return { success: false, message: data.errors || 'Login failed' };
             }
 
             const data = await resp.json();
-            console.log(resp.status)
+            console.log(resp)
 
             if (data.errors) {
                 console.error('Login failed:', data.errors);
                 return { success: false, message: data.errors };
             } else if (data.success) {
                 localStorage.setItem('token', data.authtoken);
-                return { success: true, message: 'Logged in successful' };
+                return { success: true, message: 'Logged in successful', username: data.username };
             }
         } catch (error) {
             return { success: false, message: error.message || 'An error occurred during login' };
@@ -42,6 +44,7 @@ const AuthService = {
                 },
                 body: JSON.stringify({ username, password, email, firstname, lastname, gender, isPrivate }),
             });
+            console.log(resp)
 
             if (!resp.ok) {
                 const data = await resp.json();

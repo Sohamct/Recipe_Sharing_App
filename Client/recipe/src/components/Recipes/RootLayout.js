@@ -5,29 +5,20 @@ import {FilterRecipe} from './FilterRecipe/FilterRecipe'
 import { RecipeList } from './RecipeList/RecipeList';
 
 export const RootLayout = () => {
-  const containerStyle = {
-    marginLeft: '50px',    // Set margin to 0
-  };
 
   return (
     <div>
       <Navigation />
-      <div className="container" style={containerStyle}>
-      <FilterRecipe />
-      <div className="row">
-        <div className="col-md-6">
+        <div>
           <RecipeList />
         </div>
         
-          <div className="col-md-6">
+          {/* <div className="">
             <main>
               <Outlet/>
             </main>
-          </div>
+          </div> */}
         
-      </div>
-    </div>
-      
     </div>
   );
 };

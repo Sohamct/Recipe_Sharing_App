@@ -1,44 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { RecipeItem } from './RecipeItem/RecipeItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
 
 export const RecipeList = () => {
-    const location = useLocation();
-    const dispatch = useDispatch();
-    const recipesState = useSelector((state) => state.recipes);
-    // Determine isOwner based on the current location
-    const isOwner = location.pathname === '/myrecipe';
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                await dispatch(fetchRecipesAsync());
-                console.log(recipesState.recipes)
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const recipesState = useSelector((state) => state.recipes);
+  // Determine isOwner based on the current location
+  const isOwner = location.pathname === '/myrecipe';
 
-            } catch (error) {
-                console.error('Error fetching recipes:', error);
-            }
-        };
-
-        fetchData();
-    }, [dispatch]);
-
-    if (recipesState.status === 'loading') {
-        return <h3>Loading...</h3>;
+  // Use useCallback to memoize the function
+  const fetchData = useCallback(async () => {
+    try {
+      await dispatch(fetchRecipesAsync());
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
     }
+  }, [dispatch]);
 
-    if (recipesState.status === 'failed') {
-        return <p>Error: {recipesState.error.fetchError}</p>;
-    }
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]); // Include fetchData in the dependency array
 
-    const recipes = recipesState.recipes || [];
+  if (recipesState.status === 'loading') {
+    return <h3>Loading...</h3>;
+  }
 
-    return (
-        <div>
-            {recipes.map((recipe) => (
-                <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner} />
-            ))}
-        </div>
-    );
+  if (recipesState.status === 'failed') {
+    return <p>Error: {recipesState.error.fetchError}</p>;
+  }
+
+  const recipes = recipesState.recipes || [];
+
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5">
+      {recipes.map((recipe) => (
+        <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner} />
+      ))}
+    </div>
+  );
 };

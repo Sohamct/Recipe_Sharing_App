@@ -3,18 +3,18 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
+import { Navigation } from '../../../Navigation';
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("")
   const debouncedText = useDebounce(CommentText, 300); // 300ms
 
-  const {commentByRecipe, addComment, removeComment, fetchComment, clearCommentsForRecipe} = useCommentStore(
+  const {commentByRecipe, addComment, removeComment, fetchComment} = useCommentStore(
     (state) => ({
       commentByRecipe: state.commentByRecipe,
       removeComment: state.removeComment,
       addComment: state.addComment,
       fetchComment : state.fetchComment,
-      clearCommentsForRecipe: state.clearCommentsForRecipe
     })
   )
   const params = useParams();
@@ -61,45 +61,48 @@ export const RecipeShow = () => {
   const { _id, title, description, date, ingredients } = recipe;
 
   return (
-    <div className="card mb-3">
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <p className="card-subtitle text-muted">Recipe ID: {_id}</p>
-        <p className="card-text">
-          <small className="text-muted">{new Date(date).toLocaleString()}</small>
-        </p>
+    <div>
+      <div>
+        <Navigation />
       </div>
-      {/* Add your image component here */}
-      {/* <img src="..." className="card-img-top" alt="Recipe Image" /> */}
+      <div className='pt-7'>
 
-      <div className="card-body">
+        <div className="mx-auto block w-3/4 px-4 pt-6 text-sm border border-gray-300 rounded-lg shadow-md p-4">
+          <div>
+            <h5 className="text-xl font-semibold">{title}</h5>
+            <p className="text-gray-600">Recipe ID: {_id}</p>
+            <p className="text-gray-600">
+              <small>{new Date(date).toLocaleString()}</small>
+            </p>
+          </div>
 
-        <h6 className="card-subtitle mb-2 text-muted">Ingredients:</h6>
-        <ul className="list-group list-group-flush">
-          {ingredients.map((ingredient, index) => (
-            <li key={index} className="list-group-item">
-              {ingredient.ingredient_name} ({ingredient.quantity} {ingredient.quantity_type})
-            </li>
-          ))}
-        </ul>
+          <div className="mt-4">
+            <h6 className="text-lg font-semibold">Ingredients:</h6>
+            <ul className="list-disc list-inside">
+              {ingredients.map((ingredient, index) => (
+                <li key={index} className="text-gray-700">
+                  {ingredient.ingredient_name} ({ingredient.quantity} {ingredient.quantity_type})
+                </li>
+              ))}
+            </ul>
 
-        {/* Add your steps here */}
-        <h6 className="card-subtitle mt-3 mb-2 text-muted">Steps:</h6>
-        <ol>
-          {description}
-        </ol>
+            {/* Add your steps here */}
+            <h6 className="card-subtitle mt-3 mb-2 text-muted">Steps:</h6>
+            <ol>
+              {description}
+            </ol>
 
-        <div className="mt-3">
-          <button className="btn btn-primary me-2">Like</button>
-          <button className="btn btn-info me-2" onClick={() => navigate('/Comment')}>
-            Comment
-          </button>
-          <i className="far fa-heart me-2"></i>
-          <button className="btn btn-success me-2">Follow</button>
-          <button className="btn btn-warning me-2">Add to Favorite</button>
-        </div>
+            <div className="mt-3">
+              <button className="btn btn-primary me-2">Like</button>
+              <button className="btn btn-info me-2" onClick={() => navigate('/chat')}>
+                Chat
+              </button>
+              <i className="far fa-heart me-2"></i>
+              <button className="btn btn-success me-2">Follow</button>
+              <button className="btn btn-warning me-2">Add to Favorite</button>
+            </div>
 
-        <div className="mt-3">
+            <div className="mt-3">
           <input
            className="form-control" 
            value={CommentText} onChange={(e)=>setCommentText(e.target.value)} 
@@ -109,13 +112,16 @@ export const RecipeShow = () => {
             handleCommentSubmit()
           }}>Add Comment</button>
         </div>
+          </div>
 
-        <div className="mt-3">
+          <div className="mt-3">
           <h6 className="card-subtitle list-group-flush">
             <ul className="list-grroup list-group-flush">
               <Comment recipeId={params.id} commentByRecipe={commentByRecipe} removeComment={removeComment} addComment={addComment}/>
             </ul>
           </h6>
+        </div>
+
         </div>
       </div>
     </div>
