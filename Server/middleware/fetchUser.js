@@ -3,15 +3,13 @@ const jwt = require('jsonwebtoken');
 
 const fetchUser = (req, res, next) => {
     const JWT_SECRET = process.env.JWT_SECRET;
-    console.log(JWT_SECRET)
+    console.log(JWT_SECRET);
     try {
         const token = req.header('auth-token');
         console.log("token: ",token)
         if (!token) {
             return res.status(401).json({ error: "Please login to RecipeBook System" });
         }
-
-//   console.log('====================fetching Comments=============================================================================', req.headers);
 
         const data = jwt.verify(token, JWT_SECRET);
 

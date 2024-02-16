@@ -8,7 +8,7 @@ const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
 
-// Route-1: create a user using: '/api/auth/createrecipe'
+// Route-1: create a user using: '/api/comment/addComment'
 router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
   console.log('Adding new comment', req.body, req.header);
   try {
@@ -23,7 +23,7 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
     if (!req.user) {
       return resp.status(401).json({ message: 'Unauthorized access' });
     }
-    const recipeId = '65bcac3e76dfff0a2699e588'
+    const recipeId = req.params.id;
     try{
         if(repliedTo == "recipe"){
             to = await Recipe.find({ _id: _to });
@@ -33,15 +33,15 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
     }catch(err){
       return resp.status(401).json({ message: 'Unexpected reply' });
     }
-    const userId = req.user.id;
-
+    const username = req.user.username;
+    console.log("Username..................", req.user)
     const comment = await Comment.create({
       text,
-      _from : userId,
+      _from : username,
       repliedTo,
       _to,
     });
-
+    console.log("comment created: ",comment);
     resp.status(200).json({ message: 'Comment created successfully', data: comment });
   } catch (error) {
     console.error(error);
@@ -51,13 +51,12 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
 
 
 router.get('/fetchComments/:id', fetchUser, async (req, resp) => {
-  // console.log('====================fetching Comments=============================================================================', req.headers);
-  console.log("Request is comming..................");
+  console.log("Fetch Request is comming..................");
   try {
     if (!req.user) {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
-
+    console.log(req.params.id)
     const comments = await Comment.find({ _to: req.params.id });
     console.log(comments);
     resp.status(201).json({ message: 'Comments fetched successfully', data: comments });

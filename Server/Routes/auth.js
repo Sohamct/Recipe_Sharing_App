@@ -6,7 +6,7 @@ const { check, body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// Route-1: create a user using: '/api/auth/createuser'
+// Route-1: POST create a user using: '/api/auth/createuser'
 router.post('/createuser', [
     check('username')
       .trim().notEmpty().withMessage('Username cannot be empty')
@@ -63,12 +63,14 @@ router.post('/createuser', [
     }
   });
   
-
+// Route-2: POST create a user using: '/api/auth/login'
 router.post('/login', [
     check('username')
-        .trim().notEmpty().withMessage('Please enter username')
+        .trim().notEmpty().withMessage('Username can not be empty')
         .isLength({ min: 3 }).withMessage('Username must consist of at least 3 characters'),
-    body('password', 'Password cannot be blank').exists(),
+        body('password')
+        .notEmpty().withMessage('Password cannot be empty')
+        .isLength({ min: 5 }).withMessage('Password must be at least 5 characters long'),
 ], async (req, resp) => {
 
     let success = false;
@@ -76,7 +78,7 @@ router.post('/login', [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        return resp.status(400).json({ errors: errors.array() });
+        return resp.status(400).json({ errors: errors.array()[0].msg });
     }
 
     const { username, password } = req.body;
@@ -95,13 +97,14 @@ router.post('/login', [
 
         const data = {
             user: {
-                id: user.id
+                id: user.id,
+                username: user.username
             }
         };
 
         const authtoken = jwt.sign(data, process.env.JWT_SECRET);
         success = true;
-        return resp.json({ success, authtoken });
+        return resp.json({ success, authtoken, username: data.user.username });
         // console.log(authtoken)
     } catch (err) {
         return resp.status(500).send("Internal server error");
