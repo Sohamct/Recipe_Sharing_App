@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { Navigation } from '../../../Navigation';
@@ -10,6 +11,7 @@ export const RecipeShow = () => {
   const debouncedText = useDebounce(CommentText, 300); // 300ms
 
   const {commentByRecipe, addComment, removeComment, fetchComment} = useCommentStore(
+
     (state) => ({
       commentByRecipe: state.commentByRecipe,
       removeComment: state.removeComment,
@@ -18,7 +20,9 @@ export const RecipeShow = () => {
     })
   )
   const params = useParams();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const recipeId = params.id;
   useEffect(() => {  
     if(commentByRecipe[params.id] === undefined){
       fetchComment(params.id);
@@ -28,10 +32,11 @@ export const RecipeShow = () => {
       console.log("==================+++++++++++++++", commentByRecipe)
     }, [params.id])
 
+
   const recipes = useSelector((state) => state.recipes.recipes);
-  const navigate = useNavigate()
   const recipe = recipes.find((r) => r._id === params.id)
   // console.log(recipe)
+
 
   const handleCommentSubmit = () => {
     if (!CommentText) {
@@ -55,7 +60,8 @@ export const RecipeShow = () => {
   console.log("Comment is rendered")
 
   if (!recipe) {
-    return <div>Recipe not found</div>;
+    navigate('/not-found');
+    return null; // Prevent rendering anything else
   }
 
   const { _id, title, description, date, ingredients } = recipe;
@@ -103,6 +109,7 @@ export const RecipeShow = () => {
             </div>
 
             <div className="mt-3">
+
           <input
            className="form-control" 
            value={CommentText} onChange={(e)=>setCommentText(e.target.value)} 
@@ -120,6 +127,7 @@ export const RecipeShow = () => {
               <Comment recipeId={params.id} commentByRecipe={commentByRecipe} removeComment={removeComment} addComment={addComment}/>
             </ul>
           </h6>
+
         </div>
 
         </div>

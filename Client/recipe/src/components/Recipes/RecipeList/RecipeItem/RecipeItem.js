@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const RecipeItem = ({ _id, title, owner, date }) => {
+
+
   const navigate = useNavigate();
   const goToSpecificRecipe = () => {
     navigate(`/viewrecipe/${_id}`);
@@ -32,12 +34,14 @@ export const RecipeItem = ({ _id, title, owner, date }) => {
     }
   };
 
+
   return (
     <div className='container'>
       <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
         <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
           <img
             src={require('../../../../assets/pizza.jpg')}
+
             alt="card-image"
             className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
           />
@@ -53,7 +57,9 @@ export const RecipeItem = ({ _id, title, owner, date }) => {
             By {owner}
           </p>
           <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
+
             {calculateRelativeTime(date)}
+
           </p>
         </div>
         <div className="p-4 pt-0">

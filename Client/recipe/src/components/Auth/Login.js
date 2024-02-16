@@ -6,6 +6,7 @@ import AuthService from "./Auth.service";
 import './login.css'
 import { useUser } from "../../features/context";
 
+
 export const Login = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {username, setUser} = useUser();
@@ -21,6 +22,15 @@ export const Login = () => {
     navigate('/signup');
   }
 
+ 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      alert('You are already logged in');
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -36,7 +46,7 @@ export const Login = () => {
         console.log(loginResponse);
         setUser({username: loginResponse.username})
         notify();
-        navigate("/");
+        navigate("/recipe");
       } else {
         console.log(loginResponse.message);
         toast.error(loginResponse.message, {
@@ -90,5 +100,3 @@ export const Login = () => {
     </div>
   );
 };
-
-
