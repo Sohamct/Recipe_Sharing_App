@@ -1,28 +1,64 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import {useCommentStore} from '../../../../features/comment/_commentStore';
+
+import useCommentStore from '../../../../features/comment/_commentStore';
+import { Comment } from './Comment';
 import { Navigation } from '../../../Navigation';
 
-
 export const RecipeShow = () => {
-  const { CommentList, addComment, removeComment, fetchComment } = useCommentStore(
+  const [CommentText, setCommentText] = useState("")
+  const debouncedText = useDebounce(CommentText, 300); // 300ms
+
+  const {commentByRecipe, addComment, removeComment, fetchComment} = useCommentStore(
+
     (state) => ({
-      CommentList: state.CommentList,
+      commentByRecipe: state.commentByRecipe,
       removeComment: state.removeComment,
       addComment: state.addComment,
-      fetchComment: state.fetchComment
+      fetchComment : state.fetchComment,
     })
   )
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const recipeId = params.id;
+  useEffect(() => {  
+    if(commentByRecipe[params.id] === undefined){
+      fetchComment(params.id);
+    }
+
+      console.log(debouncedText);
+      console.log("==================+++++++++++++++", commentByRecipe)
+    }, [params.id])
+
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = recipes.find((r) => r._id === params.id)
   // console.log(recipe)
+
+
+  const handleCommentSubmit = () => {
+    if (!CommentText) {
+      return alert("please add Comment-text");
+    }
+
+    // CommentList = CommentList.filter((Comment) => Comment.recipeId === params.id)
+    // const filteredComments = CommentList.filter((Comment) => Comment.recipeId === params.id);
+
+    const newComment = {
+      text: CommentText,
+      _to: params.id,
+      repliedTo: 'recipe'
+    };
+  
+    addComment(params.id, newComment);
+    // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
+    setCommentText("");
+  }
+
+  console.log("Comment is rendered")
+
   if (!recipe) {
     navigate('/not-found');
     return null; // Prevent rendering anything else
@@ -73,13 +109,44 @@ export const RecipeShow = () => {
             </div>
 
             <div className="mt-3">
-              <input type="text" className="form-control" placeholder="Type your message" />
-              <button className="btn btn-primary mt-2">Submit Chat</button>
-            </div>
+
+          <input
+           className="form-control" 
+           value={CommentText} onChange={(e)=>setCommentText(e.target.value)} 
+           placeholder="Type here..." />
+          <button className="btn btn-primary mt-2" 
+          onClick={()=>{
+            handleCommentSubmit()
+          }}>Add Comment</button>
+        </div>
           </div>
+
+          <div className="mt-3">
+          <h6 className="card-subtitle list-group-flush">
+            <ul className="list-grroup list-group-flush">
+              <Comment recipeId={params.id} commentByRecipe={commentByRecipe} removeComment={removeComment} addComment={addComment}/>
+            </ul>
+          </h6>
+
+        </div>
 
         </div>
       </div>
     </div>
   );
 };
+
+
+function useDebounce(value, delay){
+  const [debounceValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    }
+  }, [value, delay])
+  return debounceValue;
+}

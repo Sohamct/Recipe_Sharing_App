@@ -6,7 +6,7 @@ const validateRecipe = require('../middleware/validateRecipeMiddleware');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
-// Route-1: create a user using: '/api/auth/createrecipe'
+// Route-1: POST create a user using: '/api/auth/createrecipe'
 router.post('/createrecipe', [fetchUser, validateRecipe], async (req, resp) => {
   console.log('Creating new recipe', req.body, req.header);
   try {
@@ -22,15 +22,14 @@ router.post('/createrecipe', [fetchUser, validateRecipe], async (req, resp) => {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
 
-    const userId = req.user.id;
-
-    // Include the 'steps' field in the recipe creation if required
+    const username = req.user.username;
+    console.log(username)
     const recipe = await Recipe.create({
       title,
       description,
-      steps, // Uncomment this line if 'steps' is required
+      steps,
       ingredients,
-      owner: userId,
+      owner: username,
     });
 
     resp.status(201).json({ message: 'Recipe created successfully', data: recipe });
@@ -50,7 +49,7 @@ router.get('/fetchrecipes',  fetchUser, async (req, resp) => {
 
     const userId = req.user.id;
     const recipes = await Recipe.find({});
-    console.log(recipes)
+    console.log("fetched all recipes ",recipes)
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
     console.error(error);
@@ -71,5 +70,6 @@ router.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 module.exports = router;

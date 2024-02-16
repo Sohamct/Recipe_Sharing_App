@@ -1,11 +1,16 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
 import AuthService from "./Auth.service";
-import React, { useEffect } from "react";
+import './login.css'
+import { useUser } from "../../features/context";
 
 
 export const Login = () => {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const {username, setUser} = useUser();
+
   const notify = () =>
     toast.success("Logged in successfully!", {
       autoClose: 2000,
@@ -29,25 +34,33 @@ export const Login = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    console.log("working...");
+    if(isButtonDisabled) return ;
+    setIsButtonDisabled(true);
+    // console.log("working...");
     const username = e.target.elements.username.value;
     const password = e.target.elements.password.value;
-    console.log(username + password);
+    // console.log(username + password);
     try {
       const loginResponse = await AuthService.login(username, password);
       if (loginResponse.success) {
-        console.log(loginResponse.message);
+        console.log(loginResponse);
+        setUser({username: loginResponse.username})
         notify();
         navigate("/recipe");
       } else {
         console.log(loginResponse.message);
         toast.error(loginResponse.message, {
-          autoClose: 2000,
+          autoClose: 1500,
           theme: "colored",
         });
       }
     } catch (error) {
       console.log(error.message || "Erjlkbagr");
+    }
+    finally{
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 2000)
     }
   };
 
@@ -70,8 +83,10 @@ export const Login = () => {
           placeholder="Password "
           className="p-2.5 border-2 my-4 w-full rounded-lg block"
         />
-        <button type="submit" className="p-2.5 border-2 my-3 text-white font-semibold bg-blue-700 w-full rounded-lg block">
-          Login
+        <button type="submit" 
+        className="p-2.5 border-2 my-3 text-white font-semibold bg-blue-700 w-full rounded-lg block button"
+        disabled={isButtonDisabled}>
+          {isButtonDisabled ? 'Logging in...' : 'Login'}
         </button>
         <div className="text-center">
               Not registered ?{" "}

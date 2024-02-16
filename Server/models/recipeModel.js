@@ -13,7 +13,7 @@ const ingredientSchema = new mongoose.Schema({
     description: { type: String },
     ingredients: [{ type: ingredientSchema }],
     owner: { 
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
         required: true
     },

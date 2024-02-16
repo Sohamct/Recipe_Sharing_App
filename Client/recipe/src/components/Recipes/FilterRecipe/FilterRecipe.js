@@ -41,3 +41,4 @@ export const FilterRecipe = ({ onFilter }) => {
     </div>
   );
 };
+
