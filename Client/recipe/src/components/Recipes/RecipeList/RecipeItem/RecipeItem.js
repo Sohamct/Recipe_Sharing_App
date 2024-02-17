@@ -46,6 +46,7 @@ export const RecipeItem = ({ _id, title, owner, date }) => {
             className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
           />
         </div>
+        
         <div className="p-4 mt-2">
           <h5 className="block mb-2 font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900">
             Recipe ID: {_id}

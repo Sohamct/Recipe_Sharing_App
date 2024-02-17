@@ -22,7 +22,7 @@ export const RecipeList = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]); // Include fetchData in the dependency array
+  }, [fetchData]); 
 
   if (recipesState.status === 'loading') {
     return <h3>Loading...</h3>;
@@ -33,6 +33,7 @@ export const RecipeList = () => {
   }
 
   const recipes = recipesState.recipes || [];
+  console.log(recipes);
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5">
