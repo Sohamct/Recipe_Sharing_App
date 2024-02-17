@@ -11,7 +11,7 @@ export const Login = () => {
   const {username, setUser} = useUser();
 
   const notify = () =>
-    toast.success("Logged in successfully!", {
+    toast.success("sogged in successfully!", {
       autoClose: 2000,
       theme: "colored",
     });

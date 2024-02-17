@@ -1,39 +1,76 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { createRecipeAsync } from '../../../features/recipe/Slice/recipe_slice';
+import { createRecipeAsync, editRecipeAsync } from '../../../features/recipe/Slice/recipe_slice';
 import { toast } from 'react-toastify';
 import { Navigation } from '../../Navigation';
-
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useUser } from '../../../features/context';
 
 export const CreateRecipe = () => {
-
+  const recipesState = useSelector((state) => state.recipes);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { status, error } = useSelector((state) => state.recipes)
-  const notify1 = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
+  const location = useLocation();
+  const params = useParams();
+  const {username} = useUser();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingRecipe, setEditingRecipe] = useState(null);
+  console.log(recipesState.recipes)
+  useEffect(() => {
+    setIsEditing(location.pathname.includes('/editrecipe'));
+  }, [location.pathname]);
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     image: '',
-    ingredients: [
-      { ingredient_name: '', quantity: '', quantity_type: 'ml' }
-    ]
+    ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml', owner: '' }],
   });
 
+  useEffect(() => {
+    if (isEditing) {
+      console.log(recipesState)
+      const recipeToEdit = recipesState.recipes.find((recipe) => recipe._id === params.id);
+      if (!recipeToEdit) {
+        toast.error("Recipe does not exist!", { autoClose: 2000, theme: "colored" });
+        // navigate('/');
+      } else if (username !== recipeToEdit.owner) {
+        toast.error("You don't have permission to edit this recipe!", { autoClose: 2000, theme: "colored" });
+        // navigate('/');
+      } else {
+        setEditingRecipe(recipeToEdit);
+        setFormData({
+          title: recipeToEdit.title,
+          description: recipeToEdit.description,
+          image: recipeToEdit.image,
+          ingredients: recipeToEdit.ingredients,
+          owner: recipeToEdit.owner
+        });
+      }
+    }
+  }, [isEditing, params.id, recipesState, username, navigate, ]);
+
+  // const { status, error } = useSelector((state) => state.recipes)
+  const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
+  const editRecipeNotify = () => toast.success("Recipe edited successfully", { autoClose: 2000, theme: "colored" });
+
   const handleChange = (e, index) => {
-    // console.log([...formData.ingredients])
     const { name, value } = e.target;
-    const newIngredients = [...formData.ingredients];
-    newIngredients[index][name] = value;
-    setFormData({
-      ...formData,
-      ingredients: newIngredients
+    setFormData(prevFormData => {
+      const newIngredients = [...prevFormData.ingredients]; // Clone the array
+      newIngredients[index] = {
+        ...newIngredients[index], // Clone the ingredient object
+        [name]: value // Update the specific property
+      };
+      return {
+        ...prevFormData,
+        ingredients: newIngredients
+      };
     });
   };
   const _handleChange = (e) => {
-    // console.log([...formData.ingredients])
     const { name, value } = e.target;
-    const newStuff = value;
+    const newStuff = value || '';
     setFormData({
       ...formData,
       [name]: newStuff
@@ -64,7 +101,7 @@ export const CreateRecipe = () => {
 
     const isValid = formData.ingredients.every(ingredient => {
       return ingredient.ingredient_name.trim() !== ''
-        && ingredient.quantity.trim() !== '';
+        && ingredient.quantity !== '';
     });
 
     if (!isValid) {
@@ -73,33 +110,56 @@ export const CreateRecipe = () => {
     }
 
     console.log('Form submitted:', formData);
-    dispatch(createRecipeAsync(formData))
-      .then((response) => {
-        console.log(response)
-        console.log('Recipe created successfully');
-        notify1();
-        // Reset the form data
-        setFormData({
-          title: '',
-          description: '',
-          image: '',
-          ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
+    if (isEditing) {
+      // If editing, dispatch editRecipeAsync
+      dispatch(editRecipeAsync({_id: params.id, ...formData} ))
+        .then((response) => {
+          console.log(response)
+          if (response.type === 'recipe/editrecipe/fulfilled') {
+            console.log('Recipe updated successfully');
+            editRecipeNotify();
+            setFormData({
+              title: '',
+              description: '',
+              image: '',
+              ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
+            });
+            navigate('/');
+          }
+        })
+        .catch((error) => {
+          console.error('Error updating recipe:', error);
         });
-      })
-      .catch((error) => {
-        console.error('Error creating recipe:', error);
-      });
+    } else {
+      dispatch(createRecipeAsync(formData))
+        .then((response) => {
+          if (response.type === 'recipe/createRecipe/fulfilled') {
+            console.log('Recipe created successfully');
+            createRecipeNotify();
+            setFormData({
+              title: '',
+              description: '',
+              image: '',
+              ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
+            });
+            navigate('/');
+          }
+        })
+        .catch((error) => {
+          console.error('Error creating recipe:', error);
 
+        });
+    }
 
   };
   const isFormEmpty = () => {
     return (
-      // formData.title.trim() === '' ||
+      formData.title.trim() === '' ||
       formData.description.trim() === '' ||
       formData.ingredients.some(
         (ingredient) =>
           ingredient.ingredient_name.trim() === '' ||
-          ingredient.quantity.trim() === ''
+           ingredient.quantity === ''
       )
     );
   };
@@ -207,7 +267,7 @@ export const CreateRecipe = () => {
             className="block px-3 py-2 text-sm text-white font-medium bg-blue-500 rounded-md hover:bg-blue-600"
             disabled={isFormEmpty()}
           >
-            Submit
+            {isEditing ? 'Update Recipe' : 'Submit'}
           </button>
 
         </form>
