@@ -4,6 +4,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const { check, body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
+const fetchUser = require("../middleware/fetchUser");
 const router = express.Router();
 
 // Route-1: POST create a user using: '/api/auth/createuser'
@@ -93,11 +94,11 @@ router.post('/login', [
         const passwordCompare = await bcrypt.compare(password, user.password);
         if (!passwordCompare) {
             return resp.status(400).json({ success, errors: "Please try logging in using correct credentials" });
-        }
+        } 
 
         const data = {
             user: {
-                id: user.id,
+                id: user._id,
                 username: user.username
             }
         };
@@ -109,6 +110,27 @@ router.post('/login', [
     } catch (err) {
         return resp.status(500).send("Internal server error");
     }
+});
+
+// Route-2: POST create a user using: '/api/auth/login'
+router.get('/getDetails/:uname',fetchUser, async (req, resp) => {
+
+  let success = false;
+  console.log('Habbibi is running hu tutututu...', req.body);
+  const username = req.params.uname;
+  try {
+      let user = await User.findOne({ username });
+
+      if (!user) {
+          return resp.status(400).json({ success, errors: "Username is not registered!" });
+      }
+
+      success = true;
+      return resp.json({ success:success, data: user });
+
+  } catch (err) {
+      return resp.status(500).send("Internal server error");
+  }
 });
 
 module.exports = router;

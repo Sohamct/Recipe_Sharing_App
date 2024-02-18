@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { toast } from 'react-toastify';
@@ -10,12 +9,13 @@ import { Navigation } from '../../../Navigation';
 import { useUser } from '../../../../features/context';
 import DeleteConfirmation from './DeleteConfirmation';
 import { deleteRecipeAsync } from '../../../../features/recipe/Slice/recipe_slice';
+import { IoChatboxEllipses } from "react-icons/io5";
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("")
   const [deleteClick, setDeleteClick] = useState(false);
   const debouncedText = useDebounce(CommentText, 300); // 300ms
-  const {username} = useUser();
+  const { username } = useUser();
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -37,21 +37,21 @@ export const RecipeShow = () => {
 
   const { _id, title, description, date, ingredients, owner } = recipe;
 
-  const handleDeleteClick = ()=> {
+  const handleDeleteClick = () => {
     setDeleteClick(true);
   }
   const handleCancelDelete = () => {
     setDeleteClick(false)
   }
   const handleConfirmDelete = () => {
-    dispatch(deleteRecipeAsync({recipeId : _id,owner: owner}))
+    dispatch(deleteRecipeAsync({ recipeId: _id, owner: owner }))
       .then(response => {
         //console.log(status)
         //console.log(error);
-        if(status.delete === 'failed'){
+        if (status.delete === 'failed') {
           toast.error(error.deleteError, { autoClose: 2000, theme: "colored" });
         }
-        else if(status.delete === 'success'){
+        else if (status.delete === 'success') {
           toast.success(response.payload.message, { autoClose: 2000, theme: "colored" });
         }
         console.log(response);
@@ -61,10 +61,10 @@ export const RecipeShow = () => {
         toast.error(error, { autoClose: 2000, theme: "colored" });
 
       });
-      setDeleteClick(false);
-      navigate('/');
+    setDeleteClick(false);
+    navigate('/');
   }
-  
+
   useEffect(() => {
     if (commentByRecipe[params.id] === undefined) {
       fetchComment(params.id);
@@ -105,7 +105,7 @@ export const RecipeShow = () => {
 
   return (
     <div>
-      {deleteClick && <DeleteConfirmation deleteClick={deleteClick} handleCancelDelete={handleCancelDelete} handleConfirmDelete={handleConfirmDelete}/>}
+      {deleteClick && <DeleteConfirmation deleteClick={deleteClick} handleCancelDelete={handleCancelDelete} handleConfirmDelete={handleConfirmDelete} />}
       <div>
         <Navigation />
       </div>
@@ -120,9 +120,15 @@ export const RecipeShow = () => {
                   <small>{new Date(date).toLocaleString()}</small>
                 </p>
               </div>
+              <p className="relative">
+                <Link to="/chat">
+                <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" />
+                </Link>
+              </p>
               {
                 username === recipe.owner ? (
                   <div className="flex">
+
                     <FaEdit onClick={handleEditClick} size={25} className="mx-4 cursor-pointer hover:text-blue-500 transition-colors duration-300" />
                     <FaTrash onClick={handleDeleteClick} size={25} className="mx-4 cursor-pointer hover:text-red-500 transition-colors duration-300" />
                   </div>
