@@ -32,6 +32,20 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
+    followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'User',
+            default: [], 
+        }
+    ],
+    followings: [
+        {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'User',
+            default: [], 
+        }
+    ],
 })
 
 module.exports = mongoose.model('User', userSchema)
