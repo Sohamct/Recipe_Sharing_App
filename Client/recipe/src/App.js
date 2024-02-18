@@ -11,6 +11,7 @@ import { CreateRecipe } from './components/Recipes/CreateRecipe/CreateRecipe';
 import LogoutInfoPage from './components/Auth/LogoutInfoPage';
 import SearchRecipe from './components/Recipes/SearchRecipe/SearchRecipe';
 import SearchResults from './components/Recipes/SearchRecipe/SearchResults';
+import { Chat } from './components/Chat/Chat';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,7 +27,7 @@ const router = createBrowserRouter(
       <Route path="viewrecipe/:id" element={<RecipeShow />}/>
       <Route path="/search-results" element={<SearchResults/>} />
         <Route path="/" element={<SearchRecipe/>} />
-
+      <Route path="/chat" element={<Chat/>}></Route>
     </Route>
   )
 );
