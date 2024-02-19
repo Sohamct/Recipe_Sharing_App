@@ -60,7 +60,7 @@ const SearchResults = () => {
             ))}
           </div>
         ) : (
-          <p className='text-gray-700 text-xl'>No results found</p>
+          <p className='mx-4 text-gray-700 text-xl'>No results found</p>
         )}
 
         {error && <p className='text-red-500'>Error: {error}</p>}

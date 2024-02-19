@@ -1,8 +1,11 @@
 import React from 'react';
+import { useUser } from '../../../../features/context';
 import { useNavigate } from 'react-router-dom';
 
-export const RecipeItem = ({ _id, title, owner, date }) => {
+export const RecipeItem = ({ _id, title, _from, date }) => {
 
+
+  const { username, setUser } = useUser();
 
   const navigate = useNavigate();
   const goToSpecificRecipe = () => {
@@ -54,7 +57,7 @@ export const RecipeItem = ({ _id, title, owner, date }) => {
             {title}
           </p>
           <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
-            By {owner}
+            By {username}
           </p>
           <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
 

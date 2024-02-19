@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState }from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { Navigation } from '../../../Navigation';
+import { useEffect } from 'react';
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("")

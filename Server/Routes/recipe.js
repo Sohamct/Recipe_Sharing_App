@@ -71,5 +71,36 @@ router.get('/search', async (req, res) => {
   }
 });
 
+router.get('/suggestions', async (req, res) => {
+  try {
+    const keyword = req.query.q.toLowerCase();
+
+    // Use the searchTerm to query the database for matching recipes
+    const matchingRecipes = await Recipe.find({
+      $or: [
+        { title: { $regex: keyword, $options: 'i' } },
+        { owner: { $regex: keyword, $options: 'i' } },
+        { description: { $regex: keyword, $options: 'i' } },
+        { 'ingredients.ingredient_name': { $regex: keyword, $options: 'i' } }, // Assuming 'ingredients' is an array of objects with 'ingredient_name' property
+        // Add more fields as needed
+      ],
+    });
+
+    // Extract relevant details for suggestions
+    const suggestions = matchingRecipes.map(recipe => ({
+      id: recipe.id,
+      name: recipe.title,
+      owner: recipe.owner,
+      description: recipe.description,
+      ingredients: recipe.ingredients.map(ingredient => ingredient.ingredient_name), // Extract ingredient names
+      // Add more details as needed
+    }));
+
+    res.json({ suggestions });
+  } catch (error) {
+    console.error('Error fetching suggestions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 module.exports = router;

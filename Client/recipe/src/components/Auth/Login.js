@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import AuthService from "./Auth.service";
 import './login.css'
 import { useUser } from "../../features/context";
@@ -45,6 +45,7 @@ export const Login = () => {
       if (loginResponse.success) {
         console.log(loginResponse);
         setUser({username: loginResponse.username})
+        console.log(loginResponse.username);
         notify();
         navigate("/recipe");
       } else {
