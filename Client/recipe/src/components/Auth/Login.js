@@ -45,6 +45,7 @@ export const Login = () => {
       if (loginResponse.success) {
         console.log(loginResponse);
         setUser({username: loginResponse.username})
+        console.log(loginResponse.username);
         notify();
         navigate("/recipe");
       } else {
