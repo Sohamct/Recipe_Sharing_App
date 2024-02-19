@@ -1,2 +1,3 @@
-/Client/recipe/node_modules
+node_modules
+/Client/recipe/node_modules/
 /Server/node_modules

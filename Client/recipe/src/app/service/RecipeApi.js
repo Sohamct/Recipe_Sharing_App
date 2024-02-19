@@ -24,6 +24,30 @@ const api = {
     }
   },
 
+  editRecipeAsync: async (recipeData) => {
+    try {
+      const response = await fetch(`${uri}/editrecipe`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+        body: JSON.stringify(recipeData),
+      });
+  
+      if (response.ok || response.status === 201) {
+        const data = await response.json();
+        return data;
+      } else {
+        const errorData = await response.json();
+        //console.log(errorData);
+        throw new Error(errorData.message); // Throw an error with the specific error message from the server
+      }
+    } catch (error) {
+      throw new Error(`Failed to edit recipe: ${error.message}`); // Include the original error message in the thrown error
+    }
+  },
+  
 
   fetchRecipesAsync: async () => {
     try {
@@ -44,6 +68,28 @@ const api = {
       }
     } catch (error) {
       throw new Error('Failed to fetch recipes'); // Throw a generic error if something goes wrong
+    }
+  },
+
+  deleteRecipeAsync: async (deleteInfo) => {
+    try{
+      const response = await fetch(`${uri}/deleterecipe`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+        body: JSON.stringify(deleteInfo)
+      })
+      const data = await response.json();
+
+      if(response.ok){
+        return data;
+      }else{
+        throw new Error(data.message);
+      }
+    }catch(error){
+      throw new Error('Failed to delete the recipe');
     }
   },
   
@@ -69,6 +115,7 @@ const api = {
     }
   },
 
+
   getSuggestionsAsync: async (keyword) => {
     try {
       const response = await fetch(`${uri}/suggestions?q=${encodeURIComponent(keyword)}`, {
@@ -93,6 +140,7 @@ const api = {
       throw new Error(`Failed to get suggestions: ${error.message}`);
     }
   },
+
 };
 
 export default api
