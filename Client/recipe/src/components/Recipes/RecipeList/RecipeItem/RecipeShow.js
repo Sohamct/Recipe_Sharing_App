@@ -14,6 +14,7 @@ import { useUser } from '../../../../features/context';
 import DeleteConfirmation from './DeleteConfirmation';
 import { deleteRecipeAsync } from '../../../../features/recipe/Slice/recipe_slice';
 import { IoChatboxEllipses } from "react-icons/io5";
+import { addChat } from '../../../../app/service/ChatApi';
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("")
@@ -106,6 +107,21 @@ export const RecipeShow = () => {
     navigate(`/editrecipe/${params.id}`)
   }
 
+  const makeNewChat = async (owner) => {
+    try {
+      const response = await addChat({ sender: username, receiver: owner });
+      console.log(response)
+      if (response.data) {
+        navigate('/chat')
+      } else {
+        toast.error('Failed to create chat. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error creating chat:', error);
+      toast.error('An error occurred while creating chat. Please try again later.');
+    }
+
+  }
 
   return (
     <div>
@@ -124,11 +140,9 @@ export const RecipeShow = () => {
                   <small>{new Date(date).toLocaleString()}</small>
                 </p>
               </div>
-              <p className="relative">
-                <Link to="/chat">
-                <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" />
-                </Link>
-              </p>
+              {username === recipe.owner ? '' :<p className="relative">
+                <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" onClick={() => makeNewChat(recipe.owner)} />
+              </p>}
               {
                 username === recipe.owner ? (
                   <div className="flex">

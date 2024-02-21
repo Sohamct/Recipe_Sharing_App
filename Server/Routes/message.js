@@ -8,6 +8,10 @@ const chatModel = require('../models/chatModel');
 router.post('/', async (req, resp) => {
     try {
         const { chatId, sender, text } = req.body;
+        const isChatExist = await chatModel.findOne({_id: chatId});
+        if(!isChatExist){
+            return resp.status(404).send("Chat itself not found!")
+        }
         const message = new MessageModel({
             chatId: chatId,
             sender,
@@ -26,6 +30,12 @@ router.get('/:chatId', async (req, resp) => {
         console.log("Message fetching");
         console.log(req.params.chatId);
         const { chatId } = req.params;
+
+        const isChatExist = await chatModel.findOne({_id: chatId})
+
+        if(!isChatExist){
+            return resp.status(404).send("Chat itself not found!")
+        }
 
         const messages = await MessageModel.find({ chatId });
         if (!messages) {

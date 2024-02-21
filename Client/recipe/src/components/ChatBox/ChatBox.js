@@ -6,6 +6,7 @@ import './ChatBox.css';
 import { format } from 'timeago.js';
 import InputEmoji from 'react-input-emoji';
 import { addMessage } from '../../app/service/MessageApi';
+import ReactLoading from 'react-loading';
 
 const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
     const [userData, setUserData] = useState(null);
@@ -81,7 +82,7 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
 
     // always scroll to the last message
     useEffect(() => {
-        scroll.current?.scrollIntoView({behavior : "smooth"})
+        scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [messages])
 
     return (
@@ -92,7 +93,8 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                         <div className="chat-header">
                             <div className="follower">
                                 {isLoadingUserData ? (
-                                    'Loading...'
+                                    <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ReactLoading type="balls" color="#FFA500"
+                                        height={150} width={90} /></div>
                                 ) : (
                                     <>
                                         <CgProfile
@@ -115,9 +117,9 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                             ) : (
                                 messages.map((message) => (
                                     <div ref={scroll} className=
-                                    {message.sender === username 
-                                    ? "message own" : "message"} 
-                                    key={message._id}>
+                                        {message.sender === username
+                                            ? "message own" : "message"}
+                                        key={message._id}>
                                         <span>{message.text}</span>
                                         <span>{format(message.createdAt)}</span>
                                     </div>
