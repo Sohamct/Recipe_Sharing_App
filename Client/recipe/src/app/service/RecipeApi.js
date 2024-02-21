@@ -114,6 +114,33 @@ const api = {
       throw new Error(`Failed to search recipes: ${error.message}`); // Throw a generic error if something goes wrong
     }
   },
-  
+
+
+  getSuggestionsAsync: async (keyword) => {
+    try {
+      const response = await fetch(`${uri}/suggestions?q=${encodeURIComponent(keyword)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      try {
+        const data = await response.json();
+        return data.suggestions || [];
+      } catch (jsonError) {
+        throw new Error(`Failed to parse JSON: ${jsonError.message}`);
+      }
+    } catch (error) {
+      throw new Error(`Failed to get suggestions: ${error.message}`);
+    }
+  },
+
 };
+
 export default api
