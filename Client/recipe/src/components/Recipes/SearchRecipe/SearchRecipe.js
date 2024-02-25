@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../../app/service/RecipeApi';
+import {searchRecipes, getSuggestions} from '../../../app/service/RecipeApi';
 import { useNavigate } from 'react-router-dom';
 import { RecipeItem } from '../RecipeList/RecipeItem/RecipeItem';
+import { useUser } from '../../../features/UserContext';
+import { useProgress } from '../../../features/ProgressContext';
 
 const SearchRecipe = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,10 +11,11 @@ const SearchRecipe = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const {updateProgress} = useProgress();
 
   const handleSearch = async () => {
     try {
-      const results = await api.searchRecipesAsync(searchTerm);
+      const results = await searchRecipes(searchTerm, updateProgress);
       setSearchResults(results);
 
       if (searchTerm.trim() !== '') {
@@ -29,7 +32,7 @@ const SearchRecipe = () => {
 
     if (value.trim() !== '') {
       try {
-        const suggestions = await api.getSuggestionsAsync(value);
+        const suggestions = await getSuggestions(value, updateProgress);
         setSuggestions(suggestions);
       } catch (error) {
         setError(error.message);

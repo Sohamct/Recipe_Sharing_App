@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import React, {useState, useEffect} from "react";
 import AuthService from "./Auth.service";
 import './login.css'
-import { useUser } from "../../features/context";
+import { useUser } from "../../features/UserContext";
 
 
 export const Login = () => {

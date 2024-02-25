@@ -1,7 +1,7 @@
 // SearchResults.js
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import api from '../../../app/service/RecipeApi';
+import {searchRecipes} from '../../../app/service/RecipeApi';
 import { RecipeItem } from '../RecipeList/RecipeItem/RecipeItem';
 
 const SearchResults = () => {
@@ -17,7 +17,7 @@ const SearchResults = () => {
         // Clear previous search results
         setSearchResults([]);
 
-        const results = await api.searchRecipesAsync(searchTerm);
+        const results = await searchRecipes(searchTerm);
         setSearchResults(results);
       } catch (error) {
         setError(error.message);

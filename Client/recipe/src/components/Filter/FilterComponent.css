@@ -1,0 +1,29 @@
+.filter-component {
+    width: 250px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ddd;
+    transition: transform 0.3s ease;
+  }
+  
+  .filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #ddd;
+  }
+  
+  .filter-content {
+    padding: 10px;
+  }
+  
+  .filter-component.closed {
+    transform: translateX(-250px);
+  }
+  
+  .filter-component button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  

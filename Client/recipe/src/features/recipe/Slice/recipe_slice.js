@@ -1,16 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../../../app/service/RecipeApi';
+import {deleteRecipe, searchRecipes, fetchRecipes, addRecipe, editRecipe} from '../../../app/service/RecipeApi';
 
 const initialState = {
   recipes: [],
   status: { fetch: 'idle', create: 'idle', search: 'idle', edit: 'idle', delete: 'idle' },
   error: { fetchError: null, createError: null, searchError: null, editError: null, deleteError:null},
 };
-export const editRecipeAsync = createAsyncThunk('recipe/editrecipe', async (recipeData, { rejectWithValue }) => {
+export const editRecipeAsync = createAsyncThunk('recipe/editrecipe', async (arg, { rejectWithValue }) => {
   try {
-    const response = await api.editRecipeAsync(recipeData);
+    const {recipeData, updateProgress} = arg;
+    updateProgress(30);
+    const response = await editRecipe(recipeData);
 
-    if(response.data)
+    if(response.data);
     return response;
   
   } catch (error) {
@@ -19,33 +21,44 @@ export const editRecipeAsync = createAsyncThunk('recipe/editrecipe', async (reci
   }
 });
 
-export const deleteRecipeAsync = createAsyncThunk('recipe/deleteRecipe', async (recipeData, {rejectWithValue}) => {
+export const deleteRecipeAsync = createAsyncThunk('recipe/deleteRecipe', async (arg, {rejectWithValue}) => {
   try{
-    const response = await api.deleteRecipeAsync(recipeData);
+    const {data, updateProgress} = arg;
+    updateProgress(30);
+    const response = await deleteRecipe(data);
+    updateProgress(70);
     return response;
   }catch(error){
     return rejectWithValue(error.message);
   }
 })
 
-export const fetchRecipesAsync = createAsyncThunk('recipe/fetchRecipes', async (_, { rejectWithValue }) => {
+export const fetchRecipesAsync = createAsyncThunk('recipe/fetchRecipes', async (updateProgress, { rejectWithValue }) => {
   try {
-    const response = await api.fetchRecipesAsync();
+    
+    console.log("Fetching recipes;")
+    
+    updateProgress(30);
+    const response = await fetchRecipes();
+    updateProgress(60);
+    console.log(response);
     return response;
   } catch (error) {
     return rejectWithValue(error.message);
   }
 });
 
-export const createRecipeAsync = createAsyncThunk('recipe/createRecipe', async (recipeData, { rejectWithValue }) => {
+export const createRecipeAsync = createAsyncThunk('recipe/createRecipe', async (arg, { rejectWithValue }) => {
   try {
-    const response = await api.addRecipeAsync(recipeData);
-    console.log(response);
+    const {formData, updateProgress} = arg;
+    
+    updateProgress(30);
+    const response = await addRecipe(formData);
 
     if (response.data) {
       return response.data;
     } else {
-      console.log("wrong.....");
+      // console.log("wrong.....");
       const errorData = await response.json();
       throw new Error(errorData.errors[0].msg);
     }
@@ -54,9 +67,11 @@ export const createRecipeAsync = createAsyncThunk('recipe/createRecipe', async (
   }
 });
 
-export const searchRecipesAsync = createAsyncThunk('recipe/searchRecipes', async (searchTerm, { rejectWithValue }) => {
+export const searchRecipesAsync = createAsyncThunk('recipe/searchRecipes', async (searchTerm, { rejectWithValue, extra }) => {
   try {
-    const response = await api.searchRecipesAsync(searchTerm);
+    const {updateProgress} = extra;
+    updateProgress(30);
+    const response = await searchRecipes(searchTerm);
     return response;
   } catch (error) {
     return rejectWithValue(error.message);
@@ -67,7 +82,7 @@ const recipeSlice = createSlice({
   name: 'recipes',
   initialState,
   reducers: {
-    addRecipe: (state, action) => {
+    addRecipe_: (state, action) => {
       state.recipes.push(action.payload);
     },
     removeRecipe: (state, action) => {
@@ -147,6 +162,6 @@ const recipeSlice = createSlice({
 
 export const selectRecipes = (state) => state.recipes.recipes;
 
-export const { addRecipe, updateRecipe, removeRecipe } = recipeSlice.actions;
+export const { addRecipe_, updateRecipe, removeRecipe } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

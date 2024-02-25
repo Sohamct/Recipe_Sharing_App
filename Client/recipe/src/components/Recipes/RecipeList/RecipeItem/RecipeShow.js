@@ -1,28 +1,51 @@
-import React, {useState }from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Navigation } from '../../../Navigation';
-import { useEffect } from 'react';
-import { useUser } from '../../../../features/context';
+import { useUser } from '../../../../features/UserContext';
 import DeleteConfirmation from './DeleteConfirmation';
 import { deleteRecipeAsync } from '../../../../features/recipe/Slice/recipe_slice';
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
+import { useProgress } from '../../../../features/ProgressContext';
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("")
   const [deleteClick, setDeleteClick] = useState(false);
   const debouncedText = useDebounce(CommentText, 300); // 300ms
   const { username } = useUser();
+  const {updateProgress} = useProgress();
   const dispatch = useDispatch();
   const navigate = useNavigate()
+
+  const calculateRelativeTime = (timestamp) => {
+    const now = new Date();
+    const commentTime = new Date(timestamp);
+    const timeDifference = now - commentTime;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(months / 12);
+    if (years > 0) {
+      return `${years} year${years > 1 ? 's' : ''} ago`;
+    } else if (months > 0) {
+      return `${months} month${months > 1 ? 's' : ''} ago`;
+    } else if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+    }
+  };
 
   const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
     (state) => ({
@@ -37,8 +60,20 @@ export const RecipeShow = () => {
   const recipes = useSelector((state) => state.recipes.recipes);
   const status = useSelector(state => state.recipes.status);
   const error = useSelector(state => state.recipes.error);
+  let recipe;
+  // console.log(recipes)
+  recipe = recipes.find((r) => r._id === params.id);
 
-  const recipe = recipes.find((r) => r._id === params.id)
+  useEffect(() => {
+    if(recipe && commentByRecipe[params.id] === undefined){
+        fetchComment(params.id);
+    }
+
+  }, [params.id])
+
+  if(!recipe){
+    return navigate('/');
+  }
 
   const { _id, title, description, date, ingredients, owner } = recipe;
 
@@ -49,10 +84,14 @@ export const RecipeShow = () => {
     setDeleteClick(false)
   }
   const handleConfirmDelete = () => {
-    dispatch(deleteRecipeAsync({ recipeId: _id, owner: owner }))
+    const data = {
+      recipeId: _id, owner: owner
+    }
+
+    dispatch(deleteRecipeAsync({data, updateProgress}))
       .then(response => {
-        //console.log(status)
-        //console.log(error);
+        console.log(response);
+        updateProgress(100);
         if (status.delete === 'failed') {
           toast.error(error.deleteError, { autoClose: 2000, theme: "colored" });
         }
@@ -70,23 +109,10 @@ export const RecipeShow = () => {
     navigate('/');
   }
 
-  useEffect(() => {
-    if (commentByRecipe[params.id] === undefined) {
-      fetchComment(params.id);
-    }
-
-    //console.log(debouncedText);
-    //console.log("==================+++++++++++++++", commentByRecipe)
-  }, [params.id])
-
   const handleCommentSubmit = () => {
     if (!CommentText) {
       return alert("please add Comment-text");
     }
-
-    // CommentList = CommentList.filter((Comment) => Comment.recipeId === params.id)
-    // const filteredComments = CommentList.filter((Comment) => Comment.recipeId === params.id);
-
     const newComment = {
       text: CommentText,
       _to: params.id,
@@ -97,8 +123,6 @@ export const RecipeShow = () => {
     // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
     setCommentText("");
   }
-
-  //console.log("Comment is rendered")
 
   if (!recipe) {
     return <div>Recipe not found</div>;
@@ -137,7 +161,7 @@ export const RecipeShow = () => {
                 <h5 className="text-xl font-semibold">{title}</h5>
                 <p className="text-gray-600">Recipe ID: {_id}</p>
                 <p className="text-gray-600">
-                  <small>{new Date(date).toLocaleString()}</small>
+                  <small>{calculateRelativeTime(date)}</small>
                 </p>
               </div>
               {username === recipe.owner ? '' :<p className="relative">

@@ -22,7 +22,6 @@ app.use('/api/message', require('./Routes/message'));
 const port = 5501;
 
 app.listen(port, () => {
-app.listen(5501, () => {
   console.log("Server is started")
 
     console.log(`Server started on port: ${port}`)

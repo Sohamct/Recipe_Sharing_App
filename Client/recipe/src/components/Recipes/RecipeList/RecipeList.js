@@ -3,18 +3,29 @@ import { useLocation } from 'react-router-dom';
 import { RecipeItem } from './RecipeItem/RecipeItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
+import {RecipeFilter} from './RecipeFilter';
+import { useProgress } from '../../../features/ProgressContext';
 
 export const RecipeList = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const recipesState = useSelector((state) => state.recipes);
-  // Determine isOwner based on the current location
+  
   const isOwner = location.pathname === '/myrecipe';
+  const {updateProgress}= useProgress();
+  console.log(updateProgress);
 
-  // Use useCallback to memoize the function
   const fetchData = useCallback(async () => {
     try {
-      await dispatch(fetchRecipesAsync());
+      await dispatch(fetchRecipesAsync(updateProgress));
+
+      const connectionSpeedMbps = navigator.connection.downlink;
+
+      const timeoutDuration = Math.ceil(1000 / connectionSpeedMbps);
+
+      setTimeout(() => {
+        updateProgress(100);
+      }, timeoutDuration/30);
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
@@ -38,8 +49,9 @@ export const RecipeList = () => {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5">
       {recipes.map((recipe) => (
-        <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner} />
+        <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner}/>
       ))}
+      <RecipeFilter/>
     </div>
   );
 };
