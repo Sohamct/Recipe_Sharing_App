@@ -12,7 +12,8 @@ import LogoutInfoPage from './components/Auth/LogoutInfoPage';
 import SearchRecipe from './components/Recipes/SearchRecipe/SearchRecipe';
 import SearchResults from './components/Recipes/SearchRecipe/SearchResults';
 import { Chat } from './components/Chat/Chat';
-
+import UserProfile from  './components/User/userProfile';
+ 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/logout" element={<LogoutInfoPage/>}/>
+      <Route path="/user-profile" element={<UserProfile/>} />
       <Route path="viewrecipe/:id" element={<RecipeShow />}/>
       <Route path="/search-results" element={<SearchResults/>} />
         <Route path="/" element={<SearchRecipe/>} />

@@ -9,10 +9,10 @@ import { useUser } from "../../features/context";
 
 export const Login = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const {username, setUser} = useUser();
+  const {setUser} = useUser();
 
   const notify = () =>
-    toast.success("sogged in successfully!", {
+    toast.success("signed in successfully!", {
       autoClose: 2000,
       theme: "colored",
     });
@@ -22,7 +22,6 @@ export const Login = () => {
     navigate('/signup');
   }
 
- 
   useEffect(() => {
     const token = localStorage.getItem('token');
 
@@ -36,10 +35,10 @@ export const Login = () => {
     e.preventDefault();
     if(isButtonDisabled) return ;
     setIsButtonDisabled(true);
-    // console.log("working...");
+
     const username = e.target.elements.username.value;
     const password = e.target.elements.password.value;
-    // console.log(username + password);
+
     try {
       const loginResponse = await AuthService.login(username, password);
       if (loginResponse.success) {

@@ -157,8 +157,8 @@ router.get('/suggestions', async (req, res) => {
       ],
     });
 
-    // Extract relevant details for suggestions
-    const suggestions = matchingRecipes.map(recipe => ({
+    // Extract relevant details for suggestions and filter those that start with the keyword
+    const suggestions = matchingRecipes.filter(recipe => recipe.title.toLowerCase().startsWith(keyword)).map(recipe => ({
       id: recipe.id,
       name: recipe.title,
       owner: recipe.owner,

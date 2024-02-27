@@ -64,9 +64,7 @@ export const Signup = () => {
         progress: undefined,
         theme: "colored",
       });
-
-
-      navigate("/login");
+      navigate("/recipe");
     } else {
       toast.error(signupResponse.message, {
         autoClose: 2000,

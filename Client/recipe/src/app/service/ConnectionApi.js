@@ -1,5 +1,5 @@
-    const uri = "http://localhost:5501/api/connections";
-// http://localhost:5501/api/comment//fetchComments/65bcac3e76dfff0a2699e588
+const uri = "http://localhost:5501/api/connections";
+
 export const fetchConnections = async () => {
     try{
         console.log("--////////***********//////////******///////*---",recipe_id, "-------********/////****////****///****/****/")

@@ -61,9 +61,7 @@ export const RecipeItem = ({ _id, title, owner, date }) => {
             By {owner === username ? 'You' : owner}
           </p>
           <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
-
             {calculateRelativeTime(date)}
-
           </p>
         </div>
         <div className="p-4 pt-0">
