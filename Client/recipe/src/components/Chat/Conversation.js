@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useUser } from '../../features/context';
 import { CgProfile } from 'react-icons/cg';
 import AuthService from '../Auth/Auth.service';
+import ReactLoading from 'react-loading';
 
 export const Conversation = ({ chat, online }) => {
     const { username } = useUser();
@@ -27,13 +28,20 @@ export const Conversation = ({ chat, online }) => {
     }, [chat, username]);
 
     return (
-        <div className="follower conversation">
+        <div className="follower conversation" >
             <div>
             {online ? (<div className="online-dot"></div>)
             : ''
             }
                 {isLoading ? (
-                    'Loading...'
+                    <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <ReactLoading
+        type="spinningBubbles"
+        color="#FFA500"
+        height={100}
+        width={55}
+    />
+</div>
                 ) : (
                     <>
                         <CgProfile
