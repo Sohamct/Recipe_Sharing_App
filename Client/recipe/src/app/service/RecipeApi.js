@@ -48,10 +48,9 @@ const api = {
     }
   },
   
-
   fetchRecipesAsync: async () => {
     try {
-      const response = await fetch(`${uri}/fetchRecipes`, {
+      const response = await fetch(`${uri}/fetchrecipes`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +113,6 @@ const api = {
       throw new Error(`Failed to search recipes: ${error.message}`); // Throw a generic error if something goes wrong
     }
   },
-
 
   getSuggestionsAsync: async (keyword) => {
     try {

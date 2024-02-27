@@ -58,37 +58,3 @@ export const useCommentStore = create(
 );
 
 export default useCommentStore;
-// import {create} from 'zustand';
-// import { devtools, persist } from 'zustand/middleware'; // to check info in browser
-// // persist: to store info in browser
-
-
-// const CommentStore = (set) => ({
-//     CommentList: [], // initially
-//     addComment: (Comment) => {
-//         set((state) => ({
-//             CommentList : [Comment, ...state.CommentList],
-//         }))
-//     },
-//     removeComment: (CommentId) => {
-//         set((state) => ({
-//             CommentList: state.CommentList.filter((c) => c.id !== CommentId)
-//         }))
-//     },
-//     toggleCourseStatus: (CommentId) => {
-//         set((state) => ({
-//             CommentList: state.CommentList.map((Comment) => Comment.id === CommentId ? {...Comment, completed: !Comment.completed} : Comment)
-//         }))
-//     }
-
-// })
-
-// const useCommentStore = create(
-//     devtools(
-//         persist(CommentStore, {
-//             name: "Comments",
-//         })
-//     )
-// )
-
-// export default useCommentStore;

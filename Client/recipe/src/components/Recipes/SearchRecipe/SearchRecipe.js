@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import api from '../../../app/service/RecipeApi';
 import { useNavigate } from 'react-router-dom';
 import { RecipeItem } from '../RecipeList/RecipeItem/RecipeItem';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SearchRecipe = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,6 +14,10 @@ const SearchRecipe = () => {
 
   const handleSearch = async () => {
     try {
+      if (searchTerm.trim() === '') {
+        toast.error('Please fill out the search field.');
+        return;
+      }
       const results = await api.searchRecipesAsync(searchTerm);
       setSearchResults(results);
 
@@ -48,24 +54,37 @@ const SearchRecipe = () => {
 
   return (
     <div className="relative">
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => handleInputChange(e.target.value)}
-        placeholder="Search recipe..."
-        className="border border-gray-300 w-56 px-3 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-800"
-      />
-
-      <button
-        onClick={handleSearch}
-        disabled={!searchTerm.trim()} // Disable button when input is empty
-        className="ml-2 px-3 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-800 focus:outline-none focus:ring focus:border-blue-500"
-      >
-        Search
-      </button>
+      <div className="flex">
+        <div class="relative mr-6 my-0 w-full">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => handleInputChange(e.target.value)}
+            class="bg-purple-white rounded border border-gray-200 p-[7px] focus:outline-blue-900"
+            placeholder="Search recipe..."
+          />
+          <div class="cursor-pointer absolute top-0 right-0 mt-[8px] mr-2.5 text-purple-lighter">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 text-blue-900"
+              onClick={handleSearch}
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
 
       {suggestions.length > 0 && (
-        <div className="absolute top-full w-56 bg-gray-200 border border-gray-300 rounded-sm shadow-md mt-1 z-10">
+        <div className="absolute top-full w-[90%] bg-gray-200 border border-gray-300 rounded-sm shadow-md mt-1 z-10">
           {suggestions.map((suggestion) => (
             <div
               key={suggestion.id}

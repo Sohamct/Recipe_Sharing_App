@@ -99,7 +99,9 @@ router.post('/login', [
         const data = {
             user: {
                 id: user._id,
-                username: user.username
+                username: user.username,
+                firstname : user.firstname,
+                lastname : user.lastname
             }
         };
 
@@ -116,7 +118,7 @@ router.post('/login', [
 router.get('/getDetails/:uname',fetchUser, async (req, resp) => {
 
   let success = false;
-  console.log('Habbibi is running hu tutututu...', req.body);
+
   const username = req.params.uname;
   try {
       let user = await User.findOne({ username });
@@ -124,7 +126,6 @@ router.get('/getDetails/:uname',fetchUser, async (req, resp) => {
       if (!user) {
           return resp.status(400).json({ success, errors: "Username is not registered!" });
       }
-
       success = true;
       return resp.json({ success:success, data: user });
 
