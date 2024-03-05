@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SearchRecipe from '../SearchRecipe/SearchRecipe';
+import { SearchRecipe } from '../SearchRecipe/SearchRecipe';
 
 export const FilterRecipe = ({ onFilter }) => {
   const [category, setCategory] = useState('all');

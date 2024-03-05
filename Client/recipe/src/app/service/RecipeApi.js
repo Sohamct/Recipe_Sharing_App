@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const uri = 'http://localhost:5501/api/recipe';
 
 const api = {
@@ -34,7 +36,7 @@ const api = {
         },
         body: JSON.stringify(recipeData),
       });
-  
+
       if (response.ok || response.status === 201) {
         const data = await response.json();
         return data;
@@ -47,7 +49,7 @@ const api = {
       throw new Error(`Failed to edit recipe: ${error.message}`); // Include the original error message in the thrown error
     }
   },
-  
+
   fetchRecipesAsync: async () => {
     try {
       const response = await fetch(`${uri}/fetchrecipes`, {
@@ -71,7 +73,7 @@ const api = {
   },
 
   deleteRecipeAsync: async (deleteInfo) => {
-    try{
+    try {
       const response = await fetch(`${uri}/deleterecipe`, {
         method: 'DELETE',
         headers: {
@@ -82,16 +84,16 @@ const api = {
       })
       const data = await response.json();
 
-      if(response.ok){
+      if (response.ok) {
         return data;
-      }else{
+      } else {
         throw new Error(data.message);
       }
-    }catch(error){
+    } catch (error) {
       throw new Error('Failed to delete the recipe');
     }
   },
-  
+
   searchRecipesAsync: async (searchTerm) => {
     try {
       const response = await fetch(`${uri}/search?q=${encodeURIComponent(searchTerm)}`, {
@@ -101,9 +103,9 @@ const api = {
           'auth-token': localStorage.getItem('token'),
         },
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         return data.results || []; // Return the search results or an empty array if the 'results' property is not present
       } else {
@@ -114,31 +116,77 @@ const api = {
     }
   },
 
-  getSuggestionsAsync: async (keyword) => {
+  addFavoriteAsync: async (userId, recipeId) => {
     try {
-      const response = await fetch(`${uri}/suggestions?q=${encodeURIComponent(keyword)}`, {
-        method: 'GET',
+      const response = await fetch(`${uri}/addFavorite`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'auth-token': localStorage.getItem('token'),
         },
+        body: JSON.stringify({ userId, recipeId }),
       });
 
+      const data = await response.json();
+      // console.log(data);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        console.error('Error adding recipe to favorites:', data.message);
       }
 
-      try {
-        const data = await response.json();
-        return data.suggestions || [];
-      } catch (jsonError) {
-        throw new Error(`Failed to parse JSON: ${jsonError.message}`);
-      }
+      return data;
     } catch (error) {
-      throw new Error(`Failed to get suggestions: ${error.message}`);
+      console.error('Failed to add recipe to favorites:', error.message);
+      throw new Error('Internal Server Error');
+    }
+  },
+
+  removeFavoriteAsync: async (userId, recipeId) => {
+    try {
+      const response = await fetch(`${uri}/removeFavorite`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ userId, recipeId })
+      });
+
+      // console.log(response);
+      const data = await response.json();
+
+      // console.log(data);
+      if (response.ok)
+        return data;
+      else
+        throw new Error(data.message);
+
+    } catch (error) {
+      throw new Error(`failed to remove the recipes from favorites : ${error.message}`);
+    }
+  },
+
+  checkIfRecipeIsFavoriteAsync: async (recipeId) => {
+    try {
+      const response = await fetch(`${uri}/checkIfRecipeIsFavorite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ recipeId })
+      })
+
+      const data = await response.json();
+      if (response.ok)
+        return data;
+      else
+        throw new Error(data.message);
+    } catch (error) {
+      throw new Error(`failed to check if the recipe is already is favorite : ${error.message}`);
     }
   },
 
 };
 
-export default api
+export default api;

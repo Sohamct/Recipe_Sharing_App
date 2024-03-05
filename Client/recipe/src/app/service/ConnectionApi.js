@@ -16,7 +16,7 @@ export const fetchConnections = async () => {
         const data = await response.json();
         return data;
     }catch(error){
-        console.log("Error fetching connections: ", error.message)
+        // console.log("Error fetching connections: ", error.message)
         throw error;
     }
 };
@@ -31,7 +31,7 @@ export const newConnection = async (user_id) => {
             body: JSON.stringify(user_id),
         });
 
-        console.log(response); // Add this line
+        // console.log(response); // Add this line
 
         if (!response.ok) {
             throw new Error(`Failed to add connection. Status: ${response.status}`);
@@ -40,7 +40,7 @@ export const newConnection = async (user_id) => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log("Error adding connection: ", error.message)
+        // console.log("Error adding connection: ", error.message)
         throw error;
     }
 }
