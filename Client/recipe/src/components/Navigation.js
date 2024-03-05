@@ -9,6 +9,7 @@ export const Navigation = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedSection, setSelectedSection] = useState('home'); // Default to home
 
   useEffect(() => {
     const getUserData = async () => {
@@ -38,14 +39,16 @@ export const Navigation = () => {
 
   return (
     <div>
-      <div className="relative w-full bg-white">  
+      <div className="relative w-full bg-white">
         <div className="flex w-full items-center justify-between px-0 py-2   mt-0">
           <ul className="pl-7 mt-3">
             <ul className="inline-flex space-x-8">
               <li>
                 <Link
                   to="/"
-                  className="text-lg font-bold text-gray-900 transi duration-300 ease-in-out rounded-md px-2 py-1.5  hover:text-gray-700 no-underline bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+                  className={`text-lg font-bold text-gray-900 transition duration-300 ease-in-out rounded-md px-2 py-1.5 hover:text-gray-700 no-underline ${selectedSection === 'home' ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500' : ''
+                    }`}
+                  onClick={() => setSelectedSection('home')}
                 >
                   CookCraft 🧑‍🍳
                 </Link>
@@ -53,33 +56,40 @@ export const Navigation = () => {
               <li>
                 <Link
                   to="/recipe"
-                  className="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline"
-                >
+                  className={`text-lg font-semibold text-blue-900 hover:text-blue-800 no-underline ${selectedSection === 'recipe' ? 'underline' : ''
+                    }`}
+                  >
                   Recipe
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/"
-                  className="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline"
+                  to="/favorite"
+                  className={`text-lg font-semibold text-blue-900 hover:text-blue-800 no-underline ${selectedSection === 'favorite' ? 'underline' : ''
+                    }`}
+                  onClick={() => setSelectedSection('favorite')}
                 >
-                  Favourite recipe
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/newrecipe"
-                  className="text-lg font-semibold text-blue-900  hover:text-blue-800 no-underline"
-                >
-                  Add Recipe
+                  Favorite recipe
                 </Link>
               </li>
               <li>
                 <Link
                   to="/myrecipe"
-                  className="text-lg font-semibold  text-blue-900  hover:text-blue-800 no-underline"
+                  className={`text-lg font-semibold text-blue-900 hover:text-blue-800 no-underline ${selectedSection === 'myrecipe' ? 'underline' : ''
+                    }`}
+                  onClick={() => setSelectedSection('myrecipe')}
                 >
                   My Recipe
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/newrecipe"
+                  className={`text-lg font-semibold text-blue-900 hover:text-blue-800 no-underline ${selectedSection === 'newrecipe' ? 'underline' : ''
+                    }`}
+                  onClick={() => setSelectedSection('newrecipe')}
+                >
+                  Add Recipe
                 </Link>
               </li>
             </ul>
@@ -90,7 +100,7 @@ export const Navigation = () => {
               {isLoggedIn ? (
                 <div className="relative group" onClick={handleDropdownClick}>
                   <div className={`mx-2 w-9 h-9 rounded-full bg-blue-900 hover:bg-blue-800 transition duration-300 ease-in-out flex items-center justify-center cursor-pointer group ${showDropdown ? 'border-3 rounded-full border-gray-400' : ''}`}>
-                    {isLoggedIn && (
+                    {isLoggedIn && userDetails && userDetails.firstname && userDetails.lastname && (
                       <div>
                         <span className="text-md font-medium text-white">{userDetails.firstname.charAt(0)}{userDetails.lastname.charAt(0)}</span>
                       </div>

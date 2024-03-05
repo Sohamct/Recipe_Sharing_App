@@ -18,37 +18,10 @@ export const fetchUserDetails = async () => {
       },
     });
 
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user details: ", error);
     throw error;
   }
 };
-
-/* 
-
-const uri = "http://localhost:5501/api/user/";
-
-export const fetchUserDetails = async () => {
-  try {
-    const response = await fetch(`${uri}/details`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': localStorage.getItem('token')
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch user details. Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching user details: ", error.message);
-    throw error;
-  }
-};
-
-*/

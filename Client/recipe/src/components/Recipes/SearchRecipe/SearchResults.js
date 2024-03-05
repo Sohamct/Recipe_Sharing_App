@@ -1,10 +1,9 @@
-// SearchResults.js
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../../../app/service/RecipeApi';
 import { RecipeItem } from '../RecipeList/RecipeItem/RecipeItem';
 
-const SearchResults = () => {
+export const SearchResults = () => {
   const location = useLocation();
   const searchTerm = new URLSearchParams(location.search).get('q');
   const [searchResults, setSearchResults] = useState([]);
@@ -33,7 +32,6 @@ const SearchResults = () => {
   const goBack = () => {
     navigate(-1); // Navigate back to the previous page
   };
-
   return (
     <div className='p-4 m-auto'>
       <div>
@@ -68,5 +66,3 @@ const SearchResults = () => {
     </div>
   );
 };
-
-export default SearchResults;

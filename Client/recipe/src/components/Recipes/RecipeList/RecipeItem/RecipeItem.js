@@ -1,11 +1,11 @@
 import React from 'react';
 import { useUser } from '../../../../features/context';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../../../features/context';
+import RecipeFavoriteButton from '../../../Favorites/RecipeFavoriteButton.js';
 
 export const RecipeItem = ({ _id, title, owner, date }) => {
 
-  const {username} = useUser();
+  const { username } = useUser();
 
   const navigate = useNavigate();
   const goToSpecificRecipe = () => {
@@ -44,21 +44,25 @@ export const RecipeItem = ({ _id, title, owner, date }) => {
         <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
           <img
             src={require('../../../../assets/pizza.jpg')}
-
             alt="card-image"
             className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
           />
         </div>
-        
-        <div className="p-4 mt-2">
-          <h5 className="block mb-2 font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900">
-            Recipe ID: {_id}
-          </h5>
-          <p className="block font-sans font-semibold text-sm leading-relaxed text-inherit">
-            {title}
-          </p>
-          <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
-            By {owner === username ? 'You' : owner}
+
+        <div className="p-3 mt-2">
+          <div className='flex justify-between'>
+            <p className="block font-customFont font-semibold text-xl leading-relaxed text-inherit">
+              {title}
+            </p>
+            <div className='hover:cursor-pointer'>
+              <RecipeFavoriteButton
+                recipeId={_id}
+              />
+            </div>
+          </div>
+
+          <p className="block font-mono text-sm antialiased font-light leading-relaxed text-inherit">
+            By {username === owner ? 'You' : owner}
           </p>
           <p className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
             {calculateRelativeTime(date)}

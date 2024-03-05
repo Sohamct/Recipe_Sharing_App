@@ -18,6 +18,7 @@ const ingredientSchema = new mongoose.Schema({
         required: true
     },
     date: { type: Date, default: Date.now },
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
   });
   
 module.exports = mongoose.model('Recipe', recipeSchema)

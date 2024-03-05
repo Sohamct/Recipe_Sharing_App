@@ -12,7 +12,7 @@ export const CreateRecipe = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = useParams();
-  const {username} = useUser();
+  const { username } = useUser();
   const [isEditing, setIsEditing] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState(null);
   console.log(recipesState.recipes)
@@ -48,7 +48,7 @@ export const CreateRecipe = () => {
         });
       }
     }
-  }, [isEditing, params.id, recipesState, username, navigate, ]);
+  }, [isEditing, params.id, recipesState, username, navigate,]);
 
   // const { status, error } = useSelector((state) => state.recipes)
   const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
@@ -112,7 +112,7 @@ export const CreateRecipe = () => {
     console.log('Form submitted:', formData);
     if (isEditing) {
       // If editing, dispatch editRecipeAsync
-      dispatch(editRecipeAsync({_id: params.id, ...formData} ))
+      dispatch(editRecipeAsync({ _id: params.id, ...formData }))
         .then((response) => {
           console.log(response)
           if (response.type === 'recipe/editrecipe/fulfilled') {
@@ -159,7 +159,7 @@ export const CreateRecipe = () => {
       formData.ingredients.some(
         (ingredient) =>
           ingredient.ingredient_name.trim() === '' ||
-           ingredient.quantity === ''
+          ingredient.quantity === ''
       )
     );
   };
@@ -204,13 +204,26 @@ export const CreateRecipe = () => {
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image URL:</label>
             <input
               type="text"
               id="image"
               name="image"
               value={formData.image}
+              onChange={_handleChange}
+              className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div> */}
+
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+              Choose Recipe Image:
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
               onChange={_handleChange}
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />

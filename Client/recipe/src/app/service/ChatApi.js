@@ -2,7 +2,7 @@ const uri = "http://localhost:5501/api/chat";
 
 export const addChat = async(newChat) =>{
     try{
-        console.log(newChat);
+        // console.log(newChat);
         const response = await fetch(`${uri}/`, {
             method: "POST",
             headers: {

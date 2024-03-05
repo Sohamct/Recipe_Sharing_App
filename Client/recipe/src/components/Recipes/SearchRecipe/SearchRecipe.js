@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import api from '../../../app/service/RecipeApi';
 import { useNavigate } from 'react-router-dom';
-import { RecipeItem } from '../RecipeList/RecipeItem/RecipeItem';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { RecipeItem } from '../RecipeList/RecipeItem/RecipeItem';
 
-const SearchRecipe = () => {
+export const SearchRecipe = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -48,34 +48,34 @@ const SearchRecipe = () => {
   const handleSuggestionClick = (suggestion) => {
     setSearchTerm(suggestion.name);
     setSuggestions([]);
-    const navigationUrl = `/search-results?q=${encodeURIComponent(suggestion.name)}`;
+    const navigationUrl = `/search-results?q=${encodeURIComponent(suggestion.id)}`;
     navigate(navigationUrl);
   };
 
   return (
     <div className="relative">
       <div className="flex">
-        <div class="relative mr-6 my-0 w-full">
+        <div className="relative mr-6 my-0 w-full">
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => handleInputChange(e.target.value)}
-            class="bg-purple-white rounded border border-gray-200 p-[7px] focus:outline-blue-900"
+            className="bg-purple-white rounded border border-gray-200 p-[7px] focus:outline-blue-900"
             placeholder="Search recipe..."
           />
-          <div class="cursor-pointer absolute top-0 right-0 mt-[8px] mr-2.5 text-purple-lighter">
+          <div className="cursor-pointer absolute top-0 right-0 mt-[8px] mr-2.5 text-purple-lighter">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
-              class="w-6 h-6 text-blue-900"
+              className="w-6 h-6 text-blue-900"
               onClick={handleSearch}
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
               />
             </svg>
@@ -101,8 +101,8 @@ const SearchRecipe = () => {
         <div className="mt-16">
           <h3>Search Results:</h3>
           {searchResults.map((result) => (
-            <div key={result.id}>
-              <RecipeItem recipe={result} />
+            <div key={result._id}>
+              <RecipeItem {...result} />
             </div>
           ))}
         </div>
@@ -112,5 +112,3 @@ const SearchRecipe = () => {
     </div>
   );
 };
-
-export default SearchRecipe;
