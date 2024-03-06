@@ -79,7 +79,7 @@ router.put('/editrecipe', [fetchUser, validateRecipe], async (req, resp) => {
 });
 
 router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
-  console.log("Dleteting recipe...");
+  // console.log("Dleteting recipe...");
 
   try {
     const errors = validationResult(req);
@@ -138,6 +138,10 @@ router.get('/search', async (req, res) => {
     }
 
     const searchResults = await Recipe.find({ title: { $regex: searchTerm, $options: 'i' } });
+
+    if (searchResults.length === 0) {
+      return res.json({ results: [], message: 'No results found' });
+    }
 
     res.json({ results: searchResults });
   } catch (error) {
@@ -211,29 +215,31 @@ router.delete('/removeFavorite', fetchUser, async (req, res) => {
 
 router.get('/getFavorites', fetchUser, async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+      if (!req.user) {
+          return res.status(401).json({ message: 'Unauthorized' });
+      }
 
-    const userId = req.user.id;
+      const userId = req.user.id; 
+      // console.log(userId);
+      // Fetch user's favorite recipe IDs
+      const user = await User.findById(userId);
 
-    // Fetch user's favorite recipe IDs
-    const user = await User.findById(userId);
-    const favoriteRecipeIds = user.favorites || [];
+      const favoriteRecipeIds = user.favoriteRecipes || [];
+      // console.log(favoriteRecipeIds);
 
-    // Fetch the actual recipe details using the favoriteRecipeIds
-    const favoriteRecipes = await Recipe.find({ _id: { $in: favoriteRecipeIds } });
+      // Fetch the actual recipe details using the favoriteRecipeIds
+      const favoriteRecipes = await Recipe.find({ _id: { $in: favoriteRecipeIds } });
 
-    res.status(200).json({ message: 'Favorite recipes fetched successfully', data: favoriteRecipes });
+      res.status(200).json({ message: 'Favorite recipes fetched successfully', data: favoriteRecipes });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Unexpected error occurred');
+      console.error(error);
+      res.status(500).json({ error: 'Unexpected error occurred' });
   }
 });
 
 router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
   const { recipeId } = req.body;
-  
+
   try {
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });

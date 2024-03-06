@@ -48,9 +48,10 @@ export const SearchRecipe = () => {
   const handleSuggestionClick = (suggestion) => {
     setSearchTerm(suggestion.name);
     setSuggestions([]);
-    const navigationUrl = `/search-results?q=${encodeURIComponent(suggestion.id)}`;
+    const navigationUrl = `/search-results?q=${encodeURIComponent(suggestion.name)}`;
     navigate(navigationUrl);
   };
+  
 
   return (
     <div className="relative">
