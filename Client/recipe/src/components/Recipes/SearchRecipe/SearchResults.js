@@ -52,9 +52,7 @@ export const SearchResults = () => {
         {searchResults.length > 0 ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mx-4'>
             {searchResults.map((result) => (
-              <div key={result._id}>
-                <RecipeItem {...result} />
-              </div>
+              <RecipeItem key={result._id} recipe={result} />
             ))}
           </div>
         ) : (

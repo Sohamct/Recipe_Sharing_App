@@ -1,15 +1,11 @@
 import React, { useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
 import { RecipeItem } from './RecipeItem/RecipeItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
 
 export const RecipeList = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const recipesState = useSelector((state) => state.recipes);
-  // Determine isOwner based on the current location
-  const isOwner = location.pathname === '/myrecipe';
 
   // Use useCallback to memoize the function
   const fetchData = useCallback(async () => {
@@ -38,7 +34,7 @@ export const RecipeList = () => {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5">
       {recipes.map((recipe) => (
-        <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner} />
+        <RecipeItem key={recipe._id} recipe = {recipe}/>
       ))}
     </div>
   );

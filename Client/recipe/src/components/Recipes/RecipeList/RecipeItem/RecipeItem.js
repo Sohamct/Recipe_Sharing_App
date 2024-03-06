@@ -3,8 +3,8 @@ import { useUser } from '../../../../features/context';
 import { useNavigate } from 'react-router-dom';
 import RecipeFavoriteButton from '../../../Favorites/RecipeFavoriteButton.js';
 
-export const RecipeItem = ({ _id, title, owner, date }) => {
-
+export const RecipeItem = ({ recipe }) => {
+  const { _id, title, owner, date } = recipe;
   const { username } = useUser();
 
   const navigate = useNavigate();

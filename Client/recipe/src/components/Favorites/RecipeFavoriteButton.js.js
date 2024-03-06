@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import api from '../../app/service/RecipeApi';
 import { fetchUserDetails } from '../../app/service/userApi';
 
-
 const RecipeFavoriteButton = ({ recipeId }) => {
-
   const [isFavorite, setIsFavorite] = useState(false);
   const [userData, setUserData] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [recipeTitle, setRecipeTitle] = useState('');
 
   useEffect(() => {
     const fetchFavoriteStatus = async () => {
       try {
         if (!localStorage.getItem('token')) {
-          // Handle case where the user is not authenticated
           return;
         }
 
-        // Fetch the latest favorite status when the component mounts
         const response = await api.checkIfRecipeIsFavoriteAsync(recipeId);
         setIsFavorite(response.isFavorite);
       } catch (error) {
@@ -32,44 +31,52 @@ const RecipeFavoriteButton = ({ recipeId }) => {
       setUserData(userData);
       const userId = userData.user.id;
       setUserId(userId);
+    };
 
-    }
+    const fetchRecipeDetails = async () => {
+      try {
+        const response = await api.fetchRecipesAsync();
+        const recipeDetails = response.data;
+        
+        // Find the recipe with the given recipeId and set its title
+        const foundRecipe = recipeDetails.find(recipe => recipe._id === recipeId);
+        if (foundRecipe) {
+          setRecipeTitle(foundRecipe.title);
+        }
+      } catch (error) {
+        console.error('Error fetching recipe details:', error.message);
+      }
+    };
 
     fetchFavoriteStatus();
     getUserData();
+    fetchRecipeDetails();
   }, [recipeId]);
-
-
 
   const handleFavoriteClick = async () => {
     try {
       if (!localStorage.getItem('token')) {
-        // Handle the case where the user is not authenticated
         return;
       }
 
-      // Toggle the favorite status on the client side
       const newFavoriteStatus = !isFavorite;
       setIsFavorite(newFavoriteStatus);
 
-      // Update localStorage with the new favorite status
       localStorage.setItem(`recipe_${recipeId}_favorite`, newFavoriteStatus ? 'true' : 'false');
 
-      // Send a request to add or remove the recipe from favorites
       if (!isFavorite) {
         await api.addFavoriteAsync(userId, recipeId);
-        console.log('added to list');
+        toast.success(`${recipeTitle} added to favorites!`);
       } else {
         await api.removeFavoriteAsync(userId, recipeId);
-        console.log('removed from the list');
+        toast.info(`${recipeTitle} removed from favorites.`);
       }
     } catch (error) {
       console.error('Failed to add/remove recipe from favorites:', error.message);
-      // Handle the error as needed (e.g., show an error message to the user)
+      toast.error('Failed to update favorites. Please try again.');
     }
   };
 
-  // Check localStorage for the initial favorite status
   useEffect(() => {
     const storedFavoriteStatus = localStorage.getItem(`recipe_${recipeId}_favorite`);
     if (storedFavoriteStatus) {

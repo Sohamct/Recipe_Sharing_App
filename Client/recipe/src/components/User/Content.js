@@ -24,7 +24,7 @@ function Content() {
           </div>
 
           <div className='my-3'>
-            <label for="email" className="block text-sm font-medium text-gray-900">Your email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-900">Your email</label>
             <div className='flex py-1'>
               <p className='p-0 m-0' type='email' name='email' id='email' > example@gmail.com</p>
               <div className='mt-0.5 bg-center ml-auto'>

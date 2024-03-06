@@ -61,6 +61,7 @@ const api = {
       });
 
       const data = await response.json();
+      // console.log(data);
 
       if (response.ok) {
         return data; // Return the payload if the response is successful
@@ -185,6 +186,22 @@ const api = {
 
     } catch (error) {
       throw new Error(`failed to remove the recipes from favorites : ${error.message}`);
+    }
+  },
+
+  getFavoritesAsync: async () => {
+    try {
+      const response = await fetch(`${uri}/getFavorites`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+      });
+
+      return response;
+    } catch (error) {
+      throw new Error(`Failed to get favorites: ${error.message}`);
     }
   },
 
