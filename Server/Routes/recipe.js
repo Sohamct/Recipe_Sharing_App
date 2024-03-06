@@ -131,9 +131,12 @@ router.get('/fetchrecipes', fetchUser, async (req, resp) => {
 
 router.get('/search', async (req, res) => {
   try {
-    const searchTerm = req.query.q; // Get the search term from query parameters
+    const searchTerm = req.query.q;
 
-    // Use the searchTerm to query your backend data
+    if (!searchTerm || searchTerm.trim() === '') {
+      return res.json({ results: [] }); // Return an empty array if searchTerm is not provided or is an empty string
+    }
+
     const searchResults = await Recipe.find({ title: { $regex: searchTerm, $options: 'i' } });
 
     res.json({ results: searchResults });
@@ -147,26 +150,30 @@ router.get('/suggestions', async (req, res) => {
   try {
     const keyword = req.query.q.toLowerCase();
 
-    // Use the searchTerm to query the database for matching recipes
+    if (keyword.trim() === '') {
+      return res.json({ suggestions: [] }); // Return an empty array if keyword is an empty string
+    }
+
+    // Use the keyword to query the database for matching recipes
     const matchingRecipes = await Recipe.find({
       $or: [
         { title: { $regex: keyword, $options: 'i' } },
         { owner: { $regex: keyword, $options: 'i' } },
         { description: { $regex: keyword, $options: 'i' } },
-        { 'ingredients.ingredient_name': { $regex: keyword, $options: 'i' } }, // Assuming 'ingredients' is an array of objects with 'ingredient_name' property
-        // Add more fields as needed
+        { 'ingredients.ingredient_name': { $regex: keyword, $options: 'i' } },
       ],
     });
 
-    // Extract relevant details for suggestions and filter those that start with the keyword
-    const suggestions = matchingRecipes.filter(recipe => recipe.title.toLowerCase().startsWith(keyword)).map(recipe => ({
-      id: recipe.id,
-      name: recipe.title,
-      owner: recipe.owner,
-      description: recipe.description,
-      ingredients: recipe.ingredients.map(ingredient => ingredient.ingredient_name), // Extract ingredient names
-      // Add more details as needed
-    }));
+    const suggestions = matchingRecipes
+      .filter((recipe) => recipe.title.toLowerCase().startsWith(keyword))
+      .map((recipe) => ({
+        id: recipe.id,
+        name: recipe.title,
+        owner: recipe.owner,
+        description: recipe.description,
+        ingredients: recipe.ingredients.map((ingredient) => ingredient.ingredient_name),
+        // Add more details as needed
+      }));
 
     res.json({ suggestions });
   } catch (error) {
