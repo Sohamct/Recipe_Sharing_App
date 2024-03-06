@@ -116,6 +116,28 @@ const api = {
     }
   },
 
+  getSuggestionsAsync: async (searchTerm) => {
+    try {
+      const response = await fetch(`${uri}/suggestions?q=${encodeURIComponent(searchTerm)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return data.suggestions || [];
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (error) {
+      throw new Error(`Failed to get suggestions: ${error.message}`);
+    }
+  },
+
   addFavoriteAsync: async (userId, recipeId) => {
     try {
       const response = await fetch(`${uri}/addFavorite`, {
