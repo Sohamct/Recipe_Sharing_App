@@ -32,7 +32,7 @@ export const RecipeList = () => {
   // console.log(recipes);
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
       {recipes.map((recipe) => (
         <RecipeItem key={recipe._id} recipe = {recipe}/>
       ))}
