@@ -50,7 +50,6 @@ const AuthService = {
             }
 
             const data = await resp.json();
-            //console.log(resp);
 
             if (data.errors) {
                 return { success: false, message: data.errors };

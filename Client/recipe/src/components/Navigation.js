@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FilterRecipe } from "./Recipes/FilterRecipe/FilterRecipe";
 import { fetchUserDetails } from "../app/service/userApi";
+import { useUser } from "../features/context";
 
 
 export const Navigation = () => {
@@ -9,7 +10,8 @@ export const Navigation = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedSection, setSelectedSection] = useState('home'); // Default to home
+  const [selectedSection, setSelectedSection] = useState('home'); 
+  const { username } = useUser();
 
   useEffect(() => {
     const getUserData = async () => {
@@ -111,7 +113,7 @@ export const Navigation = () => {
                       <Link to="/logout" className="block px-4 no-underline py-2 text-gray-600 hover:text-blue-900">
                         Logout
                       </Link>
-                      <Link to="/user-profile" className="block no-underline px-4 py-2 text-gray-600 hover:text-blue-900">
+                      <Link to={`/user-profile/${username}`} className="block no-underline px-4 py-2 text-gray-600 hover:text-blue-900">
                         Your Profile
                       </Link>
                     </div>

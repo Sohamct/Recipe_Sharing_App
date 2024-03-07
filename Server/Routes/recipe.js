@@ -129,6 +129,25 @@ router.get('/fetchrecipes', fetchUser, async (req, resp) => {
   }
 });
 
+router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
+  try {
+    if (!req.user) {
+      return resp.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const ownerName = req.query.owner; // Assuming the ownerName is provided as a query parameter
+    if (!ownerName) {
+      return resp.status(400).json({ message: 'Owner name is required' });
+    }
+
+    const recipes = await Recipe.find({ owner: ownerName });
+    resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
+  } catch (error) {
+    console.error(error);
+    resp.status(500).send('Unexpected error occurred');
+  }
+});
+
 router.get('/search', async (req, res) => {
   try {
     const searchTerm = req.query.q;
