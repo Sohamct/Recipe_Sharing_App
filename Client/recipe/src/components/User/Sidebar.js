@@ -2,11 +2,12 @@ import React from 'react';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import XIcon from '@mui/icons-material/X';
 import PeopleIcon from '@mui/icons-material/People';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import MailIcon from '@mui/icons-material/Mail';
 
 function Sidebar() {
-  
+
   const instagramProfileLink = "https://www.instagram.com/kevinnn._.11/";
   const linkedProfileLink = "https://www.linkedin.com/in/kevin-thumbar-00152b221/";
   const twitterLink = "https://twitter.com/imKevint11";
@@ -19,13 +20,26 @@ function Sidebar() {
       <p className='m-0 text-gray-600'>username</p>
 
       <div className='flex mt-3'>
-        <p className='px-1'>
-          <PeopleIcon fontSize='small' />
-        </p>
-        <div className='bg-center flex items-center my-1'>
-          <p className='text-sm text-gray-700'>
-            15 Followers
+        <div className='flex'>
+          <p className='px-1'>
+            <PeopleIcon fontSize='small' />
           </p>
+          <div className='bg-center items-center my-1'>
+            <p className='text-sm text-gray-700'>
+              15 Followers
+            </p>
+          </div>
+        </div>
+
+        <div className='flex mx-3'>
+          <p className='px-1'>
+            <PeopleOutlineIcon fontSize='small' />
+          </p>
+          <div className='bg-center items-center my-1'>
+            <p className='text-sm text-gray-700'>
+              15 Following
+            </p>
+          </div>
         </div>
       </div>
 

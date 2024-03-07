@@ -73,6 +73,30 @@ const api = {
     }
   },
 
+  fetchRecipesByOwnerAsync: async (ownerName) => {
+    try {
+        const response = await fetch(`${uri}/fetchrecipesbyowner?owner=${ownerName}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': localStorage.getItem('token'),
+            },
+        });
+
+        const data = await response.json();
+        // console.log(data);
+
+        if (response.ok) {
+            return data; // Return the payload if the response is successful
+        } else {
+            throw new Error(data.errors[0].msg); // Throw an error if the response indicates an error
+        }
+    } catch (error) {
+        throw new Error('Failed to fetch recipes by owner'); // Throw a generic error if something goes wrong
+    }
+},
+
+
   deleteRecipeAsync: async (deleteInfo) => {
     try {
       const response = await fetch(`${uri}/deleterecipe`, {

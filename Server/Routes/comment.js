@@ -41,7 +41,7 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
       repliedTo,
       _to,
     });
-    console.log("comment created: ",comment);
+    // console.log("comment created: ",comment);
     resp.status(200).json({ message: 'Comment created successfully', data: comment });
   } catch (error) {
     console.error(error);
@@ -51,14 +51,14 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
 
 
 router.get('/fetchComments/:id', fetchUser, async (req, resp) => {
-  console.log("Fetch Request is comming..................");
+  // console.log("Fetch Request is comming..................");
   try {
     if (!req.user) {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
     console.log(req.params.id)
     const comments = await Comment.find({ _to: req.params.id });
-    console.log(comments);
+    // console.log(comments);
     resp.status(201).json({ message: 'Comments fetched successfully', data: comments });
   } catch (error) {
     console.error(error);

@@ -25,3 +25,65 @@ export const fetchUserDetails = async () => {
     throw error;
   }
 };
+
+export const followUser = async (userIdToFollow) => {
+  try {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      // Handle the case when the token is not present
+      throw new Error('Token not found');
+    }
+
+    const response = await fetch('/api/auth/follow', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': token,
+      },
+      body: JSON.stringify({ userIdToFollow }),
+    });
+
+    if (!response.ok) {
+      // Handle the case when the response is not successful
+      const data = await response.json();
+      throw new Error(data.error);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error following user: ", error);
+    throw error;
+  }
+};
+
+export const unfollowUser = async (userIdToUnfollow) => {
+  try {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      // Handle the case when the token is not present
+      throw new Error('Token not found');
+    }
+
+    const response = await fetch('/api/auth/unfollow', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': token,
+      },
+      body: JSON.stringify({ userIdToUnfollow }),
+    });
+
+    if (!response.ok) {
+      // Handle the case when the response is not successful
+      const data = await response.json();
+      throw new Error(data.error);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error unfollowing user: ", error);
+    throw error;
+  }
+};

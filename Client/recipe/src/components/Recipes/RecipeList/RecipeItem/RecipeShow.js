@@ -1,4 +1,4 @@
-import React, {useState }from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
@@ -20,6 +20,7 @@ export const RecipeShow = () => {
   const { username } = useUser();
   const dispatch = useDispatch();
   const navigate = useNavigate()
+
 
   const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
     (state) => ({
@@ -72,6 +73,7 @@ export const RecipeShow = () => {
       fetchComment(params.id);
     }
 
+    // console.log("Owner is" + owner);
     //console.log(debouncedText);
     //console.log("==================+++++++++++++++", commentByRecipe)
   }, [params.id])
@@ -120,6 +122,8 @@ export const RecipeShow = () => {
 
   }
 
+  const isRecipeOwner = (username === owner);
+
   return (
     <div>
       {deleteClick && <DeleteConfirmation deleteClick={deleteClick} handleCancelDelete={handleCancelDelete} handleConfirmDelete={handleConfirmDelete} />}
@@ -131,13 +135,20 @@ export const RecipeShow = () => {
           <div>
             <div className="flex justify-between items-center">
               <div>
+                {
+                  isRecipeOwner ? null : (
+                    <Link to={`/user-profile/${owner}`}>
+                      <span className="text-blue-500 cursor-pointer">{owner}</span>
+                    </Link>
+                  )
+                }
                 <h5 className="text-xl font-semibold">{title}</h5>
                 <p className="text-gray-600">Recipe ID: {_id}</p>
                 <p className="text-gray-600">
                   <small>{new Date(date).toLocaleString()}</small>
                 </p>
               </div>
-              {username === recipe.owner ? '' :<p className="relative">
+              {username === recipe.owner ? '' : <p className="relative">
                 <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" onClick={() => makeNewChat(recipe.owner)} />
               </p>}
               {
