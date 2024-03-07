@@ -90,28 +90,32 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
             {
                 chat ? (
                     <>
-                        <div className="chat-header">
-                            <div className="follower">
+                        <div className="chat-header p-0 m-0">
+                            <div className="flex follower">
                                 {isLoadingUserData ? (
                                     <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ReactLoading type="balls" color="#FFA500"
                                         height={150} width={90} /></div>
                                 ) : (
                                     <>
-                                        <CgProfile
-                                            className="followerImage"
-                                            style={{ width: '40px', height: '40px' }}
-                                            alt="Profile Image"
-                                        />
-                                        <div className="name" style={{ fontSize: '0.8rem' }}>
-                                            <span>
-                                                {userData?.firstname} {userData?.lastname}
-                                            </span>
+                                        <div className='flex'>
+                                            <CgProfile
+                                                className="followerImage"
+                                                style={{ width: '40px', height: '40px' }}
+                                                alt="Profile Image"
+                                            />
+                                            <div className="name mt-2.5 px-2" style={{ fontSize: '0.8rem' }}>
+                                                <span>
+                                                    {userData?.firstname} {userData?.lastname}
+                                                </span>
+
+                                            </div>
                                         </div>
                                     </>
                                 )}
                             </div>
+                            <hr />
                         </div>
-                        <div className='chat-body'>
+                        <div className='chat-body my-2 p-3'>
                             {isLoadingMessages ? (
                                 "Loading..."
                             ) : (

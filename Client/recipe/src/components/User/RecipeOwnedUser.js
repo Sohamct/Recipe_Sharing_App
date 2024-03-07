@@ -22,8 +22,8 @@ const RecipeOwnedUser = ({ ownerName }) => {
         <div>
             <h3 className='px-4 pt-3 text-gray-800'>Recipes Owned by you : </h3>
             <hr />
-            <ul>
-                <div className='grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 m-3'>
+            <ul className='mx-0 p-0 mb-5'>
+                <div className='grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 m-4'>
                     {recipes.map((recipe) => (
                         <RecipeCardForUser key={recipe._id} recipe={recipe} />
                     ))}
