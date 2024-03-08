@@ -135,12 +135,14 @@ router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
 
-    const ownerName = req.query.owner; // Assuming the ownerName is provided as a query parameter
+    const ownerName = req.query.owner; 
+    
     if (!ownerName) {
       return resp.status(400).json({ message: 'Owner name is required' });
     }
 
     const recipes = await Recipe.find({ owner: ownerName });
+    // console.log(recipes);
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
     console.error(error);

@@ -3,10 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../features/context';
 
 export const RecipeCardForUser = ({ recipe }) => {
-  const { _id, title } = recipe;
-  const { username } = useUser();
 
+  const { username } = useUser();
   const navigate = useNavigate();
+  
+  if (!recipe || typeof recipe !== 'object' || !('_id' in recipe)) {
+    // Handle the case where recipe is undefined or doesn't have _id property
+    return null; // or display an error message
+  }
+  const { _id, title } = recipe;
+
   const goToSpecificRecipe = () => {
     navigate(`/viewrecipe/${_id}`);
   };
