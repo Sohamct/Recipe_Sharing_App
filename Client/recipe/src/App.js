@@ -20,6 +20,7 @@ import { SearchRecipe } from './components/Recipes/SearchRecipe/SearchRecipe.js'
 import { ToastContainer } from 'react-toastify';
 import  Chat  from './components/Chat/Chat';
 import './App.css'
+import { MyRecipe } from './components/MyRecipe/MyRecipe.js';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
       <Route path="/search-results" element={<SearchResults />} />
       <Route path="/favorite" element={<FavoriteRecipesPage />} />
       <Route path="/chat" element={<Chat />} />
+      <Route path='/myrecipe' element={<MyRecipe/>} />
     </Route>
   )
 );

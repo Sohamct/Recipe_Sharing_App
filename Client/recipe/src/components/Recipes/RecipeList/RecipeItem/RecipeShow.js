@@ -179,7 +179,7 @@ export const RecipeShow = () => {
                 {description}
               </ol>
 
-              <div className="mt-3">
+              {/* <div className="mt-3">
                 <button className="btn btn-primary me-2">Like</button>
                 <button className="btn btn-info me-2" onClick={() => navigate('/chat')}>
                   Chat
@@ -187,7 +187,7 @@ export const RecipeShow = () => {
                 <i className="far fa-heart me-2"></i>
                 <button className="btn btn-success me-2">Follow</button>
                 <button className="btn btn-warning me-2">Add to Favorite</button>
-              </div>
+              </div> */}
 
               <div className="mt-3">
                 <input
