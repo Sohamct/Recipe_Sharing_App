@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUser } from '../../../../features/context';
 import { useNavigate } from 'react-router-dom';
 import RecipeFavoriteButton from '../../../Favorites/RecipeFavoriteButton.js';
+import { useProgress } from '../../../../features/ProgressContext.js';
 
 export const RecipeItem = ({ recipe }) => {
-  const { _id, title, owner, date } = recipe;
+  const { _id, title, owner, date , image, description} = recipe;
   const { username } = useUser();
+  
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const { updateProgress } = useProgress();
 
   const navigate = useNavigate();
   const goToSpecificRecipe = () => {
@@ -36,6 +40,9 @@ export const RecipeItem = ({ recipe }) => {
       return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
     }
   };
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
 
 
   return (
@@ -47,6 +54,18 @@ export const RecipeItem = ({ recipe }) => {
             alt="card-image"
             className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
           />
+          {/* {!imageLoaded && (
+            <div
+              className="object-cover w-full h-full rounded-t-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md skeleton"
+              style={{ opacity: 0.7 }}
+            ></div>
+          )}
+          <img
+            src={require(`../../../../Uploads/${image}`)}
+            alt="card-image"
+            className={`object-cover w-full h-full rounded-t-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md ${!imageLoaded && 'hidden'}`}
+            onLoad={handleImageLoad}
+          /> */}
         </div>
 
         <div className="p-3 mt-2">

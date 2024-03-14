@@ -3,50 +3,67 @@ import axios from "axios";
 const uri = 'http://localhost:5501/api/recipe';
 
 const api = {
-  addRecipeAsync: async (recipeData) => {
+  addRecipeAsync: async (formData) => {
     try {
-      const response = await fetch(`${uri}/createrecipe`, {
-        method: 'POST',
+      console.log(formData);
+      const formDataToSend = new FormData();
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("image", formData.image);
+      formDataToSend.append("ingredients", JSON.stringify(formData.ingredients))
+
+      const response = await axios.post(`${uri}/createrecipe`, formDataToSend, {
         headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('token'),
+          "Content-Type": "multipart/form-data",
+          "auth-token": localStorage.getItem("token"), // Use Authorization header for the token
         },
-        body: JSON.stringify(recipeData),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        return data; // Return the payload if the response is successful
+      if (response.status === 201) {
+        console.log("Recipe created successfully");
+        return response.data;
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.errors[0].msg); // Throw an error with the specific error message from the server
+        console.error("Failed to create recipe:", response.data.message);
+        throw new Error(response.data.message);
       }
     } catch (error) {
-      throw new Error(`Failed to add recipe: ${error.message}`); // Include the original error message in the thrown error
+      console.error("Failed to create recipe:", error.message);
+      throw new Error(error.message);
     }
   },
-
-  editRecipeAsync: async (recipeData) => {
+  
+  editRecipeAsync: async (formData) => {
     try {
-      const response = await fetch(`${uri}/editrecipe`, {
-        method: 'PUT',
+      console.log(formData);
+      const formDataToSend = new FormData();
+      formDataToSend.append("_id", formData._id);
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("owner", formData.owner);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("ingredients", JSON.stringify(formData.ingredients));
+
+      // Append image if it exists
+      if (formData.image) {
+        formDataToSend.append("image", formData.image);
+      }
+
+      const response = await axios.put(`${uri}/editrecipe`, formDataToSend, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
           'auth-token': localStorage.getItem('token'),
-        },
-        body: JSON.stringify(recipeData),
+        }
       });
 
-      if (response.ok || response.status === 201) {
-        const data = await response.json();
-        return data;
+      if (response.status === 201) {
+        console.log("Recipe updated successfully");
+        return response.data;
       } else {
-        const errorData = await response.json();
-        //console.log(errorData);
-        throw new Error(errorData.message); // Throw an error with the specific error message from the server
+        console.error("Failed to update recipe:", response.data.message);
+        throw new Error(response.data.message);
       }
     } catch (error) {
-      throw new Error(`Failed to edit recipe: ${error.message}`); // Include the original error message in the thrown error
+      console.error("Failed to update recipe:", error.message);
+      throw new Error(error.message);
     }
   },
 

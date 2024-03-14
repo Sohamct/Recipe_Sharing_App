@@ -4,6 +4,7 @@ import { createRecipeAsync, editRecipeAsync } from '../../../features/recipe/Sli
 import { toast } from 'react-toastify';
 import { Navigation } from '../../Navigation';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useProgress } from '../../../features/ProgressContext';
 import { useUser } from '../../../features/context';
 
 export const CreateRecipe = () => {
@@ -12,10 +13,10 @@ export const CreateRecipe = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = useParams();
-  const { username } = useUser();
+  const {username} = useUser();
+  const {updateProgress} = useProgress();
   const [isEditing, setIsEditing] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState(null);
-  console.log(recipesState.recipes)
   useEffect(() => {
     setIsEditing(location.pathname.includes('/editrecipe'));
   }, [location.pathname]);
@@ -29,14 +30,16 @@ export const CreateRecipe = () => {
 
   useEffect(() => {
     if (isEditing) {
-      console.log(recipesState)
+       console.log("checking editing recipe")
       const recipeToEdit = recipesState.recipes.find((recipe) => recipe._id === params.id);
       if (!recipeToEdit) {
         toast.error("Recipe does not exist!", { autoClose: 2000, theme: "colored" });
-        // navigate('/');
+        navigate('/');
+        return ;
       } else if (username !== recipeToEdit.owner) {
         toast.error("You don't have permission to edit this recipe!", { autoClose: 2000, theme: "colored" });
-        // navigate('/');
+        navigate('/');
+        return ;
       } else {
         setEditingRecipe(recipeToEdit);
         setFormData({
@@ -59,8 +62,8 @@ export const CreateRecipe = () => {
     setFormData(prevFormData => {
       const newIngredients = [...prevFormData.ingredients]; // Clone the array
       newIngredients[index] = {
-        ...newIngredients[index], // Clone the ingredient object
-        [name]: value // Update the specific property
+        ...newIngredients[index], 
+        [name]: value 
       };
       return {
         ...prevFormData,
@@ -69,11 +72,11 @@ export const CreateRecipe = () => {
     });
   };
   const _handleChange = (e) => {
-    const { name, value } = e.target;
-    const newStuff = value || '';
+    const { name, value, files } = e.target;
+    const newValue = (name === "image" ? files[0] : (value || ''));
     setFormData({
       ...formData,
-      [name]: newStuff
+      [name]: newValue
     });
   };
 
@@ -110,44 +113,53 @@ export const CreateRecipe = () => {
     }
 
     console.log('Form submitted:', formData);
+
     if (isEditing) {
       // If editing, dispatch editRecipeAsync
-      dispatch(editRecipeAsync({ _id: params.id, ...formData }))
+
+      const recipeData = {_id: params.id, ...formData}
+      dispatch(editRecipeAsync({recipeData, updateProgress}))
+
         .then((response) => {
-          console.log(response)
+          updateProgress(100);
+          console.log(response);
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
             setFormData({
               title: '',
               description: '',
-              image: '',
+              image: null,
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            navigate('/');
+            setTimeout(() => {
+              navigate('/');
+            }, 2000)
           }
         })
         .catch((error) => {
           console.error('Error updating recipe:', error);
         });
     } else {
-      dispatch(createRecipeAsync(formData))
+      console.log(formData);
+      dispatch(createRecipeAsync({formData, updateProgress}))
         .then((response) => {
+          updateProgress(100);
           if (response.type === 'recipe/createRecipe/fulfilled') {
-            console.log('Recipe created successfully');
             createRecipeNotify();
             setFormData({
               title: '',
               description: '',
-              image: '',
+              image: null,
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            navigate('/');
+            setTimeout(() => {
+              navigate('/');
+            }, 2000)
           }
         })
         .catch((error) => {
           console.error('Error creating recipe:', error);
-
         });
     }
 
@@ -180,7 +192,7 @@ export const CreateRecipe = () => {
         <Navigation />
       </div>
       <div className="max-w-3xl mx-auto p-6 bg-slate-100 rounded-md shadow-md ">
-        <h2 className="text-xl font-semibold mb-4">Create New Recipe</h2>
+        <h2 className="text-xl font-semibold mb-4">{!isEditing ? ('Create New Recipe') : 'Edit Recipe'}</h2>
         <form onSubmit={handleSubmit} >
           <div className="mb-4">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title:</label>
@@ -223,6 +235,7 @@ export const CreateRecipe = () => {
             <input
               type="file"
               id="image"
+              accept='image/*'
               name="image"
               onChange={_handleChange}
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -284,10 +297,8 @@ export const CreateRecipe = () => {
           >
             {isEditing ? 'Update Recipe' : 'Submit'}
           </button>
-
         </form>
       </div>
-
     </div>
 
   )
