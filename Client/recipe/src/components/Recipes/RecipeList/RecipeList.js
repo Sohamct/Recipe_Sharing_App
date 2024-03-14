@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
 import { RecipeItem } from './RecipeItem/RecipeItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
@@ -7,11 +6,10 @@ import {RecipeFilter} from './RecipeFilter';
 import { useProgress } from '../../../features/ProgressContext';
 
 export const RecipeList = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const recipesState = useSelector((state) => state.recipes);
   
-  const isOwner = location.pathname === '/myrecipe';
+  const isOwner = window.location.pathname === '/myrecipe';
   const {updateProgress}= useProgress();
   console.log(updateProgress);
 
@@ -47,11 +45,10 @@ export const RecipeList = () => {
   // console.log(recipes);
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
       {recipes.map((recipe) => (
-        <RecipeItem key={recipe._id} {...recipe} isOwner={isOwner}/>
+        <RecipeItem key={recipe._id} {...recipe}/>
       ))}
-      <RecipeFilter/>
     </div>
   );
 };

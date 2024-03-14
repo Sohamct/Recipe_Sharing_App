@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { toast } from 'react-toastify';
@@ -8,19 +8,20 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Navigation } from '../../../Navigation';
 import { useUser } from '../../../../features/UserContext';
 import DeleteConfirmation from './DeleteConfirmation';
-import { deleteRecipeAsync } from '../../../../features/recipe/Slice/recipe_slice';
+import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recipe/Slice/recipe_slice';
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
 import { useProgress } from '../../../../features/ProgressContext';
 
+
 export const RecipeShow = () => {
-  const [CommentText, setCommentText] = useState("")
+  const [CommentText, setCommentText] = useState("");
   const [deleteClick, setDeleteClick] = useState(false);
-  const debouncedText = useDebounce(CommentText, 300); // 300ms
   const { username } = useUser();
   const {updateProgress} = useProgress();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const params = useParams();
 
   const calculateRelativeTime = (timestamp) => {
     const now = new Date();
@@ -54,25 +55,32 @@ export const RecipeShow = () => {
       addComment: state.addComment,
       fetchComment: state.fetchComment,
     })
-  )
-  const params = useParams();
+  );
+
+  const recipeIdFromStorage = localStorage.getItem('recipeId');
+  const recipeId = recipeIdFromStorage || params.id;
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const status = useSelector(state => state.recipes.status);
   const error = useSelector(state => state.recipes.error);
-  let recipe;
-  // console.log(recipes)
-  recipe = recipes.find((r) => r._id === params.id);
 
   useEffect(() => {
-    if(recipe && commentByRecipe[params.id] === undefined){
-        fetchComment(params.id);
+    if (!recipes.length) {
+      // Fetch recipes if the recipes array is empty
+      dispatch(fetchRecipesAsync());
     }
 
-  }, [params.id])
+    if (recipeIdFromStorage !== params.id) {
+      localStorage.setItem('recipeId', params.id);
+      fetchComment(params.id);
+    }
+  }, [params.id]);
 
-  if(!recipe){
-    return navigate('/');
+
+  const recipe = recipes.find((r) => r._id === recipeId);
+
+  if (!recipe) {
+    return <div className='text-base mt-4 text-center'>Loading...</div>; 
   }
 
   const { _id, title, description, date, ingredients, owner } = recipe;
@@ -108,6 +116,7 @@ export const RecipeShow = () => {
     setDeleteClick(false);
     navigate('/');
   }
+
 
   const handleCommentSubmit = () => {
     if (!CommentText) {
@@ -147,6 +156,8 @@ export const RecipeShow = () => {
 
   }
 
+  const isRecipeOwner = (username === owner);
+
   return (
     <div>
       {deleteClick && <DeleteConfirmation deleteClick={deleteClick} handleCancelDelete={handleCancelDelete} handleConfirmDelete={handleConfirmDelete} />}
@@ -158,13 +169,20 @@ export const RecipeShow = () => {
           <div>
             <div className="flex justify-between items-center">
               <div>
+                {
+                  isRecipeOwner ? null : (
+                    <Link to={`/user-profile/${owner}`}>
+                      <span className="text-blue-500 cursor-pointer">{owner}</span>
+                    </Link>
+                  )
+                }
                 <h5 className="text-xl font-semibold">{title}</h5>
                 <p className="text-gray-600">Recipe ID: {_id}</p>
                 <p className="text-gray-600">
                   <small>{calculateRelativeTime(date)}</small>
                 </p>
               </div>
-              {username === recipe.owner ? '' :<p className="relative">
+              {username === recipe.owner ? '' : <p className="relative">
                 <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" onClick={() => makeNewChat(recipe.owner)} />
               </p>}
               {
@@ -195,7 +213,7 @@ export const RecipeShow = () => {
                 {description}
               </ol>
 
-              <div className="mt-3">
+              {/* <div className="mt-3">
                 <button className="btn btn-primary me-2">Like</button>
                 <button className="btn btn-info me-2" onClick={() => navigate('/chat')}>
                   Chat
@@ -203,7 +221,7 @@ export const RecipeShow = () => {
                 <i className="far fa-heart me-2"></i>
                 <button className="btn btn-success me-2">Follow</button>
                 <button className="btn btn-warning me-2">Add to Favorite</button>
-              </div>
+              </div> */}
 
               <div className="mt-3">
                 <input

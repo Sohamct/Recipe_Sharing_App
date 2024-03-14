@@ -16,10 +16,10 @@ export const RootLayout = () => {
       <ProgressBar/>
       <Navigation />
       <div className="flex">
-        <div className={`w-1/4 ${isFilterOpen ? '' : 'hidden'}`}>
+        {/* <div className={`w-1/4 ${isFilterOpen ? '' : 'hidden'}`}>
           <FilterComponent isOpen={isFilterOpen} toggleFilter={toggleFilter} />
-        </div>
-        <div className={`w-${isFilterOpen ? '3/4' : 'full'}`}>
+        </div> */}
+        <div>
           <RecipeList />
         </div>
       </div>

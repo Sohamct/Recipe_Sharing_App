@@ -8,7 +8,7 @@ export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
   const [replyToCommentId, setReplyToCommentId] = useState(null);
   const [newComment, setNewComment] = useState('');
   const { username, setUser } = useUser();
-  console.log(username)
+  // console.log(username)
 
   // Function to calculate relative time
   const calculateRelativeTime = (timestamp) => {
