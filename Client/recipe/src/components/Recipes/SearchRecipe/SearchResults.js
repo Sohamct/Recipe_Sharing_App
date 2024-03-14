@@ -9,6 +9,7 @@ export const SearchResults = () => {
   const location = useLocation();
   const searchTerm = new URLSearchParams(location.search).get('q');
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -17,11 +18,14 @@ export const SearchResults = () => {
       try {
         // Clear previous search results
         setSearchResults([]);
+        setLoading(true);
 
         const results = await api.searchRecipes(searchTerm);
         setSearchResults(results);
       } catch (error) {
         setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -34,12 +38,13 @@ export const SearchResults = () => {
   const goBack = () => {
     navigate(-1); // Navigate back to the previous page
   };
+
   return (
     <div className='p-4 m-auto'>
       <div>
-        <div className='flex items-center mb-4 mx-4'>
+        <div className='flex items-center mb-4 mx-4 pt-2'>
           {searchTerm && (
-            <h3 className='text-3xl font-semibold text-blue-900'>
+            <h3 className='text-3xl font-semibold text-gray-800'> <span className='text-3.5xl pr-2 bg-center'>&#x2BAB;</span> 
               Search Results for "{searchTerm}" :
             </h3>
           )}
@@ -50,13 +55,14 @@ export const SearchResults = () => {
             Go Back
           </button>
         </div>
+        <hr />
 
-        {searchResults.length > 0 ? (
+        {loading ? (
+          <p className='bg-center text-center'>Loading your search results...</p>
+        ) : searchResults.length > 0 ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mx-4'>
             {searchResults.map((result) => (
-              <div key={result._id}>
-                <RecipeItem {...result} />
-              </div>
+              <RecipeItem key={result._id} recipe={result} />
             ))}
           </div>
         ) : (

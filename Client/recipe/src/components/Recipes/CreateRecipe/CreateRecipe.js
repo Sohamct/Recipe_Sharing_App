@@ -132,14 +132,14 @@ export const CreateRecipe = () => {
               image: null,
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            setTimeout(() => {
-              navigate('/');
-            }, 2000)
           }
         })
         .catch((error) => {
           console.error('Error updating recipe:', error);
         });
+        setTimeout(() => {
+          navigate('/');
+        }, 2500)
     } else {
       console.log(formData);
       dispatch(createRecipeAsync({formData, updateProgress}))
@@ -153,14 +153,14 @@ export const CreateRecipe = () => {
               image: null,
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            setTimeout(() => {
-              navigate('/');
-            }, 2000)
           }
         })
         .catch((error) => {
           console.error('Error creating recipe:', error);
         });
+        setTimeout(() => {
+          navigate('/');
+        }, 2500)
     }
 
   };

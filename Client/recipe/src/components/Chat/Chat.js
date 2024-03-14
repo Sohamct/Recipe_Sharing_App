@@ -9,15 +9,15 @@ import { FaCommentAlt } from 'react-icons/fa';
 import './RightSide/RightSide.css';
 import { IoMdHome } from 'react-icons/io';
 import ChatBox from '../ChatBox/ChatBox';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 export const Chat = () => {
     const { username } = useUser();
     const { chatsByUser, fetchChats } = useChatStore((state) => ({
         chatsByUser: state.chatsByUser,
-        fetchChats: state.fetchChats
+        fetchChats: state.fetchChats,
     }));
-    
+
     const [currentChat, setCurrentChat] = useState();
     const [loading, setLoading] = useState(true);
     const [onlineUsers, setOnlineUsers] = useState([]);
@@ -25,13 +25,16 @@ export const Chat = () => {
     const [sendMessage, setSendMessage] = useState(null);
     const [recieveMessage, setReceiveMessage] = useState();
 
-        // send message to socket server
-        useEffect(() => {
-            if(sendMessage !== null){
-                console.log(sendMessage)
-                socket.current.emit('send-message', sendMessage);
-            }
-        }, [sendMessage])
+    // Create the uniqueUsernames Set
+    const uniqueUsernames = new Set();
+
+    // send message to socket server
+    useEffect(() => {
+        if (sendMessage !== null) {
+            console.log(sendMessage);
+            socket.current.emit('send-message', sendMessage);
+        }
+    }, [sendMessage]);
 
     useEffect(() => {
         console.log('fetchChats called');
@@ -39,39 +42,38 @@ export const Chat = () => {
             fetchChats();
             setLoading(false);
         }
-        console.log(chatsByUser)
+        console.log(chatsByUser);
     }, []);
 
     useEffect(() => {
         console.log('chatsByUser updated:', chatsByUser);
     }, [chatsByUser]);
-    
+
     useEffect(() => {
         if (username) {
             socket.current = io('http://localhost:8800');
-            socket.current.emit("new-user-add", username); // subscribing the event
+            socket.current.emit('new-user-add', username);
             socket.current.on('get-users', (users) => {
                 setOnlineUsers(users);
-                console.log(onlineUsers)
-            }); // for caching the emitted active user on the client side
+                console.log(onlineUsers);
+            });
         }
     }, [username]);
-    
-        // recieve message from socket server
-        useEffect(() => {
-           if(username){
-                socket.current.on('recieve-message', (data) => {
+
+    // recieve message from socket server
+    useEffect(() => {
+        if (username) {
+            socket.current.on('recieve-message', (data) => {
                 setReceiveMessage(data);
-            })
-           }
-        }, [username])
+            });
+        }
+    }, [username]);
 
     const checkOnlineStatus = (chat) => {
-        console.log(chat);
-        const chatMember = chat.members.find((member) => member !== username)
-        const online = onlineUsers.find((user) => user.username === chatMember)
-        return online ? true : false;
-    }
+        const otherMembers = chat.members.filter((member) => member !== username);
+        const online = onlineUsers.some((user) => otherMembers.includes(user.username));
+        return online;
+    };
 
     return (
         <div className="Chat">
@@ -80,32 +82,38 @@ export const Chat = () => {
                 <div className="Chat-container">
                     <h2>Chats</h2>
                     <div className="Chat-list">
-                        {!loading && chatsByUser.map((chat, ind) => (
-                            <div key={ind} className="Chat-item"
-                            onClick={()=> setCurrentChat(chat)}>
-                                <Conversation chat={chat}  
-                                online={checkOnlineStatus(chat)}/>
-                            </div>
-                        ))}
+                    {!loading && chatsByUser && Array.isArray(chatsByUser) && chatsByUser.map((chat, ind) => {
+                                const online = checkOnlineStatus(chat);
+                                const chatMember = chat.members.find((member) => member !== username);
+
+                                // Check if the user is already added to the uniqueUsernames Set
+                                if (!uniqueUsernames.has(chatMember)) {
+                                    uniqueUsernames.add(chatMember);
+
+                                    return (
+                                        <div key={ind} className="Chat-item" onClick={() => setCurrentChat(chat)}>
+                                            <Conversation chat={chat} online={online} uniqueUsernames={uniqueUsernames} />
+                                        </div>
+                                    );
+                                }
+
+                                return null; // Skip rendering for duplicate users
+                            })}
                     </div>
                 </div>
             </div>
             {/* Right side */}
             <div className="Right-side-chat">
                 <div>
-                    <div className="navIcons">
+                    <div className="navIcons p-2 ">
                         <Link to="/">
                             <IoMdHome />
                         </Link>
-                        <IoNotifications />
+                        <IoNotifications/>
                         <FaCommentAlt />
                     </div>
                 </div>
-                <ChatBox chat={currentChat} username={username} 
-                setSendMessage={setSendMessage}
-                 recieveMessage={recieveMessage}
-                    
-                 />
+                <ChatBox chat={currentChat} username={username} setSendMessage={setSendMessage} recieveMessage={recieveMessage} />
             </div>
         </div>
     );

@@ -94,9 +94,11 @@ export const RecipeShow = () => {
         updateProgress(100);
         console.log(status);
         if (status.delete === 'failed') {
+          console.log("Delete failed");
           toast.error(error.deleteError, { autoClose: 2000, theme: "colored" });
         }
         else if (status.delete === 'success') {
+          console.log("Delete success");
           toast.success(response.payload.message, { autoClose: 2000, theme: "colored" });
         }
       })
@@ -197,12 +199,11 @@ export const RecipeShow = () => {
 
               <div className="mt-3">
                 <button className="btn btn-primary me-2">Like</button>
-                <button className="btn btn-info me-2" onClick={() => navigate('/chat')}>
+                <button className="btn btn-info me-2" onClick={() => makeNewChat(owner)}>
                   Chat
                 </button>
                 <i className="far fa-heart me-2"></i>
-                <button className="btn btn-success me-2">Follow</button>
-                <button className="btn btn-warning me-2">Add to Favorite</button>
+                
               </div>
 
               <div className="mt-3">
