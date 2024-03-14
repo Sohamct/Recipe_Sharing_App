@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
@@ -6,20 +6,47 @@ import { Comment } from './Comment';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Navigation } from '../../../Navigation';
-import { useEffect } from 'react';
-import { useUser } from '../../../../features/context';
 import DeleteConfirmation from './DeleteConfirmation';
 import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recipe/Slice/recipe_slice';
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
+import { useProgress } from '../../../../features/ProgressContext';
+import { useUser } from '../../../../features/context';
+
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
   const [deleteClick, setDeleteClick] = useState(false);
   const { username } = useUser();
+  const {updateProgress} = useProgress();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
+
+  const calculateRelativeTime = (timestamp) => {
+    const now = new Date();
+    const commentTime = new Date(timestamp);
+    const timeDifference = now - commentTime;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(months / 12);
+    if (years > 0) {
+      return `${years} year${years > 1 ? 's' : ''} ago`;
+    } else if (months > 0) {
+      return `${months} month${months > 1 ? 's' : ''} ago`;
+    } else if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+    }
+  };
 
   const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
     (state) => ({
@@ -65,17 +92,21 @@ export const RecipeShow = () => {
     setDeleteClick(false)
   }
   const handleConfirmDelete = () => {
-    dispatch(deleteRecipeAsync({ recipeId: _id, owner: owner }))
+    const data = {
+      recipeId: _id, owner: owner
+    }
+
+    dispatch(deleteRecipeAsync({data, updateProgress}))
       .then(response => {
-        //console.log(status)
-        //console.log(error);
+        console.log(response);
+        updateProgress(100);
+        console.log(status);
         if (status.delete === 'failed') {
           toast.error(error.deleteError, { autoClose: 2000, theme: "colored" });
         }
         else if (status.delete === 'success') {
           toast.success(response.payload.message, { autoClose: 2000, theme: "colored" });
         }
-        console.log(response);
       })
       .catch(error => {
         //console.log(error);
@@ -91,10 +122,6 @@ export const RecipeShow = () => {
     if (!CommentText) {
       return alert("please add Comment-text");
     }
-
-    // CommentList = CommentList.filter((Comment) => Comment.recipeId === params.id)
-    // const filteredComments = CommentList.filter((Comment) => Comment.recipeId === params.id);
-
     const newComment = {
       text: CommentText,
       _to: params.id,
@@ -105,8 +132,6 @@ export const RecipeShow = () => {
     // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
     setCommentText("");
   }
-
-  //console.log("Comment is rendered")
 
   if (!recipe) {
     return <div>Recipe not found</div>;
@@ -154,7 +179,7 @@ export const RecipeShow = () => {
                 <h5 className="text-xl font-semibold">{title}</h5>
                 <p className="text-gray-600">Recipe ID: {_id}</p>
                 <p className="text-gray-600">
-                  <small>{new Date(date).toLocaleString()}</small>
+                  <small>{calculateRelativeTime(date)}</small>
                 </p>
               </div>
               {username === recipe.owner ? '' : <p className="relative">

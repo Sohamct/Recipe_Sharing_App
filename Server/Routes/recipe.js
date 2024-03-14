@@ -8,68 +8,89 @@ const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const { addFavoriteRecipe, removeFavoriteRecipe, checkIfRecipeIsFavorite } = require('../Services/recipeService');
 
-// Route-1: POST create a user using: '/api/auth/createrecipe'
-router.post('/createrecipe', [fetchUser, validateRecipe], async (req, resp) => {
-  console.log('Creating new recipe', req.body, req.header);
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return resp.status(400).json({ errors: errors.array() });
-    }
+const multer = require('multer');
+const fs = require('fs');
 
-    const { title, description, ingredients } = req.body;
-
-    // Check if req.user is defined before accessing req.user.id
-    if (!req.user) {
-      return resp.status(401).json({ message: 'Unauthorized' });
-    }
-
-    const username = req.user.username;
-    console.log(username)
-    const recipe = await Recipe.create({
-      title,
-      description,
-      ingredients,
-      owner: username,
-    });
-
-    resp.status(201).json({ message: 'Recipe created successfully', data: recipe });
-  } catch (error) {
-    console.error(error);
-    resp.status(500).send('Unexpected error occurred');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../Client/recipe/src/Uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
   }
 });
 
-router.put('/editrecipe', [fetchUser, validateRecipe], async (req, resp) => {
-  console.log('Editing recipe', req.body, req.header);
+// Multer upload middleware
+const upload = multer({ storage: storage });
+
+// Route-1: POST create a recipe using: '/api/auth/createrecipe'
+router.post('/createrecipe', [fetchUser, upload.single("image")], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    
+    const { title, description, ingredients } = req.body;
+    const imagePath = req.file ? req.file.filename : null;
+
+    if (!req.user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const username = req.user.username;
+    const recipe = await Recipe.create({
+      title,
+      description,
+      ingredients: JSON.parse(ingredients),
+      owner: username,
+      image: imagePath
+    });
+
+    res.status(201).json({ message: 'Recipe created successfully', data: recipe });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Unexpected error occurred');
+  }
+});
+
+router.put('/editrecipe', [fetchUser, upload.single("image")], async (req, resp) => {
+  // console.log('Editing recipe', req.body, req.header);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return resp.status(400).json({ errors: errors.array() });
     }
-    console.log(req.body)
+    // console.log(req.body)
 
     const { title, _id, description, ingredients, owner } = req.body;
 
-    // Check if req.user is defined before accessing req.user.id
     if (!req.user) {
       return resp.status(401).json({ message: 'You are Unauthorized' });
     }
-
+    const imagePath = req.file ? req.file.filename : null;
     const username = req.user.username;
+    console.log(owner, username)
     if (username !== owner) {
       return resp.status(403).json({ message: 'Forbidden: You are not allowed to edit this recipe' });
     }
-    console.log(username)
+    console.log(imagePath);
+    let updateObject = { title, description, ingredients: JSON.parse(ingredients) };
+    if (req.file) {
+      updateObject.image = imagePath;
+    }
+    console.log(_id);
+    console.log(updateObject);
     const recipe = await Recipe.findOneAndUpdate(
       { _id: _id, owner: username },
-      { title, description, ingredients },
-      { new: true } // returning the updated reicpe
+      updateObject,
+      { new: true } // returning the updated recipe
     );
+
     if (!recipe) {
       return resp.status(404).json({ message: 'Recipe not found or unauthorized' });
     }
-    console.log(recipe)
+    console.log(".....................",recipe)
 
     resp.status(201).json({ message: 'Recipe edited successfully', data: recipe });
   } catch (error) {
@@ -79,7 +100,7 @@ router.put('/editrecipe', [fetchUser, validateRecipe], async (req, resp) => {
 });
 
 router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
-  // console.log("Dleteting recipe...");
+  // console.log("Deleting recipe...");
 
   try {
     const errors = validationResult(req);
@@ -98,18 +119,41 @@ router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
     if (username != owner) {
       return resp.status(403).json({ message: 'Forbidden: You are not allowed to delete this recipe' });
     }
-    await Comment.deleteMany({ _to: recipeId })
+
+    // Find the recipe to delete and retrieve the associated image filename
+    const recipeToDelete = await Recipe.findOne({ _id: recipeId });
+    if (!recipeToDelete) {
+      return resp.status(404).json({ message: "Recipe not found" });
+    }
+
+    const imagePath = recipeToDelete.image;
+
+    if (imagePath) {
+      fs.unlink(`uploads/${imagePath}`, (err) => {
+        if (err) {
+          console.error('Error deleting image file:', err);
+        } else {
+          console.log('Image file deleted successfully');
+        }
+      });
+    }
+
+    await Comment.deleteMany({ _to: recipeId });
+
     const deletedRecipe = await Recipe.findOneAndDelete({ _id: recipeId });
 
     if (!deletedRecipe) {
-      return resp.status(404).json({ message: "Recipe can not be deleted since it does not exists!" });
+      return resp.status(404).json({ message: "Recipe can not be deleted since it does not exist!" });
     }
+
     resp.status(200).json({ message: "Recipe deleted successfully!", data: deletedRecipe });
   } catch (error) {
-    console.error('Error updating recipe:', error);
+    console.error('Error deleting recipe:', error);
     return resp.status(500).json({ message: 'Internal server error' });
   }
-})
+});
+
+
 
 router.get('/fetchrecipes', fetchUser, async (req, resp) => {
   // console.log('fetching recipes', req.header);

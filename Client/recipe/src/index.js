@@ -6,18 +6,21 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { UserProvider } from './features/context';
+import { ProgressProvider } from './features/ProgressContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <UserProvider>
-      <Provider store={store}>
-      <App />
-      </Provider>
-  </UserProvider>
+    <UserProvider>
+      <ProgressProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ProgressProvider>
+    </UserProvider>
   </React.StrictMode>
-
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
