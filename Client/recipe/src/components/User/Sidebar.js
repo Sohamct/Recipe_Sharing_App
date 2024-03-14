@@ -7,7 +7,6 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import MailIcon from '@mui/icons-material/Mail';
 
 function Sidebar() {
-
   const instagramProfileLink = "https://www.instagram.com/kevinnn._.11/";
   const linkedProfileLink = "https://www.linkedin.com/in/kevin-thumbar-00152b221/";
   const twitterLink = "https://twitter.com/imKevint11";
@@ -16,8 +15,8 @@ function Sidebar() {
 
   return (
     <div>
-      <p className='m-0 font-medium'>Kevin Thumbar</p>
-      <p className='m-0 text-gray-600'>username</p>
+      <p className='m-0 font-medium'>John Doe</p>
+      <p className='m-0 text-gray-700'>username</p>
 
       <div className='flex mt-3'>
         <div className='flex'>
