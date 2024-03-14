@@ -9,18 +9,17 @@ import { Navigation } from '../../../Navigation';
 import { useEffect } from 'react';
 import { useUser } from '../../../../features/context';
 import DeleteConfirmation from './DeleteConfirmation';
-import { deleteRecipeAsync } from '../../../../features/recipe/Slice/recipe_slice';
+import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recipe/Slice/recipe_slice';
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
 
 export const RecipeShow = () => {
-  const [CommentText, setCommentText] = useState("")
+  const [CommentText, setCommentText] = useState("");
   const [deleteClick, setDeleteClick] = useState(false);
-  const debouncedText = useDebounce(CommentText, 300); // 300ms
   const { username } = useUser();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
+  const params = useParams();
 
   const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
     (state) => ({
@@ -29,14 +28,33 @@ export const RecipeShow = () => {
       addComment: state.addComment,
       fetchComment: state.fetchComment,
     })
-  )
-  const params = useParams();
+  );
+
+  const recipeIdFromStorage = localStorage.getItem('recipeId');
+  const recipeId = recipeIdFromStorage || params.id;
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const status = useSelector(state => state.recipes.status);
   const error = useSelector(state => state.recipes.error);
 
-  const recipe = recipes.find((r) => r._id === params.id)
+  useEffect(() => {
+    if (!recipes.length) {
+      // Fetch recipes if the recipes array is empty
+      dispatch(fetchRecipesAsync());
+    }
+
+    if (recipeIdFromStorage !== params.id) {
+      localStorage.setItem('recipeId', params.id);
+      fetchComment(params.id);
+    }
+  }, [params.id]);
+
+
+  const recipe = recipes.find((r) => r._id === recipeId);
+
+  if (!recipe) {
+    return <div className='text-base mt-4 text-center'>Loading...</div>; 
+  }
 
   const { _id, title, description, date, ingredients, owner } = recipe;
 
@@ -68,15 +86,6 @@ export const RecipeShow = () => {
     navigate('/');
   }
 
-  useEffect(() => {
-    if (commentByRecipe[params.id] === undefined) {
-      fetchComment(params.id);
-    }
-
-    // console.log("Owner is" + owner);
-    //console.log(debouncedText);
-    //console.log("==================+++++++++++++++", commentByRecipe)
-  }, [params.id])
 
   const handleCommentSubmit = () => {
     if (!CommentText) {

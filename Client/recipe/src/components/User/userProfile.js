@@ -3,7 +3,6 @@ import React from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Content from './Content';
-import { RecipeList } from '../Recipes/RecipeList/RecipeList';
 import { Navigation } from '../Navigation';
 import { useUser } from '../../features/context';
 import { useParams } from 'react-router-dom';

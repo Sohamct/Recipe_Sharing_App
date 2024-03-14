@@ -17,6 +17,7 @@ export const UserProvider = ({children}) => {
     const setUser = (user) => {
         // Set username in both state and local storage
         setUsername(user.username);
+        console.log(user.username);
         localStorage.setItem('username', user.username);
     }
 
