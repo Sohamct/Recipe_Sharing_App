@@ -17,7 +17,6 @@ export const CreateRecipe = () => {
   const {updateProgress} = useProgress();
   const [isEditing, setIsEditing] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState(null);
-  // console.log(recipesState.recipes)
   useEffect(() => {
     setIsEditing(location.pathname.includes('/editrecipe'));
   }, [location.pathname]);
@@ -52,7 +51,7 @@ export const CreateRecipe = () => {
         });
       }
     }
-  }, [isEditing, params.id, recipesState, username, navigate, ]);
+  }, [isEditing, params.id, recipesState, username, navigate,]);
 
   // const { status, error } = useSelector((state) => state.recipes)
   const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
@@ -63,8 +62,8 @@ export const CreateRecipe = () => {
     setFormData(prevFormData => {
       const newIngredients = [...prevFormData.ingredients]; // Clone the array
       newIngredients[index] = {
-        ...newIngredients[index], // Clone the ingredient object
-        [name]: value // Update the specific property
+        ...newIngredients[index], 
+        [name]: value 
       };
       return {
         ...prevFormData,
@@ -73,11 +72,11 @@ export const CreateRecipe = () => {
     });
   };
   const _handleChange = (e) => {
-    const { name, value } = e.target;
-    const newStuff = value || '';
+    const { name, value, files } = e.target;
+    const newValue = (name === "image" ? files[0] : (value || ''));
     setFormData({
       ...formData,
-      [name]: newStuff
+      [name]: newValue
     });
   };
 
@@ -113,48 +112,54 @@ export const CreateRecipe = () => {
       return;
     }
 
-    // console.log('Form submitted:', formData);
+    console.log('Form submitted:', formData);
+
     if (isEditing) {
       // If editing, dispatch editRecipeAsync
+
       const recipeData = {_id: params.id, ...formData}
       dispatch(editRecipeAsync({recipeData, updateProgress}))
+
         .then((response) => {
           updateProgress(100);
-          console.log(response)
+          console.log(response);
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
             setFormData({
               title: '',
               description: '',
-              image: '',
+              image: null,
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            navigate('/');
+            setTimeout(() => {
+              navigate('/');
+            }, 2000)
           }
         })
         .catch((error) => {
           console.error('Error updating recipe:', error);
         });
     } else {
+      console.log(formData);
       dispatch(createRecipeAsync({formData, updateProgress}))
         .then((response) => {
           updateProgress(100);
           if (response.type === 'recipe/createRecipe/fulfilled') {
-            console.log('Recipe created successfully');
             createRecipeNotify();
             setFormData({
               title: '',
               description: '',
-              image: '',
+              image: null,
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            navigate('/');
+            setTimeout(() => {
+              navigate('/');
+            }, 2000)
           }
         })
         .catch((error) => {
           console.error('Error creating recipe:', error);
-
         });
     }
 
@@ -166,7 +171,7 @@ export const CreateRecipe = () => {
       formData.ingredients.some(
         (ingredient) =>
           ingredient.ingredient_name.trim() === '' ||
-           ingredient.quantity === ''
+          ingredient.quantity === ''
       )
     );
   };
@@ -211,13 +216,27 @@ export const CreateRecipe = () => {
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image URL:</label>
             <input
               type="text"
               id="image"
               name="image"
               value={formData.image}
+              onChange={_handleChange}
+              className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div> */}
+
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+              Choose Recipe Image:
+            </label>
+            <input
+              type="file"
+              id="image"
+              accept='image/*'
+              name="image"
               onChange={_handleChange}
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
@@ -278,10 +297,8 @@ export const CreateRecipe = () => {
           >
             {isEditing ? 'Update Recipe' : 'Submit'}
           </button>
-
         </form>
       </div>
-
     </div>
 
   )

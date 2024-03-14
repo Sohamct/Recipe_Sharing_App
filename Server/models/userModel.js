@@ -46,6 +46,7 @@ const userSchema = new mongoose.Schema({
             default: [], 
         }
     ],
+    favoriteRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
 })
 
 module.exports = mongoose.model('User', userSchema)

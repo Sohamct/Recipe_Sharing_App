@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Chat.css';
 import { Link } from 'react-router-dom';
-import LogoSearch from './LogoSearch/LogoSearch';
 import { useUser } from '../../features/UserContext';
 import useChatStore from '../../features/chat/chatStore';
 import { Conversation } from './Conversation';
@@ -78,7 +77,6 @@ export const Chat = () => {
         <div className="Chat">
             {/* Left side */}
             <div className="Left-side-chat">
-                <LogoSearch />
                 <div className="Chat-container">
                     <h2>Chats</h2>
                     <div className="Chat-list">

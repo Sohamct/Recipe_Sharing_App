@@ -67,8 +67,6 @@ router.get('/fetchComments/:id', fetchUser, async (req, resp) => {
 });
 
 
-
-
 module.exports = router;
 
 

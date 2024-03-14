@@ -12,4 +12,4 @@ const connectToMongo = async () => {
         console.log("Failed to connect with mongodb");
     }
 }
-module.exports = connectToMongo;
+module.exports = connectToMongo; 

@@ -92,13 +92,13 @@ export const RecipeShow = () => {
       .then(response => {
         console.log(response);
         updateProgress(100);
+        console.log(status);
         if (status.delete === 'failed') {
           toast.error(error.deleteError, { autoClose: 2000, theme: "colored" });
         }
         else if (status.delete === 'success') {
           toast.success(response.payload.message, { autoClose: 2000, theme: "colored" });
         }
-        console.log(response);
       })
       .catch(error => {
         //console.log(error);
