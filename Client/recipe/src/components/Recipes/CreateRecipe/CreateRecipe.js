@@ -153,7 +153,7 @@ export const CreateRecipe = () => {
               image: null,
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            setTimeout(() => {
+            setTimeout(()  => {
               navigate('/');
             }, 2000)
           }

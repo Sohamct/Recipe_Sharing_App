@@ -2,7 +2,7 @@ const uri = "http://localhost:5501/api/comment";
 
 export const fetchComments = async (recipe_id) => {
     try {
-        console.log("Going to fetch comment of recipeId:", recipe_id);
+        // console.log("Going to fetch comment of recipeId:", recipe_id);
         const response = await fetch(`${uri}/fetchComments/${recipe_id}`, {
             method: 'GET',
             headers: {
@@ -35,7 +35,7 @@ export const addComment = async (newComment) => {
             body: JSON.stringify(newComment),
         });
 
-        console.log(response);
+        // console.log(response);
 
         if (!response.ok) {
             throw new Error(`Failed to add comment. Status: ${response.status}`);
