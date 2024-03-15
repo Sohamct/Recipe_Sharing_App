@@ -12,7 +12,7 @@ export const RecipeList = () => {
   
   const isOwner = location.pathname === '/myrecipe';
   const {updateProgress}= useProgress();
-  console.log(updateProgress);
+  // console.log(updateProgress);
 
   const fetchData = useCallback(async () => {
     try {

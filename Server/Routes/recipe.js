@@ -70,17 +70,17 @@ router.put('/editrecipe', [fetchUser, upload.single("image")], async (req, resp)
     }
     const imagePath = req.file ? req.file.filename : null;
     const username = req.user.username;
-    console.log(owner, username)
+    // console.log(owner, username)
     if (username !== owner) {
       return resp.status(403).json({ message: 'Forbidden: You are not allowed to edit this recipe' });
     }
-    console.log(imagePath);
+    // console.log(imagePath);
     let updateObject = { title, description, ingredients: JSON.parse(ingredients) };
     if (req.file) {
       updateObject.image = imagePath;
     }
-    console.log(_id);
-    console.log(updateObject);
+    // console.log(_id);
+    // console.log(updateObject);
     const recipe = await Recipe.findOneAndUpdate(
       { _id: _id, owner: username },
       updateObject,

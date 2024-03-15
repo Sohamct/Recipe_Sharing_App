@@ -14,12 +14,12 @@ const AuthService = {
             if (!resp.ok) {
                 const data = await resp.json();
                 console.log("Response is not ok");
-                console.log(data)
+                // console.log(data)
                 return { success: false, message: data.errors || 'Login failed' };
             }
 
             const data = await resp.json();
-            console.log(resp)
+            // console.log(resp)
 
             if (data.errors) {
                 console.error('Login failed:', data.errors);
@@ -45,7 +45,7 @@ const AuthService = {
             //console.log(resp);
             if (!resp.ok) {
                 const data = await resp.json();
-                console.log(data)
+                // console.log(data)
                 return { success: false, message: data.errors || 'Login failed' };
             }
 
@@ -62,7 +62,7 @@ const AuthService = {
     },
 
     signup: async (username, password, email, firstname, lastname, gender, isPrivate) => {
-        console.log(username, password, email, firstname, lastname, gender, isPrivate)
+        // console.log(username, password, email, firstname, lastname, gender, isPrivate)
         try {
             const resp = await fetch(`${API}/auth/createuser`, {
                 method: 'POST',
@@ -71,7 +71,7 @@ const AuthService = {
                 },
                 body: JSON.stringify({ username, password, email, firstname, lastname, gender, isPrivate }),
             });
-            console.log(resp)
+            // console.log(resp)
 
             if (!resp.ok) {
                 const data = await resp.json();

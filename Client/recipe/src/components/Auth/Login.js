@@ -42,13 +42,13 @@ export const Login = () => {
     try {
       const loginResponse = await AuthService.login(username, password);
       if (loginResponse.success) {
-        console.log(loginResponse);
+        // console.log(loginResponse);
         setUser({username: loginResponse.username})
-        console.log(loginResponse.username);
+        // console.log(loginResponse.username);
         notify();
         navigate("/recipe");
       } else {
-        console.log(loginResponse.message);
+        // console.log(loginResponse.message);
         toast.error(loginResponse.message, {
           autoClose: 1500,
           theme: "colored",

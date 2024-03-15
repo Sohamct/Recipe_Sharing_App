@@ -1,27 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Navigation } from '../../../Navigation';
+import { useUser } from '../../../../features/context';
 import DeleteConfirmation from './DeleteConfirmation';
 import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recipe/Slice/recipe_slice';
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
 import { useProgress } from '../../../../features/ProgressContext';
-import { useUser } from '../../../../features/context';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
   const [deleteClick, setDeleteClick] = useState(false);
   const { username } = useUser();
-  const {updateProgress} = useProgress();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {updateProgress} = useProgress();
   const params = useParams();
+
+  const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
+    (state) => ({
+      commentByRecipe: state.commentByRecipe,
+      removeComment: state.removeComment,
+      addComment: state.addComment,
+      fetchComment: state.fetchComment,
+    })
+  );
+
+  const recipes = useSelector((state) => state.recipes.recipes);
+  const status = useSelector(state => state.recipes.status);
+  const error = useSelector(state => state.recipes.error);
+  const loading = useSelector(state => state.recipes.status.fetch === 'loading');
+
+  useEffect(() => {
+    if (!recipes.length) {
+      dispatch(fetchRecipesAsync(updateProgress));
+    }
+    if (params.id) {
+      fetchComment(params.id);
+    }
+  }, [dispatch, fetchComment, fetchRecipesAsync, params.id, recipes.length, updateProgress]);
+
+  const { id } = useParams();
+  const recipe = recipes.find((r) => r._id === id);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!recipe) {
+    return <div>Recipe not found</div>;
+  }
+
+  const { _id, title, description, date, ingredients, owner } = recipe;
 
   const calculateRelativeTime = (timestamp) => {
     const now = new Date();
@@ -48,43 +86,6 @@ export const RecipeShow = () => {
     }
   };
 
-  const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
-    (state) => ({
-      commentByRecipe: state.commentByRecipe,
-      removeComment: state.removeComment,
-      addComment: state.addComment,
-      fetchComment: state.fetchComment,
-    })
-  );
-
-  const recipeIdFromStorage = localStorage.getItem('recipeId');
-  const recipeId = recipeIdFromStorage || params.id;
-
-  const recipes = useSelector((state) => state.recipes.recipes);
-  const status = useSelector(state => state.recipes.status);
-  const error = useSelector(state => state.recipes.error);
-
-  useEffect(() => {
-    if (!recipes.length) {
-      // Fetch recipes if the recipes array is empty
-      dispatch(fetchRecipesAsync());
-    }
-
-    if (recipeIdFromStorage !== params.id) {
-      localStorage.setItem('recipeId', params.id);
-      fetchComment(params.id);
-    }
-  }, [params.id]);
-
-
-  const recipe = recipes.find((r) => r._id === recipeId);
-
-  if (!recipe) {
-    return <div className='text-base mt-4 text-center'>Loading...</div>; 
-  }
-
-  const { _id, title, description, date, ingredients, owner } = recipe;
-
   const handleDeleteClick = () => {
     setDeleteClick(true);
   }
@@ -96,9 +97,9 @@ export const RecipeShow = () => {
       recipeId: _id, owner: owner
     }
 
-    dispatch(deleteRecipeAsync({data, updateProgress}))
+    dispatch(deleteRecipeAsync({ data, updateProgress }))
       .then(response => {
-        console.log(response);
+        // console.log(response);
         updateProgress(100);
         console.log(status);
         if (status.delete === 'failed') {
@@ -143,7 +144,7 @@ export const RecipeShow = () => {
   const makeNewChat = async (owner) => {
     try {
       const response = await addChat({ sender: username, receiver: owner });
-      console.log(response)
+      // console.log(response)
       if (response.data) {
         navigate('/chat')
       } else {

@@ -31,15 +31,15 @@ export const Signup = () => {
       toast.error("Password doesn't match with conform password");
       return;
     }
-    console.log(
-      username,
-      password,
-      email,
-      firstname,
-      lastname,
-      gender,
-      isPrivate
-    );
+    // console.log(
+    //   username,
+    //   password,
+    //   email,
+    //   firstname,
+    //   lastname,
+    //   gender,
+    //   isPrivate
+    // );
 
 
     const signupResponse = await AuthService.signup(

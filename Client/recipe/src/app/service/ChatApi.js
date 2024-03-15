@@ -15,7 +15,7 @@ export const addChat = async(newChat) =>{
                 throw new Error(`Failed to fetch comments. Status: ${response.status}`);
             }
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             if(data.status){
                 return data;
             }else{
@@ -39,7 +39,7 @@ export const getChats = async() =>{
             throw new Error(`Failed to fetch comments. Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         if(data.status){
             return data;
         }else{

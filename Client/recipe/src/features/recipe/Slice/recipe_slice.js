@@ -36,12 +36,12 @@ export const deleteRecipeAsync = createAsyncThunk('recipe/deleteRecipe', async (
 export const fetchRecipesAsync = createAsyncThunk('recipe/fetchRecipes', async (updateProgress, { rejectWithValue }) => {
   try {
     
-    console.log("Fetching recipes;")
+    // console.log("Fetching recipes;")
     
     updateProgress(30);
     const response = await api.fetchRecipesAsync();
     updateProgress(60);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     return rejectWithValue(error.message);

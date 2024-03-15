@@ -31,7 +31,7 @@ export const Chat = () => {
     // send message to socket server
     useEffect(() => {
         if (sendMessage !== null) {
-            console.log(sendMessage);
+            // console.log(sendMessage);
             socket.current.emit('send-message', sendMessage);
         }
     }, [sendMessage]);
@@ -42,7 +42,7 @@ export const Chat = () => {
             fetchChats();
             setLoading(false);
         }
-        console.log(chatsByUser);
+        // console.log(chatsByUser);
     }, []);
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export const Chat = () => {
             socket.current.emit('new-user-add', username);
             socket.current.on('get-users', (users) => {
                 setOnlineUsers(users);
-                console.log(onlineUsers);
+                // console.log(onlineUsers);
             });
         }
     }, [username]);

@@ -47,14 +47,14 @@ export const RecipeItem = ({ recipe }) => {
 
   return (
     <div className='container'>
-      <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+      <div className="relative flex flex-col  text-gray-700 bg-gray-100 rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
         <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
-          <img
+          {/* <img
             src={require('../../../../assets/pizza.jpg')}
             alt="card-image"
             className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
-          />
-          {/* {!imageLoaded && (
+          /> */}
+          {!imageLoaded && (
             <div
               className="object-cover w-full h-full rounded-t-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md skeleton"
               style={{ opacity: 0.7 }}
@@ -65,7 +65,7 @@ export const RecipeItem = ({ recipe }) => {
             alt="card-image"
             className={`object-cover w-full h-full rounded-t-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md ${!imageLoaded && 'hidden'}`}
             onLoad={handleImageLoad}
-          /> */}
+          />
         </div>
 
         <div className="p-3 mt-2">
