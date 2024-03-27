@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import React, {useState, useEffect} from "react";
 import AuthService from "./Auth.service";
@@ -9,7 +9,7 @@ import { useUser } from "../../features/UserContext";
 
 export const Login = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const {setUser} = useUser();
+  const {setUserDetail} = useUser();
 
   const notify = () =>
     toast.success("signed in successfully!", {
@@ -43,8 +43,8 @@ export const Login = () => {
       const loginResponse = await AuthService.login(username, password);
       if (loginResponse.success) {
         console.log(loginResponse);
-        setUser({username: loginResponse.username})
-        console.log(loginResponse.username);
+        setUserDetail(loginResponse.user)
+
         notify();
         navigate("/recipe");
       } else {

@@ -2,6 +2,7 @@ const uri = "http://localhost:5501/api/comment";
 
 export const fetchComments = async (recipe_id) => {
     try {
+        console.log(recipe_id);
         console.log("Going to fetch comment of recipeId:", recipe_id);
         const response = await fetch(`${uri}/fetchComments/${recipe_id}`, {
             method: 'GET',

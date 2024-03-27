@@ -7,9 +7,9 @@ const ProgressBar = () => {
     const [currentProgress, setCurrentProgress] = useState(0);
 
     return (
-        <div className="progress">
+        <div className="h-1 bg-gray-200">
             <LoadingBar
-                height={'3px'}
+                height={'2px'}
                 color='#f11946'
                 progress={Math.max(progress, currentProgress)} 
                 onLoaderFinished={() => { }}

@@ -26,7 +26,7 @@ const AuthService = {
                 return { success: false, message: data.errors };
             } else if (data.success) {
                 localStorage.setItem('token', data.authtoken);
-                return { success: true, message: 'Logged in successful', username: data.username };
+                return { success: true, message: 'Logged in successful', user: data.user };
             }
         } catch (error) {
             return { success: false, message: error.message || 'An error occurred during login' };

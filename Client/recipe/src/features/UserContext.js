@@ -3,27 +3,30 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [username, setUsername] = useState(null);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         console.log("UserProvider useEffect triggered");
-        const storedUsername = localStorage.getItem('username');
-        if (storedUsername) {
-            console.log("Stored username found:", storedUsername);
-            setUsername(storedUsername);
+        if(!user){
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (storedUser) {
+                console.log("Stored user found:", storedUser);
+                setUser(storedUser);
+            }
         }
+        setLoading(false);
     }, []);
-
-    const setUser = (user) => {
-        setUsername(user.username);
-        console.log("User set to:", user.username);
-        localStorage.setItem('username', user.username);
+    const setUserDetail = (user) => {
+        setUser(user);
+        console.log("User set to:", user);
+        localStorage.setItem('user', JSON.stringify(user)); // Stringify user object before storing
     }
 
     console.log("UserProvider rendered");
 
     return (
-        <UserContext.Provider value={{ username, setUser}}>
+        <UserContext.Provider value={{ user, setUserDetail, loading}}>
             {children}
         </UserContext.Provider>
     );

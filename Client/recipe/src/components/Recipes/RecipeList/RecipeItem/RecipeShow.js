@@ -17,12 +17,49 @@ import { useProgress } from '../../../../features/ProgressContext';
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
   const [deleteClick, setDeleteClick] = useState(false);
-  const { username } = useUser();
+  const { user, loading: userLoading } = useUser();
   const {updateProgress} = useProgress();
+  const [recipe, setRecipe] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const recipeId = params.id;
 
+  const recipes = useSelector((state) => state.recipes.recipes);
+  console.log(recipes);
+  const status = useSelector((state) => state.recipes.status);
+  const error = useSelector((state) => state.recipes.error);
+
+  useEffect(() => {
+    if (!recipes.length) {
+      dispatch(fetchRecipesAsync(updateProgress));
+    }
+  }, [dispatch, recipes.length]);
+
+  useEffect(() => {
+    const r = recipes.find((r) => r._id === recipeId);
+    setRecipe(r);
+  }, [recipes, recipeId]);
+
+  const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
+    (state) => ({
+      commentByRecipe: state.commentByRecipe,
+      removeComment: state.removeComment,
+      addComment: state.addComment,
+      fetchComment: state.fetchComment,
+    })
+  );console.log(commentByRecipe);
+
+  // Loading state while fetching data
+  if (userLoading || !recipe) {
+    return <div>Loading...</div>;
+  }
+
+  const { _id, title, description, updatedAt, ingredients, owner, image, createdAt, category, vegNonVeg, dishType } = recipe;
+
+  console.log(user)
+  console.log(params.id);
   const calculateRelativeTime = (timestamp) => {
     const now = new Date();
     const commentTime = new Date(timestamp);
@@ -48,55 +85,24 @@ export const RecipeShow = () => {
     }
   };
 
-  const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
-    (state) => ({
-      commentByRecipe: state.commentByRecipe,
-      removeComment: state.removeComment,
-      addComment: state.addComment,
-      fetchComment: state.fetchComment,
-    })
-  );
-
-  const recipeIdFromStorage = localStorage.getItem('recipeId');
-  const recipeId = recipeIdFromStorage || params.id;
-
-  const recipes = useSelector((state) => state.recipes.recipes);
-  const status = useSelector(state => state.recipes.status);
-  const error = useSelector(state => state.recipes.error);
-
-  useEffect(() => {
-    if (!recipes.length) {
-      // Fetch recipes if the recipes array is empty
-      dispatch(fetchRecipesAsync());
-    }
-
-    if (recipeIdFromStorage !== params.id) {
-      localStorage.setItem('recipeId', params.id);
-      fetchComment(params.id);
-    }
-  }, [params.id]);
-
-
-  const recipe = recipes.find((r) => r._id === recipeId);
-
-  if (!recipe) {
-    return <div className='text-base mt-4 text-center'>Loading...</div>; 
-  }
-
-  const { _id, title, description, date, ingredients, owner } = recipe;
-
   const handleDeleteClick = () => {
     setDeleteClick(true);
-  }
+  };
+
   const handleCancelDelete = () => {
-    setDeleteClick(false)
-  }
+    setDeleteClick(false);
+  };
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   const handleConfirmDelete = () => {
     const data = {
-      recipeId: _id, owner: owner
-    }
+      recipeId: _id,
+      owner: owner
+    };
 
-    dispatch(deleteRecipeAsync({data, updateProgress}))
+    dispatch(deleteRecipeAsync({ data, updateProgress }))
       .then(response => {
         console.log(response);
         updateProgress(100);
@@ -111,12 +117,10 @@ export const RecipeShow = () => {
       .catch(error => {
         //console.log(error);
         toast.error(error, { autoClose: 2000, theme: "colored" });
-
       });
     setDeleteClick(false);
     navigate('/');
-  }
-
+  };
 
   const handleCommentSubmit = () => {
     if (!CommentText) {
@@ -131,18 +135,14 @@ export const RecipeShow = () => {
     addComment(params.id, newComment);
     // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
     setCommentText("");
-  }
+  };
 
-  if (!recipe) {
-    return <div>Recipe not found</div>;
-  }
   const handleEditClick = () => {
-    navigate(`/editrecipe/${params.id}`)
-  }
-
+    navigate(`/editrecipe/${params.id}`);
+  };
   const makeNewChat = async (owner) => {
     try {
-      const response = await addChat({ sender: username, receiver: owner });
+      const response = await addChat({ sender: user.username, receiver: owner });
       console.log(response)
       if (response.data) {
         navigate('/chat')
@@ -153,10 +153,10 @@ export const RecipeShow = () => {
       console.error('Error creating chat:', error);
       toast.error('An error occurred while creating chat. Please try again later.');
     }
-
   }
 
-  const isRecipeOwner = (username === owner);
+
+  const isRecipeOwner = (user.username === owner);
 
   return (
     <div>
@@ -177,16 +177,31 @@ export const RecipeShow = () => {
                   )
                 }
                 <h5 className="text-xl font-semibold">{title}</h5>
-                <p className="text-gray-600">Recipe ID: {_id}</p>
                 <p className="text-gray-600">
-                  <small>{calculateRelativeTime(date)}</small>
+                  <small>{imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created '+ calculateRelativeTime(createdAt))) : '' }</small>
                 </p>
+                {image ? (
+        <img
+          src={image.url}
+          onLoad={handleImageLoad}
+          alt="card-image"
+          className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+        />
+      ) : (
+        <img
+          src={require(`../../../../components/Uploads/default.png`)}
+          onLoad={handleImageLoad}
+          alt="card-image"
+          className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+        />
+      )}
+                
               </div>
-              {username === recipe.owner ? '' : <p className="relative">
+              {user.username === recipe.owner ? '' : <p className="relative">
                 <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" onClick={() => makeNewChat(recipe.owner)} />
               </p>}
               {
-                username === recipe.owner ? (
+                user.username === recipe.owner ? (
                   <div className="flex">
 
                     <FaEdit onClick={handleEditClick} size={25} className="mx-4 cursor-pointer hover:text-blue-500 transition-colors duration-300" />
@@ -212,16 +227,6 @@ export const RecipeShow = () => {
               <ol>
                 {description}
               </ol>
-
-              {/* <div className="mt-3">
-                <button className="btn btn-primary me-2">Like</button>
-                <button className="btn btn-info me-2" onClick={() => navigate('/chat')}>
-                  Chat
-                </button>
-                <i className="far fa-heart me-2"></i>
-                <button className="btn btn-success me-2">Follow</button>
-                <button className="btn btn-warning me-2">Add to Favorite</button>
-              </div> */}
 
               <div className="mt-3">
                 <input

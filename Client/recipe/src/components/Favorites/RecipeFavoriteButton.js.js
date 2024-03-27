@@ -3,14 +3,13 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../../app/service/RecipeApi';
-import { fetchUserDetails } from '../../app/service/userApi';
 import { toast } from 'react-toastify';
+import { useUser } from '../../features/UserContext';
 
 const RecipeFavoriteButton = ({ recipeId }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
   const [recipeTitle, setRecipeTitle] = useState('');
+  const {user} = useUser();
 
   useEffect(() => {
     const fetchFavoriteStatus = async () => {
@@ -21,18 +20,11 @@ const RecipeFavoriteButton = ({ recipeId }) => {
         }
 
         const response = await api.checkIfRecipeIsFavoriteAsync(recipeId);
+        console.log(response.isFavorite);
         setIsFavorite(response.isFavorite);
       } catch (error) {
         console.error('Error fetching favorite status:', error.message);
       }
-    };
-
-    const getUserData = async () => {
-      const userData = await fetchUserDetails();
-      setUserData(userData);
-      const userId = userData.user._id;
-      setUserId(userId);
-      // console.log(userId);
     };
 
     const fetchRecipeDetails = async () => {
@@ -50,11 +42,10 @@ const RecipeFavoriteButton = ({ recipeId }) => {
     };
 
     fetchFavoriteStatus();
-    getUserData();
     fetchRecipeDetails();
   }, [recipeId]);
 
-  const handleFavoriteClick = async () => {
+    const handleFavoriteClick = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -68,16 +59,15 @@ const RecipeFavoriteButton = ({ recipeId }) => {
   
       localStorage.setItem(`recipe_${recipeId}_favorite`, newFavoriteStatus.toString());
   
-      // console.log('userId:', userId);
-      // console.log('recipeId:', recipeId);
-      // console.log('newFavoriteStatus:', newFavoriteStatus);
-  
       if (!isFavorite) {
-        await api.addFavoriteAsync(userId, recipeId);
+        console.log(user);
+        await api.addFavoriteAsync(user.id, recipeId);
+        console.log("added to favourite");
         toast.success(`${recipeTitle} added to favorites!`);
 
       } else {
-        await api.removeFavoriteAsync(userId, recipeId);
+        await api.removeFavoriteAsync(user.id, recipeId);
+        console.log("removed from favourite");
         toast.info(`${recipeTitle} removed from favorites.`);
       }
     } catch (error) {

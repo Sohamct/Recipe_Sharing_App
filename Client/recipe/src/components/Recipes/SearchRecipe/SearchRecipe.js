@@ -19,6 +19,7 @@ export const SearchRecipe = () => {
         return;
       }
       const results = await api.searchRecipesAsync(searchTerm);
+      console.log(results)
       setSearchResults(results);
 
       if (searchTerm.trim() !== '') {
