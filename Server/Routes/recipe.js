@@ -7,9 +7,26 @@ const validateRecipe = require('../middleware/validateRecipeMiddleware');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const { addFavoriteRecipe, removeFavoriteRecipe, checkIfRecipeIsFavorite } = require('../Services/recipeService');
-
 const multer = require('multer');
 const fs = require('fs');
+const path = require('path');
+
+
+const updateRecipeImages = (recipes)=> {
+  for(const recipe of recipes){
+    if(recipe.image == null){
+      recipe.image = 'pizza.jpg';
+    }else{
+      const imagePath = path.join(__dirname, '../../Client/recipe/src/Uploads', recipe.image);
+      if (!fs.existsSync(imagePath)) {
+        recipe.image = 'pizza.jpg';
+        //console.log(`Image for recipe ${recipe.title} updated to default pizza image.`);
+      }
+    }
+    
+    // console.log(recipe.image);
+  }
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -20,9 +37,9 @@ const storage = multer.diskStorage({
   }
 });
 
-// Multer upload middleware
 const upload = multer({ storage: storage });
 
+//  -----------------------------------------------------
 // Route-1: POST create a recipe using: '/api/auth/createrecipe'
 router.post('/createrecipe', [fetchUser, upload.single("image")], async (req, res) => {
   try {
@@ -153,8 +170,6 @@ router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
   }
 });
 
-
-
 router.get('/fetchrecipes', fetchUser, async (req, resp) => {
   // console.log('fetching recipes', req.header);
   try {
@@ -163,9 +178,10 @@ router.get('/fetchrecipes', fetchUser, async (req, resp) => {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
 
-    const userId = req.user.id;
+    // const userId = req.user.id;
     const recipes = await Recipe.find({});
-    // console.log("fetched all recipes ", recipes)
+    updateRecipeImages(recipes);
+    // console.log("fetched all recipes ", recipes);
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
     // console.error(error);
@@ -186,6 +202,7 @@ router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
     }
 
     const recipes = await Recipe.find({ owner: ownerName });
+    updateRecipeImages(recipes);
     // console.log(recipes);
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
@@ -207,6 +224,7 @@ router.get('/search', async (req, res) => {
     if (searchResults.length === 0) {
       return res.json({ results: [], message: 'No results found' });
     }
+    updateRecipeImages(searchResults);
 
     res.json({ results: searchResults });
   } catch (error) {
@@ -294,7 +312,7 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
 
       // Fetch the actual recipe details using the favoriteRecipeIds
       const favoriteRecipes = await Recipe.find({ _id: { $in: favoriteRecipeIds } });
-
+      updateRecipeImages(favoriteRecipes);
       res.status(200).json({ message: 'Favorite recipes fetched successfully', data: favoriteRecipes });
   } catch (error) {
       console.error(error);

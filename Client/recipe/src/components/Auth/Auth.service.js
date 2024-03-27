@@ -60,38 +60,42 @@ const AuthService = {
             return { success: false, message: error.message || 'An error occurred while getting details' };
         }
     },
-
-    signup: async (username, password, email, firstname, lastname, gender, isPrivate) => {
-        // console.log(username, password, email, firstname, lastname, gender, isPrivate)
+    signup: async (username, password, email, firstname, lastname, gender, profilePic, instagramHandle, linkedinHandle, twitterHandle) => {
         try {
+            const formData = new FormData();
+            formData.append('profilePic', profilePic);
+            formData.append('username', username);
+            formData.append('password', password);
+            formData.append('email', email);
+            formData.append('firstname', firstname);
+            formData.append('lastname', lastname);
+            formData.append('gender', gender);
+            formData.append('instagramHandle', instagramHandle);
+            formData.append('linkedinHandle', linkedinHandle);
+            formData.append('twitterHandle', twitterHandle);
+    
             const resp = await fetch(`${API}/auth/createuser`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password, email, firstname, lastname, gender, isPrivate }),
+                body: formData,
             });
-            // console.log(resp)
-
+    
             if (!resp.ok) {
                 const data = await resp.json();
                 return { success: false, message: data.errors || 'Signed up failed' };
             }
-
+    
             const data = await resp.json();
-
+    
             if (data.errors) {
-                console.error('Login failed:', data.errors);
+                console.error('Signup failed:', data.errors);
                 return { success: false, message: data.errors };
             } else if (data.success) {
                 localStorage.setItem('token', data.authtoken);
-                return { success: true, message: 'Signed up in successful' };
+                return { success: true, message: 'Signed up successfully' };
             }
         } catch (error) {
             return { success: false, message: error.message || 'An error occurred during signup' };
         }
     }
 }
-
-
 export default AuthService;

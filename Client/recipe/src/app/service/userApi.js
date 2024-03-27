@@ -26,16 +26,40 @@ export const fetchUserDetails = async () => {
   }
 };
 
+export const fetchUserDetailsbyUsername = async (username) => {
+  try {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error("Token not found !!");
+    }
+
+      // console.log(token);
+    const response = await axios.get(`${uri}/detailsbyusername?username=${username}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': token,
+      },
+      body: JSON.stringify({ username }),
+    });
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user details: ", error);
+    throw error;
+  }
+}
+
 export const followUser = async (userIdToFollow) => {
   try {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
 
     if (!token) {
       // Handle the case when the token is not present
       throw new Error('Token not found');
     }
 
-    const response = await fetch('/api/auth/follow', {
+    const response = await fetch(`${uri}/follow`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -59,14 +83,14 @@ export const followUser = async (userIdToFollow) => {
 
 export const unfollowUser = async (userIdToUnfollow) => {
   try {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
 
     if (!token) {
       // Handle the case when the token is not present
       throw new Error('Token not found');
     }
 
-    const response = await fetch('/api/auth/unfollow', {
+    const response = await fetch(`${uri}/unfollow`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -1,17 +1,35 @@
 {
   "files": {
-    "main.css": "/static/css/main.39ea060a.css",
-    "main.js": "/static/js/main.812c0e23.js",
-    "static/js/511.93db2925.chunk.js": "/static/js/511.93db2925.chunk.js",
+    "main.css": "/static/css/main.e17810ba.css",
+    "main.js": "/static/js/main.1c80f0e3.js",
+    "static/js/511.109d2402.chunk.js": "/static/js/511.109d2402.chunk.js",
+    "static/media/1710476781198-Paneer_Tikka_Masala_enjoy_181205.jpg": "/static/media/1710476781198-Paneer_Tikka_Masala_enjoy_181205.64552e8d46391b644695.jpg",
+    "static/media/1710476837485-Dabeli-recipe.jpg": "/static/media/1710476837485-Dabeli-recipe.44d0c943fd74c298e7c2.jpg",
+    "static/media/1710476607008-classic-cheese-pizza-recipe-2-64429a0cb408b.jpg": "/static/media/1710476607008-classic-cheese-pizza-recipe-2-64429a0cb408b.f9c4230cb3aa16b426b0.jpg",
+    "static/media/1710476624511-classic-cheese-pizza-recipe-2-64429a0cb408b.jpg": "/static/media/1710476624511-classic-cheese-pizza-recipe-2-64429a0cb408b.f9c4230cb3aa16b426b0.jpg",
+    "static/media/1710476636083-classic-cheese-pizza-recipe-2-64429a0cb408b.jpg": "/static/media/1710476636083-classic-cheese-pizza-recipe-2-64429a0cb408b.f9c4230cb3aa16b426b0.jpg",
+    "static/media/1710476744532-classic-cheese-pizza-recipe-2-64429a0cb408b.jpg": "/static/media/1710476744532-classic-cheese-pizza-recipe-2-64429a0cb408b.f9c4230cb3aa16b426b0.jpg",
+    "static/media/1710476913242-classic-cheese-pizza-recipe-2-64429a0cb408b.jpg": "/static/media/1710476913242-classic-cheese-pizza-recipe-2-64429a0cb408b.f9c4230cb3aa16b426b0.jpg",
+    "static/media/1710478240514-classic-cheese-pizza-recipe-2-64429a0cb408b.jpg": "/static/media/1710478240514-classic-cheese-pizza-recipe-2-64429a0cb408b.f9c4230cb3aa16b426b0.jpg",
+    "static/media/1710481886806-classic-cheese-pizza-recipe-2-64429a0cb408b.jpg": "/static/media/1710481886806-classic-cheese-pizza-recipe-2-64429a0cb408b.f9c4230cb3aa16b426b0.jpg",
+    "static/media/1710476678245-1-39.jpg": "/static/media/1710476678245-1-39.5a87272e4e80de544ffc.jpg",
+    "static/media/1710476797968-indian-style-masala-macaroni.jpg": "/static/media/1710476797968-indian-style-masala-macaroni.03eab3652d43c2883d69.jpg",
+    "static/media/1710476765363-rajma-chawal-1.jpg": "/static/media/1710476765363-rajma-chawal-1.c358b8e962326d29337b.jpg",
+    "static/media/1710476719957-360_F_397466683_4U8hMaUgWdFPNc8KMKUQ4aH2qR1yG0sA.jpg": "/static/media/1710476719957-360_F_397466683_4U8hMaUgWdFPNc8KMKUQ4aH2qR1yG0sA.246bf3a874ba3c920a77.jpg",
+    "static/media/1710476895223-istockphoto-1155185428-612x612.jpg": "/static/media/1710476895223-istockphoto-1155185428-612x612.8eb90bcd490c2713175b.jpg",
+    "static/media/1710476946577-istockphoto-1155185428-612x612.jpg": "/static/media/1710476946577-istockphoto-1155185428-612x612.8eb90bcd490c2713175b.jpg",
+    "static/media/1710476876356-360_F_232252535_SfpqgflLtxgt25BONWrJx9Z5eSxTiSj0.jpg": "/static/media/1710476876356-360_F_232252535_SfpqgflLtxgt25BONWrJx9Z5eSxTiSj0.9076016635a82be76612.jpg",
+    "static/media/1710491672320-360_F_232252535_SfpqgflLtxgt25BONWrJx9Z5eSxTiSj0.jpg": "/static/media/1710491672320-360_F_232252535_SfpqgflLtxgt25BONWrJx9Z5eSxTiSj0.9076016635a82be76612.jpg",
     "static/media/loading.gif": "/static/media/loading.669ba75e1c724c944389.gif",
+    "static/media/1710446288611-veg-biryani-260nw-142854022.jpg": "/static/media/1710446288611-veg-biryani-260nw-142854022.07c917f862f66cc9f33f.jpg",
     "static/media/pizza.jpg": "/static/media/pizza.7ade0fb33b316fcb7052.jpg",
     "index.html": "/index.html",
-    "main.39ea060a.css.map": "/static/css/main.39ea060a.css.map",
-    "main.812c0e23.js.map": "/static/js/main.812c0e23.js.map",
-    "511.93db2925.chunk.js.map": "/static/js/511.93db2925.chunk.js.map"
+    "main.e17810ba.css.map": "/static/css/main.e17810ba.css.map",
+    "main.1c80f0e3.js.map": "/static/js/main.1c80f0e3.js.map",
+    "511.109d2402.chunk.js.map": "/static/js/511.109d2402.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.39ea060a.css",
-    "static/js/main.812c0e23.js"
+    "static/css/main.e17810ba.css",
+    "static/js/main.1c80f0e3.js"
   ]
 }

@@ -101,7 +101,7 @@ const api = {
         });
 
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
 
         if (response.ok) {
             return data; // Return the payload if the response is successful

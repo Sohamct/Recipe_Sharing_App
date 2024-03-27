@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require('express');
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
@@ -6,9 +5,23 @@ const { check, body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const fetchUser = require("../middleware/fetchUser");
 const router = express.Router();
+const multer = require('multer');
+
+
+// Multer setup
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../Client/recipe/src/Uploads/User');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // Route-1: POST create a user using: '/api/auth/createuser'
-router.post('/createuser', [
+router.post('/createuser', upload.single('profilePic'), [
   check('username')
     .trim().notEmpty().withMessage('Username cannot be empty')
     .isLength({ min: 3 }).withMessage('Username must consist of 3 or more characters'),
@@ -19,7 +32,6 @@ router.post('/createuser', [
     .notEmpty().withMessage('Password cannot be empty')
     .isLength({ min: 5 }).withMessage('Password must consist of at least 5 characters'),
   body('gender', 'Enter a valid gender').isIn(['male', 'female', 'other']),
-  body('isPrivate', 'Please choose for private or public account').isIn(['true', 'false']) // Consider using strings for boolean values
 ], async (req, resp) => {
   try {
     const errors = validationResult(req);
@@ -37,13 +49,19 @@ router.post('/createuser', [
     const salt = await bcrypt.genSalt(saltRounds);
     const securedPassword = await bcrypt.hash(req.body.password, salt);
 
+    // get path of uploaded profile picture
+    const profileImagePath = req.file ? req.file.filename : null;
+
     const newUser = await User.create({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.username,
       email: req.body.email,
       password: securedPassword,
-      isPrivate: req.body.isPrivate === 'true',
+      profileImage: profileImagePath, 
+      instagramHandle: req.body.instagramHandle,
+      linkedinHandle: req.body.linkedinHandle,
+      twitterHandle: req.body.twitterHandle,
     });
 
     const data = {
@@ -51,7 +69,6 @@ router.post('/createuser', [
         id: newUser.id,
         username: newUser.username,
         email: newUser.email,
-        // Add other user details 
       }
     };
 
@@ -104,8 +121,10 @@ router.post('/login', [
         lastname: user.lastname,
         email : user.email,
         date : user.data,
-        profileImage : user.profileImage,
-        isPrivate : user.isPrivate,
+        profileImage: user.profileImage,
+        instagramHandle: user.instagramHandle,
+        linkedinHandle: user.linkedinHandle,
+        twitterHandle: user.twitterHandle,
         followers: user.followers,
         followings : user.followings,
         favoriteRecipes : user.favoriteRecipes,
