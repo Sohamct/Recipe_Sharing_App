@@ -50,6 +50,27 @@ export const fetchUserDetailsbyUsername = async (username) => {
   }
 }
 
+export const updateUserDetails = async (updatedDetails) => {
+  try {
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error("Token not found !!");
+    }
+
+    const response = await axios.put(`${uri}/update-details`, updatedDetails, {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': token,
+      },
+    }); 
+    return response.data;
+  } catch (error) {
+    throw new Error('Error updating user details: ' + error.message);
+  }
+};
+
 export const followUser = async (userIdToFollow) => {
   try {
     const token = localStorage.getItem('token');

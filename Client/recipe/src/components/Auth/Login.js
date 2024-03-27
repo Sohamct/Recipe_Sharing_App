@@ -10,6 +10,7 @@ import { useUser } from "../../features/context";
 export const Login = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {setUser} = useUser();
+  const { setUserdetails } = useUser();
 
   const notify = () =>
     toast.success("signed in successfully!", {
@@ -42,9 +43,9 @@ export const Login = () => {
     try {
       const loginResponse = await AuthService.login(username, password);
       if (loginResponse.success) {
-        // console.log(loginResponse);
-        setUser({username: loginResponse.username})
-        // console.log(loginResponse.username);
+        console.log(loginResponse.user);
+        setUser(loginResponse.user);
+        // setUserdetails(loginResponse.user)
         notify();
         navigate("/recipe");
       } else {

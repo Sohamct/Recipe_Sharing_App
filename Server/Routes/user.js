@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require('../models/userModel');
 const fetchUser = require('../middleware/fetchUser');
 
-
 // Endpoint to handle the /api/user/details route
 router.get('/details', fetchUser, async (req, res) => {
   try {
@@ -39,6 +38,44 @@ router.get('/detailsbyusername', async (req, res) => {
   } catch (error) {
     console.error('Error fetching user details:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.put('/update-details', fetchUser, async (req, res) => {
+  try {
+    // Retrieve user details from the request body
+    const { email, firstname, lastname, username, instagramHandle, linkedinHandle, twitterHandle } = req.body;
+
+    // Check if any required fields are missing
+    if (!email || !firstname || !lastname) {
+      return res.status(400).json({ error: "Email, firstname, and lastname are required fields" });
+    }
+
+    // Find the user in the database based on the ID stored in req.user
+    const userToUpdate = await User.findById(req.user._id);
+
+    // Check if the user exists
+    if (!userToUpdate) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update user details
+    userToUpdate.email = email;
+    userToUpdate.firstname = firstname;
+    userToUpdate.lastname = lastname;
+    userToUpdate.username = username;
+    userToUpdate.instagramHandle = instagramHandle;
+    userToUpdate.linkedinHandle = linkedinHandle;
+    userToUpdate.twitterHandle = twitterHandle;
+
+    // Save the updated user details to the database
+    await userToUpdate.save();
+
+    // Respond with success message and updated user details
+    res.json({ success: true, message: "User details updated successfully", user: userToUpdate });
+  } catch (error) {
+    console.error("Error updating user details:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -127,8 +164,6 @@ router.put('/unfollow', fetchUser, async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
 
 
 module.exports = router;

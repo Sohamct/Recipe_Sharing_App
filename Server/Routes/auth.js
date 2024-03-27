@@ -133,7 +133,7 @@ router.post('/login', [
 
     const authtoken = jwt.sign(data, process.env.JWT_SECRET);
     success = true;
-    return resp.json({ success, authtoken, username: data.user.username });
+    return resp.json({ success, authtoken, user : user });
     // console.log(authtoken)
   } catch (err) {
     return resp.status(500).send("Internal server error");
