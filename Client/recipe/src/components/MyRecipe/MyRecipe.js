@@ -18,16 +18,15 @@ export const MyRecipe = () => {
     const fetchUserRecipes = async () => {
       try {
         console.log('Fetching recipes...');
+        console.log('Logged-in username:', loggedInUsername);
         const data = await api.fetchRecipesByOwnerAsync(loggedInUsername);
-
+        console.log('API response:', data);
         if (isMounted) {
-          console.log('Data:', data);
           setUserRecipes(data.data);
           setLoading(false);
         }
       } catch (error) {
         console.error('Error fetching user recipes:', error.message);
-
         if (isMounted) {
           setLoading(false);
         }
@@ -49,15 +48,14 @@ export const MyRecipe = () => {
     <>
       <div>
         <div className='flex items-center mx-4 pl-9 mb-3 pt-2'>
-
-        <h3 className='pt-4 text-gray-800 '>  <span className='text-3.5xl bg-center'>&#x2BAB;</span> Recipes owned by you...</h3>
-        <button
+          <h3 className='pt-4 text-gray-800 '>  <span className='text-3.5xl bg-center'>&#x2BAB;</span> Recipes owned by you...</h3>
+          <button
             className='ml-auto mr-6 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded'
             onClick={goBack}
-            >
+          >
             Go Back
           </button>
-            </div>
+        </div>
         <hr />
         {loading ? (
           <p className='text-center bg-center'>Loading...</p>

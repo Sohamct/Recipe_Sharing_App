@@ -22,7 +22,7 @@ export const RecipeShow = () => {
   const { username } = useUser();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {updateProgress} = useProgress();
+  const { updateProgress } = useProgress();
   const params = useParams();
 
   const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
@@ -172,7 +172,7 @@ export const RecipeShow = () => {
               <div>
                 {
                   isRecipeOwner ? null : (
-                    <Link to={`/user-profile/${owner}`}>
+                    <Link to={`/user-profile/${owner}`} >
                       <span className="text-blue-500 cursor-pointer">{owner}</span>
                     </Link>
                   )

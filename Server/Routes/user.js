@@ -3,23 +3,45 @@ const router = express.Router();
 const User = require('../models/userModel');
 const fetchUser = require('../middleware/fetchUser');
 
+
 // Endpoint to handle the /api/user/details route
 router.get('/details', fetchUser, async (req, res) => {
   try {
-    
     const user = req.user;
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Return the user data 
-    return res.json({ success : true, user : user});
+    const userWithoutPassword = await User.findById(user._id).select('-password');
+
+    return res.json({ success: true, user: userWithoutPassword });
   } catch (error) {
     console.error('Error fetching user details:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+router.get('/detailsbyusername', async (req, res) => {
+  try {
+    const { username } = req.query;
+
+    // Fetch user details from the database based on the username
+    // const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 router.put('/follow', fetchUser, async (req, res) => {
   try {

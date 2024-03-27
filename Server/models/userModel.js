@@ -28,22 +28,27 @@ const userSchema = new mongoose.Schema({
     profileImage: {
         type: String
     },
-    isPrivate: {
-        type: Boolean,
-        required: true
+    instagramHandle: {
+        type: String
+    },
+    linkedinHandle: {
+        type: String
+    },
+    twitterHandle: {
+        type: String
     },
     followers: [
         {
-            type: mongoose.Schema.Types.ObjectId, 
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            default: [], 
+            default: [],
         }
     ],
     followings: [
         {
-            type: mongoose.Schema.Types.ObjectId, 
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            default: [], 
+            default: [],
         }
     ],
     favoriteRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],

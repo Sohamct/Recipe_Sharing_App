@@ -18,7 +18,6 @@ export const Navigation = () => {
       try {
         const user = await fetchUserDetails();
         setUserDetails(user.user);
-        // console.log(user.user);
         setIsLoggedIn(true);
       } catch (error) {
         console.error('Error fetching user details:', error);

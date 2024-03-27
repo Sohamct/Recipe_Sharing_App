@@ -134,7 +134,7 @@ export const CreateRecipe = () => {
             });
             setTimeout(() => {
               navigate('/');
-            }, 2000)
+            }, 3500)
           }
         })
         .catch((error) => {
@@ -155,7 +155,7 @@ export const CreateRecipe = () => {
             });
             setTimeout(()  => {
               navigate('/');
-            }, 2000)
+            }, 3500)
           }
         })
         .catch((error) => {
@@ -175,15 +175,6 @@ export const CreateRecipe = () => {
       )
     );
   };
-
-  // useEffect(() => {
-  //   if (status.create === 'succeeded') {
-
-  //   } else if (status.create === 'failed') {
-  //     console.error(error.createError);
-  //     toast.error(error.createError, { autoClose: 2000, theme: "colored" }); // Notify failure
-  //   }
-  // }, [status, error.createError]);
 
 
   return (

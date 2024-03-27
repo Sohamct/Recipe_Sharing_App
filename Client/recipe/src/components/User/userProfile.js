@@ -1,5 +1,4 @@
-// UserProfile.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Content from './Content';
@@ -9,29 +8,35 @@ import { useParams } from 'react-router-dom';
 import RecipeOwnedUser from './RecipeOwnedUser';
 
 const UserProfile = () => {
+  const [reloadKey, setReloadKey] = useState(0);
+
   // Get the logged-in user from the context
   const { username } = useUser();
   
   const params = useParams();
   const { username: ownerName } = params;
-
-  // console.log("Owner of this recipe is: ", ownerName);
  
-  // Check if the logged-in user is viewing their own profile
   const isOwnProfile = (ownerName === username);
 
-  // console.log("logged in user's username is " + username);
+  useEffect(() => {
+    // reload the page whenever there's a change in ownerName
+    setReloadKey(prevKey => prevKey + 1); // Increment key to force re-render
+  }, [ownerName]);
+
+  const handleFollowToggle = () => {
+    setReloadKey(prevKey => prevKey + 1); // Increment key to force re-render
+  };
 
   return (
-    <div>
+    <div key={reloadKey}>
       <div>
         <Navigation />
       </div>
       <div className='container px-0 border-[1px] border-gray-200 mb-16 mt-8 rounded-md shadow-sm'>
-        <Header />
+        <Header ownerName={ownerName} onFollowToggle={handleFollowToggle} />
         <div className='flex'>
           <div className='p-4 w-[30%] border-r-[1px] border-gray-200'>
-            <Sidebar />
+            <Sidebar ownerName={ownerName}/>
           </div>
           <div className='w-full'>
             {isOwnProfile ? <Content /> : <RecipeOwnedUser ownerName={ownerName}/>}
