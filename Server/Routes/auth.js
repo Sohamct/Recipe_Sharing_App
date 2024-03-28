@@ -5,23 +5,12 @@ const { check, body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const fetchUser = require("../middleware/fetchUser");
 const router = express.Router();
-const multer = require('multer');
 
+const cloudinary = require('../cloudinary');
 
-// Multer setup
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '../Client/recipe/src/Uploads/User');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
-
-const upload = multer({ storage: storage });
 
 // Route-1: POST create a user using: '/api/auth/createuser'
-router.post('/createuser', upload.single('profilePic'), [
+router.post('/createuser',  [
   check('username')
     .trim().notEmpty().withMessage('Username cannot be empty')
     .isLength({ min: 3 }).withMessage('Username must consist of 3 or more characters'),
@@ -35,7 +24,7 @@ router.post('/createuser', upload.single('profilePic'), [
 ], async (req, resp) => {
   try {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if (!errors.isEmpty()) {``
       return resp.status(400).json({ errors: errors.array() });
     }
 
@@ -49,8 +38,15 @@ router.post('/createuser', upload.single('profilePic'), [
     const salt = await bcrypt.genSalt(saltRounds);
     const securedPassword = await bcrypt.hash(req.body.password, salt);
 
-    // get path of uploaded profile picture
-    const profileImagePath = req.file ? req.file.filename : null;
+    console.log(req.files);
+    const profileImagePath = req.files ? req.files.profilePic.tempFilePath : null;
+
+    const result = await cloudinary.uploader.upload(profileImagePath, {
+      folder: "ProfileImages",
+    })
+
+
+
 
     const newUser = await User.create({
       firstname: req.body.firstname,
@@ -58,7 +54,11 @@ router.post('/createuser', upload.single('profilePic'), [
       username: req.body.username,
       email: req.body.email,
       password: securedPassword,
-      profileImage: profileImagePath, 
+      profileImage: {
+        public_id: result.public_id,
+        url: result.secure_url
+      },
+
       instagramHandle: req.body.instagramHandle,
       linkedinHandle: req.body.linkedinHandle,
       twitterHandle: req.body.twitterHandle,
@@ -81,7 +81,6 @@ router.post('/createuser', upload.single('profilePic'), [
   }
 });
 
-// Route-2: POST create a user using: '/api/auth/login'
 router.post('/login', [
   check('username')
     .trim().notEmpty().withMessage('Username can not be empty')
@@ -139,7 +138,6 @@ router.post('/login', [
     return resp.status(500).send("Internal server error");
   }
 });
-
 // Route-2: POST create a user using: '/api/auth/login'
 router.get('/getDetails/:uname', fetchUser, async (req, resp) => {
 

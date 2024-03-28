@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-//  const mongoUri ="mongodb://localhost:27017/recipe";
+// const mongoUri ="mongodb://localhost:27017/recipe";
 const mongoUri = "mongodb+srv://kevint11:Kevinmongodb%4011@cluster0.tdcbq1g.mongodb.net/?retryWrites=true&w=majority"
 
 const connectToMongo = async () => {
@@ -12,4 +12,4 @@ const connectToMongo = async () => {
         console.log("Failed to connect with mongodb");
     }
 }
-module.exports = connectToMongo;
+module.exports = connectToMongo; 

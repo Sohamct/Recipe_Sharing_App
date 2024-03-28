@@ -3,7 +3,6 @@ import AuthService from '../Auth/Auth.service';
 import { CgProfile } from 'react-icons/cg';
 import { getMessages } from '../../app/service/MessageApi';
 import './ChatBox.css';
-import { format } from 'timeago.js';
 import InputEmoji from 'react-input-emoji';
 import { addMessage } from '../../app/service/MessageApi';
 import ReactLoading from 'react-loading';
@@ -79,6 +78,35 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
         setSendMessage({ ...message, recieverUsername });
 
     }
+    const timeAgo = (date) => {
+        
+        const now = new Date();
+        const past = new Date(date);
+        const seconds = Math.floor((now - past) / 1000);
+
+        let interval = Math.floor(seconds / 31536000);
+
+        if (interval >= 1) {
+            return interval + " year" + (interval === 1 ? "" : "s") + " ago";
+        }
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+            return interval + " month" + (interval === 1 ? "" : "s") + " ago";
+        }
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+            return interval + " day" + (interval === 1 ? "" : "s") + " ago";
+        }
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+            return interval + " hour" + (interval === 1 ? "" : "s") + " ago";
+        }
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) {
+            return interval + " minute" + (interval === 1 ? "" : "s") + " ago";
+        }
+        return Math.floor(seconds) + " second" + (seconds === 1 ? "" : "s") + " ago";
+    }
 
     // always scroll to the last message
     useEffect(() => {
@@ -125,7 +153,7 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                                             ? "message own" : "message"}
                                         key={message._id}>
                                         <span>{message.text}</span>
-                                        <span>{format(message.createdAt)}</span>
+                                        <span>{timeAgo(message.createdAt)}</span>
                                     </div>
                                 ))
                             )}

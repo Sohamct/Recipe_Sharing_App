@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './comment.css';
 import { FaReply, FaTrash } from 'react-icons/fa';
 import { useUser } from '../../../../features/context';
@@ -7,8 +7,9 @@ import loadingGif from '../../../../../src/loading.gif'
 export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
   const [replyToCommentId, setReplyToCommentId] = useState(null);
   const [newComment, setNewComment] = useState('');
-  const { username, setUser } = useUser();
-  // console.log(username)
+  const { user } = useUser();
+
+  console.log(commentByRecipe);
 
   // Function to calculate relative time
   const calculateRelativeTime = (timestamp) => {
@@ -51,12 +52,12 @@ export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
     setNewComment('');
     // Reset replyToCommentId
     setReplyToCommentId(null);
-    console.log(username);
+    console.log(user.username);
   };
   return (
     <div className="comment-container">
     {commentByRecipe[recipeId] === undefined ? (
-      <img src={loadingGif} alt="Loading..."/>
+      ''
     ) : (
       <ul className="comment-list">
         {commentByRecipe[recipeId].map((comment, i) => (
@@ -64,7 +65,7 @@ export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
             <div className="comment-owner">{comment._from}</div>
             <div className="comment-time">{calculateRelativeTime(comment.time)}</div> {/* Time field */}
             <div className="comment-text">{comment.text}</div>
-            {username === comment._from && (
+            {user.username === comment._from && (
               <div className="delete-comment-wrapper">
                 <FaTrash
                   className="delete-comment-icon"

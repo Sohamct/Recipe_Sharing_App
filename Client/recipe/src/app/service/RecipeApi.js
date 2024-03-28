@@ -10,6 +10,11 @@ const api = {
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("image", formData.image);
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("dishType", formData.dishType);
+      formDataToSend.append("vegNonVeg", formData.vegNonVeg);
+  console.log(formDataToSend);
+
       formDataToSend.append("ingredients", JSON.stringify(formData.ingredients))
 
       const response = await axios.post(`${uri}/createrecipe`, formDataToSend, {
@@ -41,7 +46,9 @@ const api = {
       formDataToSend.append("owner", formData.owner);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("ingredients", JSON.stringify(formData.ingredients));
-
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("dishType", formData.dishType);
+      formDataToSend.append("vegNonVeg", formData.vegNonVeg);
       // Append image if it exists
       if (formData.image) {
         formDataToSend.append("image", formData.image);
@@ -66,6 +73,7 @@ const api = {
       throw new Error(error.message);
     }
   },
+
 
   fetchRecipesAsync: async () => {
     try {
@@ -138,7 +146,30 @@ const api = {
 
   searchRecipesAsync: async (searchTerm) => {
     try {
+
       const response = await fetch(`${uri}/search?q=${encodeURIComponent(searchTerm)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+      });
+
+      const data = await response.json();
+      console.log(data)
+      if (response.ok) {
+        return data.results || []; // Return the search results or an empty array if the 'results' property is not present
+      } else {
+        throw new Error(data.error || 'Unknown error'); // Throw an error with the specific error message from the server or a default message
+      }
+    } catch (error) {
+      throw new Error(`Failed to search recipes: ${error.message}`); // Throw a generic error if something goes wrong
+    }
+  },
+
+  getSuggestionsAsync: async (searchTerm) => {
+    try {
+      const response = await fetch(`${uri}/suggestions?q=${encodeURIComponent(searchTerm)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -149,12 +180,12 @@ const api = {
       const data = await response.json();
 
       if (response.ok) {
-        return data.results || []; // Return the search results or an empty array if the 'results' property is not present
+        return data.suggestions || [];
       } else {
-        throw new Error(data.error || 'Unknown error'); // Throw an error with the specific error message from the server or a default message
+        throw new Error(data.error || 'Unknown error');
       }
     } catch (error) {
-      throw new Error(`Failed to search recipes: ${error.message}`); // Throw a generic error if something goes wrong
+      throw new Error(`Failed to get suggestions: ${error.message}`);
     }
   },
 

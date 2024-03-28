@@ -6,6 +6,11 @@ import { Navigation } from '../../Navigation';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useProgress } from '../../../features/ProgressContext';
 import { useUser } from '../../../features/context';
+import { useProgress } from '../../../features/ProgressContext';
+
+const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];
+const categories = ['Breakfast', 'Fast food', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
+const vegNonVegOptions = ['Veg', 'Non-Veg'];
 
 export const CreateRecipe = () => {
   const recipesState = useSelector((state) => state.recipes);
@@ -13,10 +18,11 @@ export const CreateRecipe = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = useParams();
-  const {username} = useUser();
+
+  const {user, loading} = useUser();
   const {updateProgress} = useProgress();
   const [isEditing, setIsEditing] = useState(false);
-  const [editingRecipe, setEditingRecipe] = useState(null);
+
   useEffect(() => {
     setIsEditing(location.pathname.includes('/editrecipe'));
   }, [location.pathname]);
@@ -26,32 +32,44 @@ export const CreateRecipe = () => {
     description: '',
     image: '',
     ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml', owner: '' }],
+    category: '',
+    dishType: '',
+    vegNonVeg: ''
   });
 
   useEffect(() => {
-    if (isEditing) {
-       console.log("checking editing recipe")
-      const recipeToEdit = recipesState.recipes.find((recipe) => recipe._id === params.id);
-      if (!recipeToEdit) {
-        toast.error("Recipe does not exist!", { autoClose: 2000, theme: "colored" });
-        navigate('/');
-        return ;
-      } else if (username !== recipeToEdit.owner) {
-        toast.error("You don't have permission to edit this recipe!", { autoClose: 2000, theme: "colored" });
-        navigate('/');
-        return ;
-      } else {
-        setEditingRecipe(recipeToEdit);
-        setFormData({
-          title: recipeToEdit.title,
-          description: recipeToEdit.description,
-          image: recipeToEdit.image,
-          ingredients: recipeToEdit.ingredients,
-          owner: recipeToEdit.owner
-        });
-      }
+    if(user ===  null){
+
+    }else{
+      if (isEditing) {
+        console.log("checking editing recipe");
+       const recipeToEdit = recipesState.recipes.find((recipe) => recipe._id === params.id);
+       console.log(recipeToEdit);
+       if (!recipeToEdit) {
+         toast.error("Recipe does not exist!", { autoClose: 2000, theme: "colored" });
+         navigate('/');
+         return ;
+       } else if (user?.username !== recipeToEdit.owner) {
+         toast.error("You don't have permission to edit this recipe!", { autoClose: 2000, theme: "colored" });
+         navigate('/');
+         return ;
+       } else {
+         setFormData({
+           title: recipeToEdit.title,
+           description: recipeToEdit.description,
+           image: recipeToEdit.image,
+           ingredients: recipeToEdit.ingredients,
+           owner: recipeToEdit.owner,
+           category: recipeToEdit.category,
+           vegNonVeg: recipeToEdit.vegNonVeg,
+           dishType: recipeToEdit.dishType
+         });
+       }
+
     }
-  }, [isEditing, params.id, recipesState, username, navigate,]);
+    
+    }
+  }, [loading, isEditing, params.id, recipesState, user?.username, navigate]);
 
   // const { status, error } = useSelector((state) => state.recipes)
   const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
@@ -60,7 +78,7 @@ export const CreateRecipe = () => {
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     setFormData(prevFormData => {
-      const newIngredients = [...prevFormData.ingredients]; // Clone the array
+      const newIngredients = [...prevFormData.ingredients];
       newIngredients[index] = {
         ...newIngredients[index], 
         [name]: value 
@@ -126,15 +144,7 @@ export const CreateRecipe = () => {
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
-            setFormData({
-              title: '',
-              description: '',
-              image: null,
-              ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
-            });
-            setTimeout(() => {
-              navigate('/');
-            }, 3500)
+              navigate(`/viewrecipe/${params.id}`)
           }
         })
         .catch((error) => {
@@ -151,11 +161,13 @@ export const CreateRecipe = () => {
               title: '',
               description: '',
               image: null,
+              category: '',
+              vegNonVeg: '',
+              dishType: '',
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            setTimeout(()  => {
-              navigate('/');
-            }, 3500)
+              navigate(`/viewrecipe/${response.payload._id}`);
+
           }
         })
         .catch((error) => {
@@ -172,7 +184,10 @@ export const CreateRecipe = () => {
         (ingredient) =>
           ingredient.ingredient_name.trim() === '' ||
           ingredient.quantity === ''
-      )
+      ) ||
+      formData.category.trim() === '' ||
+      formData.vegNonVeg.trim() === '' ||
+      formData.dishType.trim() === ''
     );
   };
 
@@ -183,7 +198,8 @@ export const CreateRecipe = () => {
         <Navigation />
       </div>
       <div className="max-w-3xl mx-auto p-6 bg-slate-100 rounded-md shadow-md ">
-        <h2 className="text-xl font-semibold mb-4">{!isEditing ? ('Create New Recipe') : 'Edit Recipe'}</h2>
+        <h2 className="text-xl font-semibold mb-4">{!isEditing ? ('Create New Recipe') : 'Update Recipe'}</h2>
+
         <form onSubmit={handleSubmit} >
           <div className="mb-4">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title:</label>
@@ -203,7 +219,8 @@ export const CreateRecipe = () => {
               name="description"
               value={formData.description}
               onChange={_handleChange}
-              rows="5"
+              rows="7"
+              style={{ whiteSpace: 'pre-wrap' }}
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -218,6 +235,54 @@ export const CreateRecipe = () => {
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div> */}
+
+          <div className="mb-4">
+          <label htmlFor="dishType" className="block text-sm font-medium text-gray-700">Dish Type:</label>
+          <select
+            id="dishType"
+            name="dishType"
+            value={formData.dishType}
+            onChange={_handleChange}
+            className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Select Dish Type</option>
+            {dishTypes.map((type, index) => (
+              <option key={index} value={type}>{type}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="vegNonVeg" className="block text-sm font-medium text-gray-700">Veg-Non Veg:</label>
+          <select
+            id="vegNonVeg"
+            name="vegNonVeg"
+            value={formData.vegNonVeg}
+            onChange={_handleChange}
+            className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Select Option</option>
+            {vegNonVegOptions.map((option, index) => (
+              <option key={index} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category:</label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={_handleChange}
+            className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Select Category</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
 
           <div className="mb-4">
             <label htmlFor="image" className="block text-sm font-medium text-gray-700">
@@ -262,6 +327,7 @@ export const CreateRecipe = () => {
                   <option value="litre">litre</option>
                   <option value="gm">gm</option>
                   <option value="kg">kg</option>
+                  <option value="unit">unit</option>
                 </select>
                 <button
                   type="button"

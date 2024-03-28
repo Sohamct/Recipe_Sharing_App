@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { useUser } from '../../../../features/context';
-import { useNavigate } from 'react-router-dom';
-import RecipeFavoriteButton from '../../../Favorites/RecipeFavoriteButton.js';
+import React, {useState} from 'react';
+import { useUser } from '../../../../features/context.js';
 
-export const RecipeItem = ({ recipe }) => {
-  const { _id, title, owner, date, description, image, updatedAt } = recipe;
-  const { username } = useUser();
+import { useNavigate } from 'react-router-dom';
+import '../../../../assets/css/StyleRecipeItem.css';
+import RecipeFavoriteButton from '../../../Favorites/RecipeFavoriteButton.js';
+//import pizzaImage from '../../../../assets/pizza.jpg'
+
+export const RecipeItem = ({  _id, title, owner, createdAt, description, image, updatedAt }) => {
+  const { user } = useUser();
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const isAllNull = _id == null && title == null && owner == null && description == null;
+  const isAllNull = (_id == null && title==null && owner == null&& description==null);
+
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -18,6 +21,7 @@ export const RecipeItem = ({ recipe }) => {
   const goToSpecificRecipe = () => {
     navigate(`/viewrecipe/${_id}`);
   };
+
 
   const calculateRelativeTime = (timestamp) => {
     const now = new Date();
@@ -30,58 +34,66 @@ export const RecipeItem = ({ recipe }) => {
     const months = Math.floor(days / 30);
     const years = Math.floor(months / 12);
     if (years > 0) {
-      return `${years} year${years > 1 ? 's' : ''} ago`;
+      return `${years} year${years >= 1 ? 's' : ''} ago`;
     } else if (months > 0) {
-      return `${months} month${months > 1 ? 's' : ''} ago`;
+      return `${months} month${months >= 1 ? 's' : ''} ago`;
     } else if (days > 0) {
-      return `${days} day${days > 1 ? 's' : ''} ago`;
+      return `${days} day${days >= 1 ? 's' : ''} ago`;
     } else if (hours > 0) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      return `${hours} hour${hours >= 1 ? 's' : ''} ago`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      return `${minutes} minute${minutes >= 1 ? 's' : ''} ago`;
     } else {
-      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+      return `${seconds} second${seconds >= 1 ? 's' : ''} ago`;
     }
   };
-
   return (
     <div className='container'>
-      <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-        <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
-          {!imageLoaded && (
+    <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+      <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
+            {!imageLoaded && (
+
             <div
               className="object-cover w-full h-full rounded-t-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md skeleton"
               style={{ opacity: 0.7 }}
             ></div>
-          )}
-          {!isAllNull && (
-            <img
-              src={require(`../../../../Uploads/${image}`)}
-              onLoad={handleImageLoad}
-              alt="card-image"
-              className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
-            />
-          )}
+            )}
+            {!isAllNull && (image &&  <img
+            src={image.url}
+            onLoad={handleImageLoad}
+            alt="card-image"
+            className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+            />) || (<img
+            src={require(`../../../../components/Uploads/default.png`)}
+            onLoad={handleImageLoad}
+            alt="card-image"
+            className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+            />)
+            }
         </div>
 
         <div className="p-3 mt-2">
-          <div className="flex justify-between">
-            <p className="block font-customFont font-semibold text-xl leading-relaxed text-inherit">
-              {imageLoaded ? title : ''}
-            </p>
-            <div className='hover:cursor-pointer mr-0'>
-              {imageLoaded && <RecipeFavoriteButton recipeId={_id} />}
+
+        <div className="flex justify-between">
+        <h5 className={`block mb-2 font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 ${!imageLoaded && 'skeleton skeleton-text'}`}>
+            {imageLoaded ? (title?.length > 20  ? title?.slice(0, 20) + '...' : title) : '' }
+          </h5>
+          <div className='hover:cursor-pointer'>
+            {imageLoaded && <RecipeFavoriteButton
+              recipeId={_id}
+            />}
             </div>
-          </div>
-          <p className={`block font-sans text-sm antialiased font-light leading-relaxed text-inherit ${!imageLoaded && 'skeleton skeleton-text'}`}>
-            {imageLoaded ? `By: ${owner === username ? 'You' : owner}` : ''}
+        </div>
+
+            <p className={`block font-sans text-sm antialiased font-light leading-relaxed text-inherit ${!imageLoaded && 'skeleton skeleton-text'}`}>
+            {imageLoaded ? 'By' : ''} {imageLoaded ? (owner === user?.username ? 'You' : owner) : ''}
           </p>
           <p className={`block font-sans text-sm antialiased font-light leading-relaxed text-inherit ${!imageLoaded && 'skeleton skeleton-text'}`}>
-            {imageLoaded ? (updatedAt ? `Updated ${calculateRelativeTime(updatedAt)}` : `Created ${calculateRelativeTime(date)}`) : ''}
+          {imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created '+ calculateRelativeTime(createdAt))) : '' }
           </p>
         </div>
         <div className="p-4 pt-0">
-          {imageLoaded && (
+        {imageLoaded && (
             <button
               className="select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-2 px-4 rounded-md bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 hover:bg-gray-800 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
               type="button"
@@ -95,3 +107,4 @@ export const RecipeItem = ({ recipe }) => {
     </div>
   );
 };
+

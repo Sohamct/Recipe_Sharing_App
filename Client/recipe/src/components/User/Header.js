@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ConfirmationModal from './ConfirmationModel';
 import { useUser } from '../../features/context';
 import { fetchUserDetails, fetchUserDetailsbyUsername, followUser, unfollowUser } from '../../app/service/userApi';
+import UserProfile from './userProfile';
+
 
 function Header({ ownerName, onFollowToggle }) {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -71,13 +73,18 @@ function Header({ ownerName, onFollowToggle }) {
     <div className='border-b-[1px] py-6 px-3 border-gray-300 w-full'>
       <div className='flex gap-4 items-center'>
         <div className='font-customFont bg-red-300 rounded-full w-12 h-12 flex items-center justify-center'>
-          {userDetails?.profileImage ? (
-            <img src={require(`../../Uploads/User/${profilePic}`)} alt="Profile" className="w-full h-full rounded-full" />
-          ) : (
-            <>
+        {userDetails?.profileImage ? (
+        <img
+          src={userDetails?.profileImage.url}
+          alt="card-image"
+          className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+        />
+      ) : (
+        <>
               {userDetails?.firstname?.charAt(0)}{userDetails?.lastname?.charAt(0)}
             </>
-          )}
+      )}
+
         </div>
         <p className='mb-0 font-semibold text-2xl text-black'>
           {userDetails?.firstname} {userDetails?.lastname}

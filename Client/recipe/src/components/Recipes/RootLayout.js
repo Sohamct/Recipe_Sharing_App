@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigation } from '../Navigation';
+import ProgressBar from '../ProgressBar';
 import { RecipeList } from './RecipeList/RecipeList';
 import ProgressBar from '../ProgressBar';
 
@@ -9,14 +10,8 @@ export const RootLayout = () => {
     <div>
       <ProgressBar/>
       <Navigation />
-      <div className="flex">
-        <div>
-          {/* Removed the FilterComponent JSX */}
-        </div>
-        <div>
-          <RecipeList />
-        </div>
-      </div>
+      <RecipeList/>
+
     </div>
   );
 };

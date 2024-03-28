@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 const uri = "http://localhost:5501/api/user";
@@ -29,7 +30,6 @@ export const fetchUserDetails = async () => {
 export const fetchUserDetailsbyUsername = async (username) => {
   try {
     const token = localStorage.getItem('token');
-
     if (!token) {
       throw new Error("Token not found !!");
     }
@@ -42,7 +42,7 @@ export const fetchUserDetailsbyUsername = async (username) => {
       },
       body: JSON.stringify({ username }),
     });
-    // console.log(response.data);
+
     return response.data;
   } catch (error) {
     console.error("Error fetching user details: ", error);

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express');
 const User = require('../models/userModel');
 const Comment = require('../models/commentModel');
@@ -10,47 +11,26 @@ const { addFavoriteRecipe, removeFavoriteRecipe, checkIfRecipeIsFavorite } = req
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const cloudinary = require('../cloudinary');
 
-
-const updateRecipeImages = (recipes)=> {
-  for(const recipe of recipes){
-    if(recipe.image == null){
-      recipe.image = 'pizza.jpg';
-    }else{
-      const imagePath = path.join(__dirname, '../../Client/recipe/src/Uploads', recipe.image);
-      if (!fs.existsSync(imagePath)) {
-        recipe.image = 'pizza.jpg';
-        //console.log(`Image for recipe ${recipe.title} updated to default pizza image.`);
-      }
-    }
-    
-    // console.log(recipe.image);
-  }
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '../Client/recipe/src/Uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
-
-const upload = multer({ storage: storage });
 
 //  -----------------------------------------------------
 // Route-1: POST create a recipe using: '/api/auth/createrecipe'
-router.post('/createrecipe', [fetchUser, upload.single("image")], async (req, res) => {
+router.post('/createrecipe', [fetchUser], async (req, res) => {
+
   try {
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     
-    const { title, description, ingredients } = req.body;
-    const imagePath = req.file ? req.file.filename : null;
-
+    const { title, description, ingredients, category, vegNonVeg, dishType} = req.body;
+    
+    const result = await cloudinary.uploader.upload( req.files ? req.files.image.tempFilePath : null, {
+      folder: "RecipeImages",
+    })
+    console.log(result.public_id, result.secure_url);
     if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -61,7 +41,15 @@ router.post('/createrecipe', [fetchUser, upload.single("image")], async (req, re
       description,
       ingredients: JSON.parse(ingredients),
       owner: username,
-      image: imagePath
+      image: {
+        public_id: result.public_id,
+        url: result.secure_url
+      },
+      category: category,
+      vegNonVeg: vegNonVeg,
+      dishType: dishType,
+      createdAt: new Date()
+
     });
 
     res.status(201).json({ message: 'Recipe created successfully', data: recipe });
@@ -71,33 +59,48 @@ router.post('/createrecipe', [fetchUser, upload.single("image")], async (req, re
   }
 });
 
-router.put('/editrecipe', [fetchUser, upload.single("image")], async (req, resp) => {
-  // console.log('Editing recipe', req.body, req.header);
+router.put('/editrecipe', [fetchUser], async (req, resp) => {
+
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return resp.status(400).json({ errors: errors.array() });
     }
-    // console.log(req.body)
 
-    const { title, _id, description, ingredients, owner } = req.body;
+
+    const { title, _id, description, ingredients, owner, category, vegNonVeg, dishType} = req.body;
+
 
     if (!req.user) {
       return resp.status(401).json({ message: 'You are Unauthorized' });
     }
-    const imagePath = req.file ? req.file.filename : null;
+
     const username = req.user.username;
     // console.log(owner, username)
     if (username !== owner) {
       return resp.status(403).json({ message: 'Forbidden: You are not allowed to edit this recipe' });
     }
     // console.log(imagePath);
-    let updateObject = { title, description, ingredients: JSON.parse(ingredients) };
-    if (req.file) {
-      updateObject.image = imagePath;
+    let updateObject = { title, description, ingredients: JSON.parse(ingredients), category, vegNonVeg, dishType, updatedAt: new Date() };
+    if (req.files && req.files.image) {
+      const imagePath = req.files.image.tempFilePath;
+      
+      const prevRecipe = await Recipe.findOne({_id, owner: username});
+      if(prevRecipe.image && prevRecipe.image.public_id){
+        const prevPublicId = prevRecipe.image.public_id;
+        await cloudinary.uploader.destroy(prevPublicId);
+      }
+
+      const result = await cloudinary.uploader.upload( imagePath, {
+        folder: "RecipeImages",
+      });
+      updateObject.image = {
+        public_id: result.public_id,
+        url: result.secure_url
+      };
     }
-    // console.log(_id);
-    // console.log(updateObject);
+
+
     const recipe = await Recipe.findOneAndUpdate(
       { _id: _id, owner: username },
       updateObject,
@@ -107,7 +110,7 @@ router.put('/editrecipe', [fetchUser, upload.single("image")], async (req, resp)
     if (!recipe) {
       return resp.status(404).json({ message: 'Recipe not found or unauthorized' });
     }
-    console.log(".....................",recipe)
+
 
     resp.status(201).json({ message: 'Recipe edited successfully', data: recipe });
   } catch (error) {
@@ -117,7 +120,7 @@ router.put('/editrecipe', [fetchUser, upload.single("image")], async (req, resp)
 });
 
 router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
-  // console.log("Deleting recipe...");
+
 
   try {
     const errors = validationResult(req);
@@ -137,22 +140,16 @@ router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
       return resp.status(403).json({ message: 'Forbidden: You are not allowed to delete this recipe' });
     }
 
-    // Find the recipe to delete and retrieve the associated image filename
     const recipeToDelete = await Recipe.findOne({ _id: recipeId });
     if (!recipeToDelete) {
       return resp.status(404).json({ message: "Recipe not found" });
     }
 
-    const imagePath = recipeToDelete.image;
+    if(recipeToDelete.image && recipeToDelete.image.public_id){
+      const public_id = recipeToDelete.image.public_id;
+      await cloudinary.uploader.destroy(public_id);
 
-    if (imagePath) {
-      fs.unlink(`uploads/${imagePath}`, (err) => {
-        if (err) {
-          console.error('Error deleting image file:', err);
-        } else {
-          console.log('Image file deleted successfully');
-        }
-      });
+
     }
 
     await Comment.deleteMany({ _to: recipeId });
@@ -171,7 +168,6 @@ router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
 });
 
 router.get('/fetchrecipes', fetchUser, async (req, resp) => {
-  // console.log('fetching recipes', req.header);
   try {
 
     if (!req.user) {
@@ -180,8 +176,7 @@ router.get('/fetchrecipes', fetchUser, async (req, resp) => {
 
     // const userId = req.user.id;
     const recipes = await Recipe.find({});
-    updateRecipeImages(recipes);
-    // console.log("fetched all recipes ", recipes);
+
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
     // console.error(error);
@@ -196,13 +191,14 @@ router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
     }
 
     const ownerName = req.query.owner; 
+    console.log(ownerName);
     
     if (!ownerName) {
       return resp.status(400).json({ message: 'Owner name is required' });
     }
 
     const recipes = await Recipe.find({ owner: ownerName });
-    updateRecipeImages(recipes);
+
     // console.log(recipes);
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
@@ -213,6 +209,7 @@ router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
 
 router.get('/search', async (req, res) => {
   try {
+    
     const searchTerm = req.query.q;
 
     if (!searchTerm || searchTerm.trim() === '') {
@@ -224,7 +221,7 @@ router.get('/search', async (req, res) => {
     if (searchResults.length === 0) {
       return res.json({ results: [], message: 'No results found' });
     }
-    updateRecipeImages(searchResults);
+
 
     res.json({ results: searchResults });
   } catch (error) {
@@ -242,11 +239,17 @@ router.get('/suggestions', async (req, res) => {
     }
 
     // Use the keyword to query the database for matching recipes
+    if (keyword.trim() === '') {
+      return res.json({ suggestions: [] }); // Return an empty array if keyword is an empty string
+    }
+
+    // Use the keyword to query the database for matching recipes
     const matchingRecipes = await Recipe.find({
       $or: [
         { title: { $regex: keyword, $options: 'i' } },
         { owner: { $regex: keyword, $options: 'i' } },
         { description: { $regex: keyword, $options: 'i' } },
+        { 'ingredients.ingredient_name': { $regex: keyword, $options: 'i' } },
         { 'ingredients.ingredient_name': { $regex: keyword, $options: 'i' } },
       ],
     });
@@ -275,6 +278,7 @@ router.post('/addFavorite', fetchUser, async (req, res) => {
   // console.log(req.body);
 
   try {
+    console.log(userId, recipeId);
     const user = await addFavoriteRecipe(userId, recipeId);
     res.status(200).json({ user, message: 'Recipe added from the favorites successfully.' });
   } catch (error) {
@@ -301,10 +305,12 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
       if (!req.user) {
           return res.status(401).json({ message: 'Unauthorized' });
       }
+      if (!req.user) {
+          return res.status(401).json({ message: 'Unauthorized' });
+      }
 
       const userId = req.user.id; 
       // console.log(userId);
-      // Fetch user's favorite recipe IDs
       const user = await User.findById(userId);
 
       const favoriteRecipeIds = user.favoriteRecipes || [];
@@ -312,9 +318,11 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
 
       // Fetch the actual recipe details using the favoriteRecipeIds
       const favoriteRecipes = await Recipe.find({ _id: { $in: favoriteRecipeIds } });
-      updateRecipeImages(favoriteRecipes);
+
       res.status(200).json({ message: 'Favorite recipes fetched successfully', data: favoriteRecipes });
   } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Unexpected error occurred' });
       console.error(error);
       res.status(500).json({ error: 'Unexpected error occurred' });
   }
@@ -322,6 +330,7 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
 
 router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
   const { recipeId } = req.body;
+
 
   try {
     if (!req.user) {
@@ -341,5 +350,5 @@ router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
   }
 });
 
-
 module.exports = router;
+

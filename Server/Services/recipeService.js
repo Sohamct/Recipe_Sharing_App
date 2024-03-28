@@ -4,7 +4,12 @@ const Recipe = require('../models/recipeModel');
 async function addFavoriteRecipe(userId, recipeId) {
   try {
     const user = await User.findByIdAndUpdate(userId, { $addToSet: { favoriteRecipes: recipeId } }, { new: true });
-    const recipe = await Recipe.findByIdAndUpdate(recipeId, { $addToSet: { favorites: userId } });
+    const recipe = await Recipe.findByIdAndUpdate(
+      recipeId,
+      { $addToSet: { favorites: userId } },
+      { new: true, omitUndefined: true, fields: { updatedAt: 0 } }
+    );
+    
 
     return {user, recipe};
   } catch (error) {
@@ -16,8 +21,12 @@ async function addFavoriteRecipe(userId, recipeId) {
 async function removeFavoriteRecipe(userId, recipeId) {
   try {
     const user = await User.findByIdAndUpdate(userId, { $pull: { favoriteRecipes: recipeId } }, { new: true });
-    const recipe = await Recipe.findByIdAndUpdate(recipeId, { $pull: { favorites: userId } });
-
+    const recipe = await Recipe.findOneAndUpdate(
+      { _id: recipeId },
+      { $pull: { favorites: userId } },
+      { new: true, omitUndefined: true, fields: { updatedAt: 0 } }
+    );
+    console.log("Removed recipe", recipe);
     return {user, recipe};
   } catch (error) {
     console.error('Error removing recipe from favorites:', error.message);

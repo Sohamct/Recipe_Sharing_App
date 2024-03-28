@@ -25,14 +25,15 @@ router.get('/details', fetchUser, async (req, res) => {
 router.get('/detailsbyusername', async (req, res) => {
   try {
     const { username } = req.query;
-
+    console.log(username);
     // Fetch user details from the database based on the username
     // const user = await User.findOne({ username });
     const user = await User.findOne({ username }).select('-password');
-
+    console.log(user);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+    console.log(user);
 
     res.json(user);
   } catch (error) {
@@ -165,5 +166,5 @@ router.put('/unfollow', fetchUser, async (req, res) => {
   }
 });
 
-
 module.exports = router;
+

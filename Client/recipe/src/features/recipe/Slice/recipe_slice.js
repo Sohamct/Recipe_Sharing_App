@@ -1,3 +1,4 @@
+
 import api from '../../../app/service/RecipeApi';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -35,13 +36,26 @@ export const deleteRecipeAsync = createAsyncThunk('recipe/deleteRecipe', async (
 
 export const fetchRecipesAsync = createAsyncThunk('recipe/fetchRecipes', async (updateProgress, { rejectWithValue }) => {
   try {
-    
-    // console.log("Fetching recipes;")
-    
-    updateProgress(30);
+    let progress = 0;
+    let responseReceived = false;
+
+    const intervalId = setInterval(() => {
+      if (!responseReceived && updateProgress) {
+        progress += 2;
+        updateProgress(progress);
+
+        if (progress >= 85) {
+          clearInterval(intervalId); // Stop the interval
+        }
+      }
+    }, 100);
+
     const response = await api.fetchRecipesAsync();
-    updateProgress(60);
-    // console.log(response);
+    responseReceived = true; 
+    clearInterval(intervalId); 
+    updateProgress(100); 
+    console.log(response);
+
     return response;
   } catch (error) {
     return rejectWithValue(error.message);

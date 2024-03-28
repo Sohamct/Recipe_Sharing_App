@@ -1,18 +1,21 @@
-import React, { useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+
+
+import React, { useEffect, useCallback, useContext } from 'react';
 import { RecipeItem } from './RecipeItem/RecipeItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
 import { useProgress } from '../../../features/ProgressContext';
+import { FilterContext } from '../../../features/FilterContext';
+
 
 export const RecipeList = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const recipesState = useSelector((state) => state.recipes);
-  
-  const isOwner = location.pathname === '/myrecipe';
+
   const {updateProgress}= useProgress();
-  // console.log(updateProgress);
+  const {filterData} = useContext(FilterContext);
+
 
   const fetchData = useCallback(async () => {
     try {
@@ -32,23 +35,46 @@ export const RecipeList = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]); 
+  }, [fetchData]);
+  
+  useEffect(() => {
+  }, [filterData])
 
   if (recipesState.status === 'loading') {
     return <h3>Loading...</h3>;
   }
-
+  console.log(filterData);
   if (recipesState.status === 'failed') {
     return <p>Error: {recipesState.error.fetchError}</p>;
   }
 
-  const recipes = recipesState.recipes || [];
+  // const recipes = recipesState.recipes || [];
+  console.log(recipesState.recipes);
+  const filteredRecipes = recipesState.recipes.filter(recipe => {
+    if (
+
+      (filterData.vegNonVeg !== 'Both' && filterData.vegNonVeg && recipe.vegNonVeg !== filterData.vegNonVeg) ||
+      (filterData.dishTypes.length > 0 && !filterData.dishTypes.includes(recipe.dishType)) ||
+      (filterData.categories.length > 0 && !filterData.categories.includes(recipe.category))
+    ) {
+      return false; 
+    }
+    return true;
+  }).sort((a, b) => {
+    if(filterData.favoritism === "high to low"){
+      return b.favorites.length - a.favorites.length;
+    }else if(filterData.favoritism === "low to high"){
+      return a.favorites.length - b.favorites.length;
+    }else{
+      return 0;
+    }
+  })
   // console.log(recipes);
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
-      {recipes.map((recipe) => (
-        <RecipeItem key={recipe._id} recipe = {recipe}/>
+      {filteredRecipes.map((recipe) => (
+        <RecipeItem key={recipe._id} {...recipe}/>
       ))}
     </div>
   );

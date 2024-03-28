@@ -25,9 +25,16 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    profileImage: {
-        type: String
-    },
+    profileImage:{ 
+        public_id: {
+          type: String,
+          required: true  
+        },
+        url: {
+          type: String,
+          required: true
+        }
+      },
     instagramHandle: {
         type: String
     },

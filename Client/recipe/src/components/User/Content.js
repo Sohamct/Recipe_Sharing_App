@@ -136,6 +136,7 @@ function Content() {
                   <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' onClick={() => handleEdit('firstname')} />
                 </div>
               </div>
+
             )}
           </div>
           <div className='my-3'>
@@ -155,6 +156,7 @@ function Content() {
                   <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' onClick={() => handleEdit('lastname')} />
                 </div>
               </div>
+
             )}
           </div>
 
@@ -195,6 +197,7 @@ function Content() {
                   <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' onClick={() => handleEdit('linkedinHandle')} />
                 </div>
               </div>
+
             )}
           </div>
 
@@ -207,6 +210,7 @@ function Content() {
                   <button className='px-2 rounded-sm bg-red-500 text-white hover:bg-red-600 ml-2' onClick={() => { setFormData({ ...formData, twitterHandle: userDetails.twitterHandle }); setEditingField(null); }}>Cancel</button>
                   <button className='px-2 rounded-sm bg-blue-900 text-white hover:bg-blue-800 ml-2' onClick={handleSubmit}>Save</button>
                 </div>
+
               </div>
             ) : (
               <div className='flex py-2'>
