@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { toast } from 'react-toastify';
@@ -12,6 +12,9 @@ import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recip
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
 import { useProgress } from '../../../../features/ProgressContext';
+
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export const RecipeShow = () => {
@@ -56,10 +59,36 @@ export const RecipeShow = () => {
     return <div>Loading...</div>;
   }
 
+
   const { _id, title, description, updatedAt, ingredients, owner, image, createdAt, category, vegNonVeg, dishType } = recipe;
 
   console.log(user)
   console.log(params.id);
+  const calculateRelativeTime = (timestamp) => {
+    const now = new Date();
+    const commentTime = new Date(timestamp);
+    const timeDifference = now - commentTime;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(months / 12);
+    if (years > 0) {
+      return `${years} year${years > 1 ? 's' : ''} ago`;
+    } else if (months > 0) {
+      return `${months} month${months > 1 ? 's' : ''} ago`;
+    } else if (days > 0) {
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+    }
+  };
+
   const calculateRelativeTime = (timestamp) => {
     const now = new Date();
     const commentTime = new Date(timestamp);
@@ -105,6 +134,7 @@ export const RecipeShow = () => {
     dispatch(deleteRecipeAsync({ data, updateProgress }))
       .then(response => {
         console.log(response);
+
         updateProgress(100);
         console.log(status);
         if (status.delete === 'failed') {
@@ -122,6 +152,7 @@ export const RecipeShow = () => {
     navigate('/');
   };
 
+
   const handleCommentSubmit = () => {
     if (!CommentText) {
       return alert("please add Comment-text");
@@ -137,6 +168,7 @@ export const RecipeShow = () => {
     setCommentText("");
   };
 
+
   const handleEditClick = () => {
     navigate(`/editrecipe/${params.id}`);
   };
@@ -144,6 +176,7 @@ export const RecipeShow = () => {
     try {
       const response = await addChat({ sender: user.username, receiver: owner });
       console.log(response)
+
       if (response.data) {
         navigate('/chat')
       } else {
@@ -171,7 +204,7 @@ export const RecipeShow = () => {
               <div>
                 {
                   isRecipeOwner ? null : (
-                    <Link to={`/user-profile/${owner}`}>
+                    <Link to={`/user-profile/${owner}`} >
                       <span className="text-blue-500 cursor-pointer">{owner}</span>
                     </Link>
                   )

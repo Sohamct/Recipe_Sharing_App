@@ -4,6 +4,7 @@ import { useUser } from '../../features/context';
 import { fetchUserDetails, fetchUserDetailsbyUsername, followUser, unfollowUser } from '../../app/service/userApi';
 import UserProfile from './userProfile';
 
+
 function Header({ ownerName, onFollowToggle }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -11,7 +12,7 @@ function Header({ ownerName, onFollowToggle }) {
   const [profilePic, setProfilePic] = useState(null);
   const [reloadComponent, setReloadComponent] = useState(false); // State to trigger component reload
   const { username } = useUser();
-  console.log(UserProfile);
+
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -83,6 +84,7 @@ function Header({ ownerName, onFollowToggle }) {
               {userDetails?.firstname?.charAt(0)}{userDetails?.lastname?.charAt(0)}
             </>
       )}
+
         </div>
         <p className='mb-0 font-semibold text-2xl text-black'>
           {userDetails?.firstname} {userDetails?.lastname}
@@ -109,21 +111,3 @@ function Header({ ownerName, onFollowToggle }) {
 }
 
 export default Header;
-// import React, { useState, useEffect } from 'react';
-// import ConfirmationModal from './ConfirmationModel';
-
-// function Header() {
-
-//   return (
-//     <div className='border-b-[1px] py-6 px-3 border-gray-300 w-full'>
-//       <div className='flex gap-4 items-center'>
-//         <span className='font-customFont bg-red-300 rounded-full py-3 px-[18px]'>
-//           JD
-//         </span>
-//         <p className='mb-0 font-semibold text-2xl text-black'>Kevin Thumbar</p>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Header;

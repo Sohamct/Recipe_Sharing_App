@@ -9,16 +9,19 @@ import { UserProvider } from './features/context';
 import { ProgressProvider } from './features/ProgressContext';
 import {FilterProvider} from './features/FilterContext';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UserProvider>
       <ProgressProvider>
+
         <FilterProvider>
           <Provider store={store}>
             <App />
           </Provider>
         </FilterProvider>
+
       </ProgressProvider>
     </UserProvider>
   </React.StrictMode>

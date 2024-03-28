@@ -72,9 +72,9 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
             console.log(error);
         }
         // send message to socket server
-        console.log(messages);
+        // console.log(messages);
         const recieverUsername = chat.members.find((uname) => uname !== username);
-        console.log(recieverUsername);
+        // console.log(recieverUsername);
         setSendMessage({ ...message, recieverUsername });
 
     }

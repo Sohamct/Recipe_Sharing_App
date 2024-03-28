@@ -17,6 +17,7 @@ const cloudinary = require('../cloudinary');
 //  -----------------------------------------------------
 // Route-1: POST create a recipe using: '/api/auth/createrecipe'
 router.post('/createrecipe', [fetchUser], async (req, res) => {
+
   try {
     console.log(req.body);
     const errors = validationResult(req);
@@ -48,6 +49,7 @@ router.post('/createrecipe', [fetchUser], async (req, res) => {
       vegNonVeg: vegNonVeg,
       dishType: dishType,
       createdAt: new Date()
+
     });
 
     res.status(201).json({ message: 'Recipe created successfully', data: recipe });
@@ -57,13 +59,14 @@ router.post('/createrecipe', [fetchUser], async (req, res) => {
   }
 });
 
-
 router.put('/editrecipe', [fetchUser], async (req, resp) => {
+
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return resp.status(400).json({ errors: errors.array() });
     }
+
 
     const { title, _id, description, ingredients, owner, category, vegNonVeg, dishType} = req.body;
 
@@ -71,8 +74,9 @@ router.put('/editrecipe', [fetchUser], async (req, resp) => {
     if (!req.user) {
       return resp.status(401).json({ message: 'You are Unauthorized' });
     }
-    
+
     const username = req.user.username;
+    // console.log(owner, username)
     if (username !== owner) {
       return resp.status(403).json({ message: 'Forbidden: You are not allowed to edit this recipe' });
     }
@@ -96,6 +100,7 @@ router.put('/editrecipe', [fetchUser], async (req, resp) => {
       };
     }
 
+
     const recipe = await Recipe.findOneAndUpdate(
       { _id: _id, owner: username },
       updateObject,
@@ -106,6 +111,7 @@ router.put('/editrecipe', [fetchUser], async (req, resp) => {
       return resp.status(404).json({ message: 'Recipe not found or unauthorized' });
     }
 
+
     resp.status(201).json({ message: 'Recipe edited successfully', data: recipe });
   } catch (error) {
     console.error('Error updating recipe:', error);
@@ -114,6 +120,7 @@ router.put('/editrecipe', [fetchUser], async (req, resp) => {
 });
 
 router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
+
 
   try {
     const errors = validationResult(req);
@@ -142,6 +149,7 @@ router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
       const public_id = recipeToDelete.image.public_id;
       await cloudinary.uploader.destroy(public_id);
 
+
     }
 
     await Comment.deleteMany({ _to: recipeId });
@@ -168,8 +176,7 @@ router.get('/fetchrecipes', fetchUser, async (req, resp) => {
 
     // const userId = req.user.id;
     const recipes = await Recipe.find({});
-    
-    // console.log("fetched all recipes ", recipes)
+
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
     // console.error(error);
@@ -191,8 +198,7 @@ router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
     }
 
     const recipes = await Recipe.find({ owner: ownerName });
-    console.log(recipes);
-    
+
     // console.log(recipes);
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
   } catch (error) {
@@ -215,7 +221,7 @@ router.get('/search', async (req, res) => {
     if (searchResults.length === 0) {
       return res.json({ results: [], message: 'No results found' });
     }
-    
+
 
     res.json({ results: searchResults });
   } catch (error) {
@@ -312,7 +318,7 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
 
       // Fetch the actual recipe details using the favoriteRecipeIds
       const favoriteRecipes = await Recipe.find({ _id: { $in: favoriteRecipeIds } });
-      
+
       res.status(200).json({ message: 'Favorite recipes fetched successfully', data: favoriteRecipes });
   } catch (error) {
       console.error(error);
@@ -344,111 +350,5 @@ router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
   }
 });
 
-
 module.exports = router;
 
-
-
-// ------------------------------------------------------
-// Route-1: POST create a user using: '/api/auth/createrecipe'
-// router.post('/createrecipe', [fetchUser], async (req, resp) => {
-//   console.log('Creating new recipe', req.body, req.header);
-//   try {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return resp.status(400).json({ errors: errors.array() });
-//     }
-
-//     const { title, description, ingredients } = req.body;
-
-//     // Check if req.user is defined before accessing req.user.id
-//     if (!req.user) {
-//       return resp.status(401).json({ message: 'Unauthorized' });
-//     }
-
-//     const username = req.user.username;
-//     console.log(username)
-//     const recipe = await Recipe.create({
-//       title,
-//       description,
-//       ingredients,
-//       owner: username,
-//     });
-
-//     resp.status(201).json({ message: 'Recipe created successfully', data: recipe });
-//   } catch (error) {
-//     console.error(error);
-//     resp.status(500).send('Unexpected error occurred');
-//   }
-// });
-
-// router.put('/editrecipe', [fetchUser], async (req, resp) => {
-//   console.log('Editing recipe', req.body, req.header);
-//   try {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return resp.status(400).json({ errors: errors.array() });
-//     }
-//     console.log(req.body)
-
-//     const { title, _id, description, ingredients, owner } = req.body;
-
-//     // Check if req.user is defined before accessing req.user.id
-//     if (!req.user) {
-//       return resp.status(401).json({ message: 'You are Unauthorized' });
-//     }
-
-//     const username = req.user.username;
-//     if (username !== owner) {
-//       return resp.status(403).json({ message: 'Forbidden: You are not allowed to edit this recipe' });
-//     }
-//     console.log(username)
-//     const recipe = await Recipe.findOneAndUpdate(
-//       { _id: _id, owner: username },
-//       { title, description, ingredients },
-//       { new: true } // returning the updated reicpe
-//     );
-//     if (!recipe) {
-//       return resp.status(404).json({ message: 'Recipe not found or unauthorized' });
-//     }
-//     console.log(recipe)
-
-//     resp.status(201).json({ message: 'Recipe edited successfully', data: recipe });
-//   } catch (error) {
-//     console.error('Error updating recipe:', error);
-//     return resp.status(500).json({ message: 'Internal server error' });
-//   }
-// });
-
-// router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
-//   // console.log("Dleteting recipe...");
-
-//   try {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return resp.status(400).json({ errors: errors.array() })
-//     }
-
-//     const { recipeId, owner } = req.body;
-
-//     if (!req.user) {
-//       return resp.status(401).json({ message: 'You are Unauthorized' });
-//     }
-
-//     const username = req.user.username;
-
-//     if (username != owner) {
-//       return resp.status(403).json({ message: 'Forbidden: You are not allowed to delete this recipe' });
-//     }
-//     await Comment.deleteMany({ _to: recipeId })
-//     const deletedRecipe = await Recipe.findOneAndDelete({ _id: recipeId });
-
-//     if (!deletedRecipe) {
-//       return resp.status(404).json({ message: "Recipe can not be deleted since it does not exists!" });
-//     }
-//     resp.status(200).json({ message: "Recipe deleted successfully!", data: deletedRecipe });
-//   } catch (error) {
-//     console.error('Error updating recipe:', error);
-//     return resp.status(500).json({ message: 'Internal server error' });
-//   }
-// })

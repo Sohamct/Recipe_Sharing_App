@@ -14,7 +14,7 @@ export const addMessage = async(message) =>{
                 throw new Error(`Failed to fetch comments. Status: ${response.status}`);
             }
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             if(data.status){
                 return data;
             }else{

@@ -18,7 +18,6 @@ const RecipeOwnedUser = ({ ownerName }) => {
                 console.error('Error fetching recipes:', error.message);
             }
         };
-
         fetchData();
     }, [ownerName]);
 

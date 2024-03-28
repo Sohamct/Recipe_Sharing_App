@@ -23,12 +23,12 @@ export const MyRecipe = () => {
         console.log(data);
         if (isMounted) {
           console.log('Data:', data.data);
+
           setUserRecipes(data.data);
           setLoading(false);
         }
       } catch (error) {
         console.error('Error fetching user recipes:', error.message);
-
         if (isMounted) {
           setLoading(false);
         }
