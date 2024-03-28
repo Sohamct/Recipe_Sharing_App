@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../features/UserContext';
+import { useUser } from '../../features/context';
 
 export const RecipeCardForUser = ({ recipe }) => {
 
@@ -21,11 +21,19 @@ export const RecipeCardForUser = ({ recipe }) => {
     <div className='container'>
       <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-52 h-64 mt-4 p-2 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
         <div className="relative h-32 w-full overflow-hidden mb-2 rounded-md shadow-md">
-          <img
-            src={require('../../assets/pizza.jpg')}
-            alt="card-image"
-            className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
-          />
+        {recipe?.image.url ? (
+        <img
+          src={recipe?.image.url}
+          alt="card-image"
+          className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+        />
+      ) : (
+        <img
+          src={require(`../../components/Uploads/default.png`)}
+          alt="card-image"
+          className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+        />
+      )}
         </div>
 
         <div className="p-1 mt-1">

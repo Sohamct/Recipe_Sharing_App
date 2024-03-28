@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../app/service/RecipeApi';
 import { RecipeCardForUser } from './RecipeCardForUser';
 
-import { useUser } from '../../features/UserContext';
+import { useUser } from '../../features/context';
 
 const RecipeOwnedUser = ({ ownerName }) => {
     const [recipes, setRecipes] = useState([]);

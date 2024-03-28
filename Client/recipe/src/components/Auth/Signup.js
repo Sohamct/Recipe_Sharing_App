@@ -1,46 +1,35 @@
+
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-
 import AuthService from "./Auth.service";
-
 
 export const Signup = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-    const username = e.target.elements.username.value;
-    const password = e.target.elements.password.value;
-    const cpassword = e.target.elements.cpassword.value;
-    const email = e.target.elements.email.value;
-    const firstname = e.target.elements.firstname.value;
-    const lastname = e.target.elements.lastname.value;
-    const gender = e.target.elements._gender.value;
-    const isPrivate = e.target.elements.isPrivate.value === "private";
-
+    const formData = new FormData(e.target);
+    const username = formData.get('username');
+    const password = formData.get('password');
+    const cpassword = formData.get('cpassword');
+    const email = formData.get('email');
+    const firstname = formData.get('firstname');
+    const lastname = formData.get('lastname');
+    const gender = formData.get('_gender');
+    const profilePic = formData.get('profilePic');
+    const instagramHandle = formData.get('instagramHandle');
+    const linkedinHandle = formData.get('linkedinHandle');
+    const twitterHandle = formData.get('twitterHandle');
 
     if (password !== cpassword) {
       toast.error("Password doesn't match with conform password");
       return;
     }
-    console.log(
-      username,
-      password,
-      email,
-      firstname,
-      lastname,
-      gender,
-      isPrivate
-    );
-
 
     const signupResponse = await AuthService.signup(
       username,
@@ -49,9 +38,11 @@ export const Signup = () => {
       firstname,
       lastname,
       gender,
-      isPrivate
+      profilePic,
+      instagramHandle,
+      linkedinHandle,
+      twitterHandle
     );
-
 
     if (signupResponse.success) {
       toast.success("Account created successfully", {
@@ -64,7 +55,7 @@ export const Signup = () => {
         progress: undefined,
         theme: "colored",
       });
-      navigate("/recipe");
+      navigate("/login");
     } else {
       toast.error(signupResponse.message, {
         autoClose: 2000,
@@ -73,23 +64,23 @@ export const Signup = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
 
-    if (token) {
-      alert('You are already logged in');
-      navigate('/');
-    }
-  }, []);
+  //   if (token) {
+  //     alert("You are already logged in");
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-1/2 bg-white border rounded p-8 shadow-md">
-        <h2 className="my-2 mt-2 text-center text-2xl font-bold">
+    <div className="flex items-center justify-center my-5">
+      <div className="w-[35rem] bg-white border rounded shadow-md">
+        <h2 className="my-2 mt-5 text-center text-2xl font-bold">
           Create an Account to use Recipe Book
         </h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-          <div className="my-2">
+        <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto my-4">
+          <div className="my-3">
             <label
               htmlFor="firstname"
               className="block text-sm font-semibold text-gray-600 mb-1"
@@ -105,8 +96,7 @@ export const Signup = () => {
             />
           </div>
 
-
-          <div className="my-2">
+          <div className="my-3">
             <label
               htmlFor="lastname"
               className="block text-sm font-semibold text-gray-600 mb-1"
@@ -122,10 +112,9 @@ export const Signup = () => {
             />
           </div>
 
-
-          <div className="my-2">
+          <div className="my-3">
             <label
-              htmlFor="lastname"
+              htmlFor="username"
               className="block text-sm font-semibold text-gray-600 mb-1"
             >
               Username
@@ -139,8 +128,7 @@ export const Signup = () => {
             />
           </div>
 
-
-          <div className="my-2">
+          <div className="my-3">
             <label
               htmlFor="email"
               className="block text-sm font-semibold text-gray-600 mb-1"
@@ -156,8 +144,55 @@ export const Signup = () => {
             />
           </div>
 
+          <div className="my-3">
+            <label
+              htmlFor="instagramHandle"
+              className="block text-sm font-semibold text-gray-600 mb-1"
+            >
+              Instagram Handle
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
+              id="instagramHandle"
+              name="instagramHandle" // Updated name attribute
+              placeholder="Enter Instagram handle"
+            />
+          </div>
 
-          <div className="my-2">
+          <div className="my-3">
+            <label
+              htmlFor="linkedinHandle"
+              className="block text-sm font-semibold text-gray-600 mb-1"
+            >
+              LinkedIn Handle
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
+              id="linkedinHandle"
+              name="linkedinHandle" // Updated name attribute
+              placeholder="Enter LinkedIn handle"
+            />
+          </div>
+
+          <div className="my-3">
+            <label
+              htmlFor="twitterHandle"
+              className="block text-sm font-semibold text-gray-600 mb-1"
+            >
+              Twitter Handle
+            </label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
+              id="twitterHandle"
+              name="twitterHandle" // Updated name attribute
+              placeholder="Enter Twitter handle"
+            />
+          </div>
+
+          <div className="my-3">
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -170,8 +205,7 @@ export const Signup = () => {
             />
           </div>
 
-
-          <div className="my-2">
+          <div className="my-3">
             <label htmlFor="cpassword">Confirm Password</label>
             <input
               type="password"
@@ -184,10 +218,9 @@ export const Signup = () => {
             />
           </div>
 
-
-          <div className="my-2">
-            <label className="mr-2">Select Gender:</label>
-            <div className="flex">
+          <div className="my-3">
+            <label className="mr-2">Gender </label>
+            <div className="flex mt-2">
               <input
                 className="mr-2"
                 type="radio"
@@ -196,59 +229,52 @@ export const Signup = () => {
                 value="female"
               />
               <label htmlFor="female">Female</label>
+              <div className=" mx-3">
+                <input
+                  className="mr-2"
+                  type="radio"
+                  name="_gender"
+                  id="male"
+                  value="male"
+                />
+                <label htmlFor="male">Male</label>
+              </div>
             </div>
-            <div className="flex">
+
+            <div className="my-3">
+              <label htmlFor="profilePic" className="block text-base mb-1">
+                Profile Picture
+              </label>
               <input
-                className="mr-2"
-                type="radio"
-                name="_gender"
-                id="male"
-                value="male"
+                type="file"
+                accept="image/*"
+                className="block w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
+                id="profilePic"
+                name="profilePic"
               />
-              <label htmlFor="male">Male</label>
+              <small className="text-gray-500">Select an image for your profile picture.</small>
             </div>
+
+
           </div>
-
-
-          <div className="my-2">
-            <label className="mr-2">Select Account type:</label>
-            <div className="flex">
-              <input
-                className="mr-2"
-                type="radio"
-                name="isPrivate"
-                id="private"
-                value="private"
-              />
-              <label htmlFor="private">Private</label>
-            </div>
-            <div className="flex">
-              <input
-                className="mr-2"
-                type="radio"
-                name="isPrivate"
-                id="public"
-                value="public"
-              />
-              <label htmlFor="public">Public</label>
-            </div>
-          </div>
-
 
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded my-2 col-span-2 hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+            className="bg-blue-500 text-white px-4 py-2 rounded my-2 w-full hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
           >
             Signup
           </button>
+
+
         </form>
-        <div className="text-center">
-              Already registered ?{" "}
-              <span
-                onClick={()=>navigate('/login')}
-                className="text-red-600 font-semibold decoration-red-600 hover:text-red-800 hover:underline cursor-pointer">
-                Login now
-              </span>
+
+        <div className="text-center mb-4">
+          Already registered ?{" "}
+          <span
+            onClick={() => navigate('/login')}
+            className="text-red-600 font-semibold decoration-red-600 hover:text-red-800 hover:underline cursor-pointer">
+            Login now
+          </span>
         </div>
         <ToastContainer />
       </div>

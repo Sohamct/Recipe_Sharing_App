@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useUser } from '../../../../features/UserContext';
+import { useUser } from '../../../../features/context.js';
 import { useNavigate } from 'react-router-dom';
 import '../../../../assets/css/StyleRecipeItem.css';
 import RecipeFavoriteButton from '../../../Favorites/RecipeFavoriteButton.js';
@@ -45,11 +45,11 @@ export const RecipeItem = ({  _id, title, owner, createdAt, description, image, 
       return `${seconds} second${seconds >= 1 ? 's' : ''} ago`;
     }
   };
-  console.log(updatedAt, createdAt);
+  // console.log(updatedAt, createdAt);
   return (
     <div className='container'>
-      <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
-        <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
+    <div className="relative flex flex-col text-gray-700 bg-white rounded-xl w-80 mt-4 p-3 border border-blue-50 shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+      <div className="relative h-48 w-full overflow-hidden mb-2 rounded-md shadow-md">
             {!imageLoaded && (
             <div
               className="object-cover w-full h-full rounded-t-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md skeleton"
@@ -72,17 +72,19 @@ export const RecipeItem = ({  _id, title, owner, createdAt, description, image, 
 
         <div className="p-3 mt-2">
 
+        <div className="flex justify-between">
         <h5 className={`block mb-2 font-sans text-lg font-semibold leading-snug tracking-normal text-blue-gray-900 ${!imageLoaded && 'skeleton skeleton-text'}`}>
-            {imageLoaded ? 'Title :' : ''}  {imageLoaded ? (title.length > 19 ? title.slice(0, 19) + '...' : title) : ''}
+            {imageLoaded ? (title?.length > 20  ? title?.slice(0, 20) + '...' : title) : '' }
           </h5>
           <div className='hover:cursor-pointer'>
             {imageLoaded && <RecipeFavoriteButton
               recipeId={_id}
             />}
             </div>
+        </div>
 
             <p className={`block font-sans text-sm antialiased font-light leading-relaxed text-inherit ${!imageLoaded && 'skeleton skeleton-text'}`}>
-            {imageLoaded ? 'By' : ''} {imageLoaded ? (owner === user.username ? 'You' : owner) : ''}
+            {imageLoaded ? 'By' : ''} {imageLoaded ? (owner === user?.username ? 'You' : owner) : ''}
           </p>
           <p className={`block font-sans text-sm antialiased font-light leading-relaxed text-inherit ${!imageLoaded && 'skeleton skeleton-text'}`}>
           {imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created '+ calculateRelativeTime(createdAt))) : '' }

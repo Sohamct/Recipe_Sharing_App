@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Chat.css';
 import { Link } from 'react-router-dom';
-import { useUser } from '../../features/UserContext';
+import { useUser } from '../../features/context';
 import useChatStore from '../../features/chat/chatStore';
 import { Conversation } from './Conversation';
 import { IoNotifications } from 'react-icons/io5';

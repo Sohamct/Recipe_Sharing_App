@@ -10,6 +10,7 @@
     "@iconscout/react-unicons": "^2.0.2",
     "@material-tailwind/react": "^2.1.8",
     "@mui/icons-material": "^5.15.12",
+    "@mui/icons-material": "^5.15.12",
     "@reduxjs/toolkit": "^2.0.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -32,6 +33,7 @@
     "socket.io-client": "^4.7.4",
     "tailgrids": "^2.1.0",
     "timeago.js": "^4.0.2",
+    "update": "^0.7.4",
     "update": "^0.7.4",
     "web-vitals": "^2.1.4",
     "zustand": "^4.5.0"

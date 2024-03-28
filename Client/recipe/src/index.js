@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-import { UserProvider } from './features/UserContext';
+import { UserProvider } from './features/context';
 import { ProgressProvider } from './features/ProgressContext';
 import {FilterProvider} from './features/FilterContext';
 

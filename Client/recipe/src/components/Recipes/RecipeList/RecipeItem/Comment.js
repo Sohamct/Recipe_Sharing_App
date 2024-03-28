@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './comment.css';
 import { FaReply, FaTrash } from 'react-icons/fa';
-import { useUser } from '../../../../features/UserContext';
+import { useUser } from '../../../../features/context';
 import loadingGif from '../../../../../src/loading.gif'
 
 export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {

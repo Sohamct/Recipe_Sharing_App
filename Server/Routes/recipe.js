@@ -184,12 +184,14 @@ router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
     }
 
     const ownerName = req.query.owner; 
+    console.log(ownerName);
     
     if (!ownerName) {
       return resp.status(400).json({ message: 'Owner name is required' });
     }
 
     const recipes = await Recipe.find({ owner: ownerName });
+    console.log(recipes);
     
     // console.log(recipes);
     resp.status(201).json({ message: 'Recipes fetched successfully', data: recipes });
@@ -201,6 +203,7 @@ router.get('/fetchrecipesbyowner', fetchUser, async (req, resp) => {
 
 router.get('/search', async (req, res) => {
   try {
+    
     const searchTerm = req.query.q;
 
     if (!searchTerm || searchTerm.trim() === '') {
@@ -230,11 +233,17 @@ router.get('/suggestions', async (req, res) => {
     }
 
     // Use the keyword to query the database for matching recipes
+    if (keyword.trim() === '') {
+      return res.json({ suggestions: [] }); // Return an empty array if keyword is an empty string
+    }
+
+    // Use the keyword to query the database for matching recipes
     const matchingRecipes = await Recipe.find({
       $or: [
         { title: { $regex: keyword, $options: 'i' } },
         { owner: { $regex: keyword, $options: 'i' } },
         { description: { $regex: keyword, $options: 'i' } },
+        { 'ingredients.ingredient_name': { $regex: keyword, $options: 'i' } },
         { 'ingredients.ingredient_name': { $regex: keyword, $options: 'i' } },
       ],
     });
@@ -290,6 +299,9 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
       if (!req.user) {
           return res.status(401).json({ message: 'Unauthorized' });
       }
+      if (!req.user) {
+          return res.status(401).json({ message: 'Unauthorized' });
+      }
 
       const userId = req.user.id; 
       // console.log(userId);
@@ -305,11 +317,14 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Unexpected error occurred' });
+      console.error(error);
+      res.status(500).json({ error: 'Unexpected error occurred' });
   }
 });
 
 router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
   const { recipeId } = req.body;
+
 
   try {
     if (!req.user) {

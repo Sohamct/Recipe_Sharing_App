@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useUser } from '../../features/UserContext';
+import { useUser } from '../../features/context';
 import { CgProfile } from 'react-icons/cg';
 import AuthService from '../Auth/Auth.service';
 import ReactLoading from 'react-loading';

@@ -3,6 +3,7 @@ import api from '../../app/service/RecipeApi';
 import { RecipeItem } from '../Recipes/RecipeList/RecipeItem/RecipeItem';
 import { useNavigate } from 'react-router-dom';
 
+
 const FavoriteRecipePage = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState(new Array(16).fill(null));
   const [loading, setLoading] = useState(true);
@@ -49,23 +50,25 @@ const FavoriteRecipePage = () => {
       <hr />
       
       <div>
-        {/* {loading ? ( */}
-          {/* <p className='bg-center text-center text-base'>Loading favorite recipes...</p> */}
-        {/* ) :  */}
-        {!loading && favoriteRecipes.length > 0 ? (
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5'>
-            {favoriteRecipes.map((recipe) => (
-              <RecipeItem key={recipe._id} {...recipe} />
-            ))}
-          </div>
-        ) : (
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5'>
+        {loading ? (
+          <>
           {favoriteRecipes.map((recipe, index) => (
-              <RecipeItem key={index} {...recipe} />
-            ))}
-          </div>
+                  <RecipeItem key={index} {...recipe} />
+                ))}
+          </>
+        ) : (
+          <>
+            {favoriteRecipes.length > 0 ? (
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5'>
+                {favoriteRecipes.map((recipe) => (
+                  <RecipeItem key={recipe._id} {...recipe} />
+                ))}
+              </div>
+            ) : (
+              <p className='container ml-8 text-xl text-center'>No Favorite recipe found</p>
+            )}
+          </>
         )}
-        {/* } */}
       </div>
     </div>
   );

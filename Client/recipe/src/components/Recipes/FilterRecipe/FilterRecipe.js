@@ -31,25 +31,8 @@ export const FilterRecipe = ({ onFilter }) => {
         {isFilterOpen && <Filter  isOpen={isFilterOpen} onClose={closeFilter}/>}
 
         <SearchRecipe className="mr-4"/>
-        <div className='mx-3'>
-          <select
-            id="category"
-            className="border rounded-md p-2"
-            value={category}
-            onChange={handleCategoryChange}
-          >
-            <option value="all">All</option>
-            <option value="veg">Veg</option>
-            <option value="nonveg">Non-Veg</option>
-          </select>
-        </div>
+        
         <div>
-          <button
-            className="rounded-md bg-blue-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            onClick={handleFilter}
-          >
-            Filter
-          </button>
         </div>
       </div>
     </div>

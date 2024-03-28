@@ -4,7 +4,7 @@ import { createRecipeAsync, editRecipeAsync } from '../../../features/recipe/Sli
 import { toast } from 'react-toastify';
 import { Navigation } from '../../Navigation';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
-import { useUser } from '../../../features/UserContext';
+import { useUser } from '../../../features/context';
 import { useProgress } from '../../../features/ProgressContext';
 
 const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];

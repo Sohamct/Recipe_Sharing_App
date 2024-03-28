@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../app/service/RecipeApi';
-import { useUser } from '../../features/UserContext';
+import { useUser } from '../../features/context';
 import { RecipeItem } from '../Recipes/RecipeList/RecipeItem/RecipeItem';
 
 export const MyRecipe = () => {
@@ -19,10 +19,10 @@ export const MyRecipe = () => {
 
         console.log('Fetching recipes...');
         console.log(user);
-        const data = await api.fetchRecipesByOwnerAsync(user.username);
+        const data = await api.fetchRecipesByOwnerAsync(user?.username);
         console.log(data);
         if (isMounted) {
-          console.log('Data:', data);
+          console.log('Data:', data.data);
           setUserRecipes(data.data);
           setLoading(false);
         }
@@ -66,11 +66,17 @@ export const MyRecipe = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
-            {userRecipes.map((recipe) => (
-              <RecipeItem key={recipe._id} {...recipe} />
-            ))}
-          </div>
+          <>
+            {userRecipes.length === 0 ? (
+              <p className='container ml-8 text-xl text-center'>No Recipe Found</p>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
+                {userRecipes.map((recipe) => (
+                  <RecipeItem key={recipe._id} {...recipe} />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </>

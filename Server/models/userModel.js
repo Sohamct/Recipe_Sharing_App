@@ -25,13 +25,16 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    profileImage: {
-        type: String
-    },
-    isPrivate: {
-        type: Boolean,
-        required: true
-    },
+    profileImage:{ 
+        public_id: {
+          type: String,
+          required: true  
+        },
+        url: {
+          type: String,
+          required: true
+        }
+      },
     followers: [
         {
             type: mongoose.Schema.Types.ObjectId, 

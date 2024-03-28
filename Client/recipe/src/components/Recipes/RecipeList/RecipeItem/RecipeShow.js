@@ -6,7 +6,7 @@ import { Comment } from './Comment';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Navigation } from '../../../Navigation';
-import { useUser } from '../../../../features/UserContext';
+import { useUser } from '../../../../features/context';
 import DeleteConfirmation from './DeleteConfirmation';
 import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recipe/Slice/recipe_slice';
 import { IoChatboxEllipses } from "react-icons/io5";
@@ -18,7 +18,7 @@ export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
   const [deleteClick, setDeleteClick] = useState(false);
   const { user, loading: userLoading } = useUser();
-  const {updateProgress} = useProgress();
+  const { updateProgress } = useProgress();
   const [recipe, setRecipe] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ export const RecipeShow = () => {
       addComment: state.addComment,
       fetchComment: state.fetchComment,
     })
-  );console.log(commentByRecipe);
+  ); console.log(commentByRecipe);
 
   // Loading state while fetching data
   if (userLoading || !recipe) {
@@ -176,26 +176,33 @@ export const RecipeShow = () => {
                     </Link>
                   )
                 }
+                {
+                  isRecipeOwner ? null : (
+                    <Link to={`/user-profile/${owner}`}>
+                      <span className="text-blue-500 cursor-pointer">{owner}</span>
+                    </Link>
+                  )
+                }
                 <h5 className="text-xl font-semibold">{title}</h5>
                 <p className="text-gray-600">
-                  <small>{imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created '+ calculateRelativeTime(createdAt))) : '' }</small>
+                  <small>{imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created ' + calculateRelativeTime(createdAt))) : ''}</small>
                 </p>
                 {image ? (
-        <img
-          src={image.url}
-          onLoad={handleImageLoad}
-          alt="card-image"
-          className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
-        />
-      ) : (
-        <img
-          src={require(`../../../../components/Uploads/default.png`)}
-          onLoad={handleImageLoad}
-          alt="card-image"
-          className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
-        />
-      )}
-                
+                  <img
+                    src={image.url}
+                    onLoad={handleImageLoad}
+                    alt="card-image"
+                    className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+                  />
+                ) : (
+                  <img
+                    src={require(`../../../../components/Uploads/default.png`)}
+                    onLoad={handleImageLoad}
+                    alt="card-image"
+                    className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
+                  />
+                )}
+
               </div>
               {user.username === recipe.owner ? '' : <p className="relative">
                 <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" onClick={() => makeNewChat(recipe.owner)} />
