@@ -19,6 +19,7 @@ function Content() {
     linkedinHandle: '',
     twitterHandle: ''
   });
+  
 
   useEffect(() => {
     const getUserData = async () => {
@@ -47,32 +48,46 @@ function Content() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
-
+  
   const handleSubmit = async () => {
     try {
-      await updateUserDetails(formData); // Update server data
-
+      // Create a copy of formData to filter out empty fields
+      const updatedData = {};
+      Object.keys(formData).forEach(key => {
+        if (formData[key]) {
+          updatedData[key] = formData[key];
+        }
+      });
+  
+      // Update user details only with non-empty fields
+      await updateUserDetails(updatedData);
+  
       // Fetch user details again to get the updated username from local storage
       const updatedUsername = localStorage.getItem('username');
       const updatedUserDetails = await fetchUserDetails(updatedUsername);
       setUserDetails(updatedUserDetails.user);
-
+  
       // Construct a user object with the updated username
       const updatedUser = { ...updatedUserDetails.user, username: formData.username };
-
+  
       // Pass the updated user object to setUser
       setUser(updatedUser);
-
+  
       // Navigate to the new URL with the updated username
       navigate(`/user-profile/${formData.username}`);
-
+  
       setEditingField(null);
     } catch (error) {
       console.error('Error updating user details:', error);
     }
   };
+  
 
   return (
     <div>

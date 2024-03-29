@@ -63,15 +63,6 @@ export const Signup = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      alert("You are already logged in");
-      navigate("/");
-    }
-  }, []);
-
   return (
     <div className="flex items-center justify-center my-5">
       <div className="w-[35rem] bg-white border rounded shadow-md">

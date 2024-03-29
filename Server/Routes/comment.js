@@ -10,7 +10,7 @@ const router = express.Router();
 
 // Route-1: create a user using: '/api/comment/addComment'
 router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
-  console.log('Adding new comment', req.body, req.header);
+  // console.log('Adding new comment', req.body, req.header);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

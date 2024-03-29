@@ -54,7 +54,7 @@ export const fetchRecipesAsync = createAsyncThunk('recipe/fetchRecipes', async (
     responseReceived = true; 
     clearInterval(intervalId); 
     updateProgress(100); 
-    console.log(response);
+    // console.log(response);
 
     return response;
   } catch (error) {

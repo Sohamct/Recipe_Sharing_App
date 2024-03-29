@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
 import { useProgress } from '../../../features/ProgressContext';
 import { FilterContext } from '../../../features/FilterContext';
+import { useLocation } from 'react-router-dom';
 
 
 export const RecipeList = () => {
@@ -43,13 +44,13 @@ export const RecipeList = () => {
   if (recipesState.status === 'loading') {
     return <h3>Loading...</h3>;
   }
-  console.log(filterData);
+  // console.log(filterData);
   if (recipesState.status === 'failed') {
     return <p>Error: {recipesState.error.fetchError}</p>;
   }
 
   // const recipes = recipesState.recipes || [];
-  console.log(recipesState.recipes);
+  // console.log(recipesState.recipes);
   const filteredRecipes = recipesState.recipes.filter(recipe => {
     if (
 
