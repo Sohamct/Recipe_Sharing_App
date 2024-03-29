@@ -17,7 +17,7 @@ router.post('/', fetchUser, async(req, resp) => {
             return resp.status(404).send("User with provided username does not exists!");
         }
         const isChatExist = await chatModel.findOne({members:{ $all: [req.body.sender, req.body.receiver]}});
-
+        console.log(isChatExist);
         if(isChatExist){
             return resp.status(200).json({message: "Chat is opened!", isNew: false, data:true, status:true})
         }
@@ -25,8 +25,9 @@ router.post('/', fetchUser, async(req, resp) => {
         const newChat = new chatModel({
             members: [req.body.sender, req.body.receiver]
         });
-
+        console.log(newChat);
         const result = await newChat.save();
+        console.log(result);
         resp.status(200).json({message: "Chat created successfully", data:result, status:true, isNew: true});
     }catch(error){
         resp.status(500).json(error);

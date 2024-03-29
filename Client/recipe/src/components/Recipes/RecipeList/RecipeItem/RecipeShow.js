@@ -12,7 +12,7 @@ import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recip
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
 import { useProgress } from '../../../../features/ProgressContext';
-
+import {TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon, WhatsappShareButton, WhatsappIcon} from 'react-share';
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
@@ -142,7 +142,7 @@ export const RecipeShow = () => {
   };
   const makeNewChat = async (owner) => {
     try {
-      const response = await addChat({ sender: user.username, receiver: owner });
+      const response = await addChat({ sender: user?.username, receiver: owner });
       console.log(response)
       if (response.data) {
         navigate('/chat')
@@ -156,7 +156,7 @@ export const RecipeShow = () => {
   }
 
 
-  const isRecipeOwner = (user.username === owner);
+  const isRecipeOwner = (user?.username === owner);
 
   return (
     <div>
@@ -169,24 +169,26 @@ export const RecipeShow = () => {
           <div>
             <div className="flex justify-between items-center">
               <div>
-                {
-                  isRecipeOwner ? null : (
-                    <Link to={`/user-profile/${owner}`}>
-                      <span className="text-blue-500 cursor-pointer">{owner}</span>
-                    </Link>
-                  )
-                }
-                {
-                  isRecipeOwner ? null : (
-                    <Link to={`/user-profile/${owner}`}>
-                      <span className="text-blue-500 cursor-pointer">{owner}</span>
-                    </Link>
-                  )
-                }
-                <h5 className="text-xl font-semibold">{title}</h5>
-                <p className="text-gray-600">
-                  <small>{imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created ' + calculateRelativeTime(createdAt))) : ''}</small>
-                </p>
+                {!isRecipeOwner && (
+                  <Link to={`/user-profile/${owner}`}>
+                    <span className="text-blue-500 cursor-pointer">{owner}</span>
+                  </Link>
+                )}
+                <h3 className="text-3xl font-semibold">{title}</h3>
+                <div className="flex items-center justify-between w-full">
+                  <h3 className="text-2xl font-semibold">{dishType}</h3><br/>
+                  <h3 className="text-2xl font-semibold">({category})</h3>
+                  <div className="flex items-center">
+                    {vegNonVeg === 'Veg' ? (
+                      <span className="text-green-500 mr-2">Pure veg</span>
+                    ) : (
+                      <span className="text-red-500 mr-2">Non veg</span>
+                    )}
+                    <p className="text-gray-600">
+                      <small>{imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created ' + calculateRelativeTime(createdAt))) : ''}</small>
+                    </p>
+                  </div>
+                </div>
                 {image ? (
                   <img
                     src={image.url}
@@ -202,21 +204,37 @@ export const RecipeShow = () => {
                     className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
                   />
                 )}
-
               </div>
-              {user.username === recipe.owner ? '' : <p className="relative">
-                <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" onClick={() => makeNewChat(recipe.owner)} />
-              </p>}
-              {
-                user.username === recipe.owner ? (
-                  <div className="flex">
-
-                    <FaEdit onClick={handleEditClick} size={25} className="mx-4 cursor-pointer hover:text-blue-500 transition-colors duration-300" />
-                    <FaTrash onClick={handleDeleteClick} size={25} className="mx-4 cursor-pointer hover:text-red-500 transition-colors duration-300" />
-                  </div>
-                ) : null
-              }
-
+              <div>
+                <FacebookShareButton 
+                  url={`Image: ${image.url}\nRecipe Link: ${window.location.href}`}
+                  quote={`Unleash the chef in you and create magic in the kitchen with our irresistible and tasty ${dishType} ${title}`}
+                  hashtag={`#${dishType}${title} ${category}`}>
+                  <FacebookIcon widths={42} height={42} logoFillColor="white" round={true}></FacebookIcon>
+                </FacebookShareButton>
+                <WhatsappShareButton
+                  imageUrl={image.url}
+                  title={`Elevate your taste buds with our mouthwatering ${dishType} ${title}`}
+                  url={`Image: ${image.url} \nRecipe Link: ${window.location.href}`}
+                  hashtag={title}
+                  >
+                  <WhatsappIcon widths={42} height={42} logoFillColor="white" round={true}></WhatsappIcon>
+                </WhatsappShareButton>
+                <TwitterShareButton>
+                  <TwitterIcon widths={42} height={42} logoFillColor="white" round={true}></TwitterIcon>
+                </TwitterShareButton>
+              </div>
+              {!isRecipeOwner && (
+                <p className="relative">
+                  <IoChatboxEllipses size={25} className="cursor-pointer text-gray-500 hover:text-gray-800" onClick={() => makeNewChat(recipe.owner)} />
+                </p>
+              )}
+              {isRecipeOwner && (
+                <div className="flex">
+                  <FaEdit onClick={handleEditClick} size={25} className="mx-4 cursor-pointer hover:text-blue-500 transition-colors duration-300" />
+                  <FaTrash onClick={handleDeleteClick} size={25} className="mx-4 cursor-pointer hover:text-red-500 transition-colors duration-300" />
+                </div>
+              )}
             </div>
 
             <div className="mt-4">
@@ -229,7 +247,6 @@ export const RecipeShow = () => {
                 ))}
               </ul>
 
-              {/* Add your steps here */}
               <h6 className="card-subtitle mt-3 mb-2 text-muted">Steps:</h6>
               <ol>
                 {description}
@@ -240,10 +257,7 @@ export const RecipeShow = () => {
                   className="form-control"
                   value={CommentText} onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Type here..." />
-                <button className="btn btn-primary mt-2"
-                  onClick={() => {
-                    handleCommentSubmit()
-                  }}>Add Comment</button>
+                <button className="btn btn-primary mt-2" onClick={handleCommentSubmit}>Add Comment</button>
               </div>
             </div>
 

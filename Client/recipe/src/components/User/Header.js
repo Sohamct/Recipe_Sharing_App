@@ -11,7 +11,7 @@ function Header({ ownerName, onFollowToggle }) {
   const [profilePic, setProfilePic] = useState(null);
   const [reloadComponent, setReloadComponent] = useState(false); // State to trigger component reload
   const { username } = useUser();
-  console.log(UserProfile);
+  // console.log(UserProfile);
   useEffect(() => {
     const getUserData = async () => {
       try {

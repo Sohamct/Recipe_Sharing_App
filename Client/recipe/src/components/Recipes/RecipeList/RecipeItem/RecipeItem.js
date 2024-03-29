@@ -20,7 +20,14 @@ export const RecipeItem = ({  _id, title, owner, createdAt, description, image, 
     navigate(`/viewrecipe/${_id}`);
   };
 
+  const updatedAtStripped = new Date(updatedAt);
+  const createdAtStripped = new Date(createdAt);
 
+  updatedAtStripped.setMilliseconds(0);
+  createdAtStripped.setMilliseconds(0);
+
+  const updatedAtTimestamp = updatedAtStripped.getTime();
+  const createdAtTimestamp = createdAtStripped.getTime();
   const calculateRelativeTime = (timestamp) => {
     const now = new Date();
     const commentTime = new Date(timestamp);
@@ -32,17 +39,17 @@ export const RecipeItem = ({  _id, title, owner, createdAt, description, image, 
     const months = Math.floor(days / 30);
     const years = Math.floor(months / 12);
     if (years > 0) {
-      return `${years} year${years >= 1 ? 's' : ''} ago`;
+      return `${years} year${years > 1 ? 's' : ''} ago`;
     } else if (months > 0) {
-      return `${months} month${months >= 1 ? 's' : ''} ago`;
+      return `${months} month${months > 1 ? 's' : ''} ago`;
     } else if (days > 0) {
-      return `${days} day${days >= 1 ? 's' : ''} ago`;
+      return `${days} day${days > 1 ? 's' : ''} ago`;
     } else if (hours > 0) {
-      return `${hours} hour${hours >= 1 ? 's' : ''} ago`;
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
     } else if (minutes > 0) {
-      return `${minutes} minute${minutes >= 1 ? 's' : ''} ago`;
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     } else {
-      return `${seconds} second${seconds >= 1 ? 's' : ''} ago`;
+      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
     }
   };
   // console.log(updatedAt, createdAt);
@@ -87,7 +94,7 @@ export const RecipeItem = ({  _id, title, owner, createdAt, description, image, 
             {imageLoaded ? 'By' : ''} {imageLoaded ? (owner === user?.username ? 'You' : owner) : ''}
           </p>
           <p className={`block font-sans text-sm antialiased font-light leading-relaxed text-inherit ${!imageLoaded && 'skeleton skeleton-text'}`}>
-          {imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created '+ calculateRelativeTime(createdAt))) : '' }
+          {imageLoaded ? (updatedAtTimestamp !== createdAtTimestamp ? ('Updated ' + calculateRelativeTime(updatedAtTimestamp)) : ('Created ' + calculateRelativeTime(createdAtTimestamp))) : ''}
           </p>
         </div>
         <div className="p-4 pt-0">

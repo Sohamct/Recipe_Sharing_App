@@ -43,7 +43,7 @@ export const fetchUserDetailsbyUsername = async (username) => {
       },
       body: JSON.stringify({ username }),
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user details: ", error);
