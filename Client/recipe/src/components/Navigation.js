@@ -12,8 +12,6 @@ export const Navigation = () => {
   const [selectedSection, setSelectedSection] = useState('home'); 
   const { user } = useUser();
   
-  // const username = user.username;
-  console.log(user);
 
   useEffect(() => {
     const getUserData = async () => {

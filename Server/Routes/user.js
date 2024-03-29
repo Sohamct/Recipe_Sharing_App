@@ -44,10 +44,15 @@ router.get('/detailsbyusername', async (req, res) => {
 
 router.put('/update-details', fetchUser, async (req, res) => {
   try {
+    // Check if req.user is defined
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
     // Retrieve user details from the request body
     const { email, firstname, lastname, username, instagramHandle, linkedinHandle, twitterHandle } = req.body;
 
-    // Check if any required fields are missing
+    // Validate required fields
     if (!email || !firstname || !lastname) {
       return res.status(400).json({ error: "Email, firstname, and lastname are required fields" });
     }
@@ -75,10 +80,11 @@ router.put('/update-details', fetchUser, async (req, res) => {
     // Respond with success message and updated user details
     res.json({ success: true, message: "User details updated successfully", user: userToUpdate });
   } catch (error) {
-    console.error("Error updating user details:", error.message);
+    console.error("Error updating user details:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 router.put('/follow', fetchUser, async (req, res) => {
@@ -88,6 +94,7 @@ router.put('/follow', fetchUser, async (req, res) => {
     if (!userIdToFollow) {
       return res.status(400).json({ error: "userIdToFollow is required" });
     }
+
 
     // Check if the user to follow exists
     const userToFollow = await User.findById(userIdToFollow);

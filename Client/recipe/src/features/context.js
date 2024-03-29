@@ -14,11 +14,11 @@ export const UserProvider = ({children}) => {
     }, []);
 
     useEffect(() => {
-        console.log("UserProvider useEffect triggered");
+        // console.log("UserProvider useEffect triggered");
         if (!user) {
             const storedUser = localStorage.getItem('user');
             if (storedUser) {
-                console.log("Stored user found:", storedUser);
+                // console.log("Stored user found:", storedUser);
                 setUserDetails(JSON.parse(storedUser)); // Parse the stored user string back to an object
             }
         }
