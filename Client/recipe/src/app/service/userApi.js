@@ -30,7 +30,6 @@ export const fetchUserDetails = async () => {
 export const fetchUserDetailsbyUsername = async (username) => {
   try {
     const token = localStorage.getItem('token');
-    console.log(username);
     if (!token) {
       throw new Error("Token not found !!");
     }
@@ -43,7 +42,11 @@ export const fetchUserDetailsbyUsername = async (username) => {
       },
       body: JSON.stringify({ username }),
     });
+<<<<<<< HEAD
     // console.log(response.data);
+=======
+
+>>>>>>> b1eb9b7d485e237a1e25aed941fcd6f1c3042b35
     return response.data;
   } catch (error) {
     console.error("Error fetching user details: ", error);

@@ -26,7 +26,7 @@ export const useCommentStore = create(
       fetchComment: async (recipeId) => {
         try {
             const comments = await fetchComments(recipeId);
-            console.log(comments.data)
+            // console.log(comments.data)
             set((state) => ({
             commentByRecipe: {
               ...state.commentByRecipe, [recipeId]:comments.data

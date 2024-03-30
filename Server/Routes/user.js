@@ -36,6 +36,7 @@ router.get('/detailsbyusername', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     console.log(user);
+
     res.json(user);
   } catch (error) {
     console.error('Error fetching user details:', error);
@@ -80,10 +81,11 @@ router.put('/update-details', fetchUser, async (req, res) => {
     console.log("Updated the 3 schemas");
     res.json({ success: true, message: "User details updated successfully", user: userToUpdate });
   } catch (error) {
-    console.error("Error updating user details:", error.message);
+    console.error("Error updating user details:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 router.put('/follow', fetchUser, async (req, res) => {
@@ -93,6 +95,7 @@ router.put('/follow', fetchUser, async (req, res) => {
     if (!userIdToFollow) {
       return res.status(400).json({ error: "userIdToFollow is required" });
     }
+
 
     // Check if the user to follow exists
     const userToFollow = await User.findById(userIdToFollow);
@@ -171,5 +174,5 @@ router.put('/unfollow', fetchUser, async (req, res) => {
   }
 });
 
-
 module.exports = router;
+

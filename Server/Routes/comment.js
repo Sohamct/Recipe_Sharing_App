@@ -10,7 +10,7 @@ const router = express.Router();
 
 // Route-1: create a user using: '/api/comment/addComment'
 router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
-  console.log('Adding new comment', req.body, req.header);
+  // console.log('Adding new comment', req.body, req.header);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -56,7 +56,7 @@ router.get('/fetchComments/:id', fetchUser, async (req, resp) => {
     if (!req.user) {
       return resp.status(401).json({ message: 'Unauthorized' });
     }
-    console.log(req.params.id)
+    // console.log(req.params.id)
     const comments = await Comment.find({ _to: req.params.id });
     // console.log(comments);
     resp.status(201).json({ message: 'Comments fetched successfully', data: comments });

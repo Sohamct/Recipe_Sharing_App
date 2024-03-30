@@ -35,18 +35,27 @@ const userSchema = new mongoose.Schema({
           required: false
         }
       },
+    instagramHandle: {
+        type: String
+    },
+    linkedinHandle: {
+        type: String
+    },
+    twitterHandle: {
+        type: String
+    },
     followers: [
         {
-            type: mongoose.Schema.Types.ObjectId, 
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            default: [], 
+            default: [],
         }
     ],
     followings: [
         {
-            type: mongoose.Schema.Types.ObjectId, 
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            default: [], 
+            default: [],
         }
     ],
     favoriteRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],

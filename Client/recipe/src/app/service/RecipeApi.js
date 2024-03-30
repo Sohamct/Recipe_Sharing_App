@@ -3,25 +3,27 @@ import axios from "axios";
 const uri = 'http://localhost:5501/api/recipe';
 
 const api = {
-  
   addRecipeAsync: async (formData) => {
     try {
+      // console.log(formData);
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("image", formData.image);
-      formDataToSend.append("ingredients", JSON.stringify(formData.ingredients));
       formDataToSend.append("category", formData.category);
       formDataToSend.append("dishType", formData.dishType);
       formDataToSend.append("vegNonVeg", formData.vegNonVeg);
   console.log(formDataToSend);
+
+      formDataToSend.append("ingredients", JSON.stringify(formData.ingredients))
+
       const response = await axios.post(`${uri}/createrecipe`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"), // Use Authorization header for the token
         },
       });
-  
+
       if (response.status === 201) {
         console.log("Recipe created successfully");
         return response.data;
@@ -47,12 +49,10 @@ const api = {
       formDataToSend.append("category", formData.category);
       formDataToSend.append("dishType", formData.dishType);
       formDataToSend.append("vegNonVeg", formData.vegNonVeg);
-      
       // Append image if it exists
       if (formData.image) {
         formDataToSend.append("image", formData.image);
       }
-  console.log(formDataToSend);
 
       const response = await axios.put(`${uri}/editrecipe`, formDataToSend, {
         headers: {
@@ -60,7 +60,7 @@ const api = {
           'auth-token': localStorage.getItem('token'),
         }
       });
-  
+
       if (response.status === 201) {
         console.log("Recipe updated successfully");
         return response.data;
@@ -109,7 +109,7 @@ const api = {
         });
 
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
 
         if (response.ok) {
             return data; // Return the payload if the response is successful

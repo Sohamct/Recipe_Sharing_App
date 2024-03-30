@@ -19,6 +19,7 @@ function Content() {
     linkedinHandle: '',
     twitterHandle: ''
   });
+  
 
   useEffect(() => {
     const getUserData = async () => {
@@ -47,32 +48,46 @@ function Content() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
-
+  
   const handleSubmit = async () => {
     try {
-      await updateUserDetails(formData); // Update server data
-
+      // Create a copy of formData to filter out empty fields
+      const updatedData = {};
+      Object.keys(formData).forEach(key => {
+        if (formData[key]) {
+          updatedData[key] = formData[key];
+        }
+      });
+  
+      // Update user details only with non-empty fields
+      await updateUserDetails(updatedData);
+  
       // Fetch user details again to get the updated username from local storage
       const updatedUsername = localStorage.getItem('username');
       const updatedUserDetails = await fetchUserDetails(updatedUsername);
       setUserDetails(updatedUserDetails.user);
-
+  
       // Construct a user object with the updated username
       const updatedUser = { ...updatedUserDetails.user, username: formData.username };
-
+  
       // Pass the updated user object to setUser
       setUser(updatedUser);
-
+  
       // Navigate to the new URL with the updated username
       navigate(`/user-profile/${formData.username}`);
-
+  
       setEditingField(null);
     } catch (error) {
       console.error('Error updating user details:', error);
     }
   };
+  
 
   return (
     <div>
@@ -136,6 +151,7 @@ function Content() {
                   <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' onClick={() => handleEdit('firstname')} />
                 </div>
               </div>
+
             )}
           </div>
           <div className='my-3'>
@@ -155,6 +171,7 @@ function Content() {
                   <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' onClick={() => handleEdit('lastname')} />
                 </div>
               </div>
+
             )}
           </div>
 
@@ -195,6 +212,7 @@ function Content() {
                   <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' onClick={() => handleEdit('linkedinHandle')} />
                 </div>
               </div>
+
             )}
           </div>
 
@@ -207,6 +225,7 @@ function Content() {
                   <button className='px-2 rounded-sm bg-red-500 text-white hover:bg-red-600 ml-2' onClick={() => { setFormData({ ...formData, twitterHandle: userDetails.twitterHandle }); setEditingField(null); }}>Cancel</button>
                   <button className='px-2 rounded-sm bg-blue-900 text-white hover:bg-blue-800 ml-2' onClick={handleSubmit}>Save</button>
                 </div>
+
               </div>
             ) : (
               <div className='flex py-2'>
@@ -227,105 +246,3 @@ function Content() {
 }
 
 export default Content;
-// import React from 'react';
-// import { FiEdit } from "react-icons/fi";
-
-// function Content() {
-
-//   const userEmail = 'example@gmail.com';
-//   const userInstagramLink = 'https://www.instagram.com/example/';
-//   const userLinkedinLink = 'https://www.linkedin.com/in/example/';
-//   const userTwitterLink = 'https://twitter.com/example/';
-
-//   return (
-//     <div>
-//       <div className='px-4 py-2'>
-//         <div className='my-3'>
-
-//         <div className='my-3'>
-//             <label htmlFor="username" className="block mt-4 mb-2 text-sm font-medium text-gray-900">Username</label>
-//             <div className='flex'>
-//               <p className="m-0 p-0" type='email' name='email' id='email' > kevint11</p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className='my-3'>
-//             <label htmlFor="email" className="block text-sm font-medium text-gray-900">Your email</label>
-//             <div className='flex py-1'>
-//               <p className='p-0 m-0' type='email' name='email' id='email' > example@gmail.com</p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className='my-3'>
-//             <label htmlFor="firstname" className="block mt-2 text-sm font-medium text-gray-900">First Name</label>
-//             <div className='flex'>
-//               <p className="m-0 p-0" type='email' name='email' id='email' > Kevin</p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className='my-3'>
-//             <label htmlFor="lastname" className="block mt-4 mb-2 text-sm font-medium text-gray-900 ">Last Name</label>
-//             <div className='flex'>
-//               <p className="m-0 p-0" type='email' name='email' id='email' > Thumbar </p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className='my-3'>
-//             <label htmlFor="isPrivate" className="block mt-4 mb-2 text-sm font-medium text-gray-900">Visibility of your account</label>
-//             <div className='flex'>
-//               <p className="m-0 p-0" type='email' name='email' id='email' > Private </p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className='my-3'>
-//             <label htmlFor="instagram" className="block mt-4 mb-2 text-sm font-medium text-gray-900">Instagram</label>
-//             <div className='flex items-center'>
-//               <p className="m-0 p-0">{userInstagramLink}</p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className='my-3'>
-//             <label htmlFor="linkedin" className="block mt-4 mb-2 text-sm font-medium text-gray-900">LinkedIn</label>
-//             <div className='flex items-center'>
-//               <p className="m-0 p-0" >{userLinkedinLink}</p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className='my-3'>
-//             <label htmlFor="twitter" className="block mt-4 mb-2 text-sm font-medium text-gray-900">Twitter</label>
-//             <div className='flex items-center'>
-//               <p className="m-0 p-0">{userTwitterLink}</p>
-//               <div className='mt-0.5 bg-center ml-auto'>
-//                 <FiEdit className='text-xl transition duration-400 ease-in-out hover:text-blue-700' />
-//               </div>
-//             </div>
-//           </div>
-
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default Content

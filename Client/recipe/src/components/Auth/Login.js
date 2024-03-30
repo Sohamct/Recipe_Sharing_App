@@ -23,14 +23,6 @@ export const Login = () => {
     navigate('/signup');
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      alert('You are already logged in');
-      navigate('/');
-    }
-  }, [navigate]);
 
   const handleClick = async (e) => {
     e.preventDefault();

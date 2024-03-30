@@ -14,7 +14,7 @@ export const UserProvider = ({children}) => {
     }, []);
 
     useEffect(() => {
-        console.log("UserProvider useEffect triggered");
+        // console.log("UserProvider useEffect triggered");
         if (!user) {
             const storedUser = localStorage.getItem('user');
             if (storedUser) {

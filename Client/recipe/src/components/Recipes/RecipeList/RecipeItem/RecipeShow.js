@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useCommentStore from '../../../../features/comment/_commentStore';
 import { Comment } from './Comment';
 import { toast } from 'react-toastify';
@@ -19,9 +19,12 @@ import {format} from 'timeago.js';
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
   const [deleteClick, setDeleteClick] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
+  const [profilePic, setProfilePic] = useState(null);
   const { user, loading: userLoading } = useUser();
   const { updateProgress } = useProgress();
   const [recipe, setRecipe] = useState(null);
+  const [owner, setOwner] = useState(null); // Declare owner state
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
@@ -32,6 +35,7 @@ export const RecipeShow = () => {
   const recipeId = params.id;
 
   const recipes = useSelector((state) => state.recipes.recipes);
+  // console.log(recipes);
   // console.log(recipes);
   const status = useSelector((state) => state.recipes.status);
   const error = useSelector((state) => state.recipes.error);
@@ -82,6 +86,23 @@ export const RecipeShow = () => {
     setRecipe(r);
   }, [recipes, recipeId]);
 
+  useEffect(() => {
+    // Fetch owner when recipe is available
+    if (recipe) {
+      setOwner(recipe.owner);
+      const getUserData = async () => {
+        try {
+          const user = await fetchUserDetailsbyUsername(recipe.owner);
+          setProfilePic(user.profileImage);
+          setUserDetails(user);
+        } catch (error) {
+          console.error('Error fetching user details:', error);
+        }
+      };
+      getUserData();
+    }
+  }, [recipe]);
+
   const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
     (state) => ({
       commentByRecipe: state.commentByRecipe,
@@ -97,19 +118,24 @@ export const RecipeShow = () => {
     return <div>Loading...</div>;
   }
 
-  const { _id, title, description, updatedAt, ingredients, owner, image, createdAt, category, vegNonVeg, dishType } = recipe;
+  const { _id, title, description, updatedAt, ingredients, image, createdAt, category, vegNonVeg, dishType } = recipe;
 
+  // Function to handle delete button click
   const handleDeleteClick = () => {
     setDeleteClick(true);
   };
 
+  // Function to handle cancel delete button click
   const handleCancelDelete = () => {
     setDeleteClick(false);
   };
+
+  // Function to handle image load
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
 
+  // Function to handle confirm delete
   const handleConfirmDelete = () => {
     const data = {
       recipeId: _id,
@@ -129,13 +155,13 @@ export const RecipeShow = () => {
         }
       })
       .catch(error => {
-        //console.log(error);
         toast.error(error, { autoClose: 2000, theme: "colored" });
       });
     setDeleteClick(false);
     navigate('/');
   };
 
+  // Function to handle comment submit
   const handleCommentSubmit = () => {
     if (!CommentText) {
       return alert("please add Comment-text");
@@ -147,13 +173,15 @@ export const RecipeShow = () => {
     };
 
     addComment(params.id, newComment);
-    // setCommentList((prevCommentList) => [...prevCommentList, newComment]);
     setCommentText("");
   };
 
+  // Function to handle edit click
   const handleEditClick = () => {
     navigate(`/editrecipe/${params.id}`);
   };
+
+  // Function to create new chat
   const makeNewChat = async (owner) => {
     try {
       const response = await addChat({ sender: user?.username, receiver: owner });
@@ -173,7 +201,7 @@ export const RecipeShow = () => {
   const isRecipeOwner = (user?.username === owner);
 
   return (
-    <div>
+    <div className="relative">
       {deleteClick && <DeleteConfirmation deleteClick={deleteClick} handleCancelDelete={handleCancelDelete} handleConfirmDelete={handleConfirmDelete} />}
       <div>
         <Navigation />
@@ -296,9 +324,8 @@ export const RecipeShow = () => {
 </div>
 
   );
+
 }
-
-
 
 function useDebounce(value, delay) {
   const [debounceValue, setDebouncedValue] = useState(value);
@@ -310,6 +337,13 @@ function useDebounce(value, delay) {
     return () => {
       clearTimeout(handler);
     }
+
+
   }, [value, delay])
+
   return debounceValue;
+
+
 }
+
+export default RecipeShow;

@@ -4,8 +4,8 @@ import { createRecipeAsync, editRecipeAsync } from '../../../features/recipe/Sli
 import { toast } from 'react-toastify';
 import { Navigation } from '../../Navigation';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
-import { useUser } from '../../../features/context';
 import { useProgress } from '../../../features/ProgressContext';
+import { useUser } from '../../../features/context';
 
 const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];
 const categories = ['Breakfast', 'Fast food', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
@@ -17,9 +17,11 @@ export const CreateRecipe = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = useParams();
+
   const {user, loading} = useUser();
   const {updateProgress} = useProgress();
   const [isEditing, setIsEditing] = useState(false);
+
   useEffect(() => {
     setIsEditing(location.pathname.includes('/editrecipe'));
   }, [location.pathname]);
@@ -157,7 +159,7 @@ export const CreateRecipe = () => {
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
-              navigate(`/viewrecipe/${params.id}`);
+              navigate(`/viewrecipe/${params.id}`)
           }
         })
         .catch((error) => {
@@ -169,7 +171,6 @@ export const CreateRecipe = () => {
         .then((response) => {
           updateProgress(100);
           if (response.type === 'recipe/createRecipe/fulfilled') {
-            console.log(response);
             createRecipeNotify();
             setFormData({
               title: '',
@@ -205,6 +206,7 @@ export const CreateRecipe = () => {
     );
   };
 
+
   return (
     <div>
       <div>
@@ -212,6 +214,7 @@ export const CreateRecipe = () => {
       </div>
       <div className="max-w-3xl mx-auto p-6 bg-slate-100 rounded-md shadow-md ">
         <h2 className="text-xl font-semibold mb-4">{!isEditing ? ('Create New Recipe') : 'Update Recipe'}</h2>
+
         <form onSubmit={handleSubmit} >
           <div className="mb-4">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title:</label>

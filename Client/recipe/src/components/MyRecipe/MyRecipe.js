@@ -17,18 +17,17 @@ export const MyRecipe = () => {
       try {
         if (!user) return; // Guard against accessing user properties when user is null
 
-        console.log('Fetching recipes...');
-        console.log(user);
+        // console.log('Fetching recipes...');
+        // console.log(user);
         const data = await api.fetchRecipesByOwnerAsync(user?.username);
-        console.log(data);
+        // console.log(data);
         if (isMounted) {
-          console.log('Data:', data.data);
+
           setUserRecipes(data.data);
           setLoading(false);
         }
       } catch (error) {
         console.error('Error fetching user recipes:', error.message);
-
         if (isMounted) {
           setLoading(false);
         }

@@ -23,6 +23,9 @@ const router = createBrowserRouter(
       <Route path="/recipe" element={<RootLayout />}/>
       <Route path="newrecipe" element={<CreateRecipe />} />
       <Route path="/editrecipe/:id" element={<CreateRecipe/>}/>
+      <Route path="/recipe" element={<RootLayout />}/>
+      <Route path="newrecipe" element={<CreateRecipe />} />
+      <Route path="/editrecipe/:id" element={<CreateRecipe/>}/>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/logout" element={<LogoutInfoPage/>}/>
