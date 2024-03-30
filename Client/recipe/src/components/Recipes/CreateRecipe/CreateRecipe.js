@@ -62,6 +62,23 @@ export const CreateRecipe = () => {
            dishType: recipeToEdit.dishType
          });
        }
+        console.log(recipesState.recipes);
+        const recipes = recipesState.recipes;
+        fetch("http://localhost:5000/recommend", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({recipes})
+        }).then(
+          res => res.json()
+        ).then(
+          data => {
+            console.log("Response from Flask server:", data);
+          }
+        ).catch((error) => {
+          console.error("Error sending data", error);
+        })
     }
     
     }

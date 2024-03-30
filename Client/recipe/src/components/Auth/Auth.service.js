@@ -50,11 +50,11 @@ const AuthService = {
             }
 
             const data = await resp.json();
-
+            console.log(data);
             if (data.errors) {
                 return { success: false, message: data.errors };
             } else if (data.success) {
-                return { success: true, message: 'Logged in successful', data: data.data };
+                return { success: true, message: 'Logged in successful', data: data };
             }
         } catch (error) {
             return { success: false, message: error.message || 'An error occurred while getting details' };

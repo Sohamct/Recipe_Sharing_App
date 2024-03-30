@@ -62,21 +62,21 @@ export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
       <ul className="comment-list">
         {commentByRecipe[recipeId].map((comment, i) => (
           <li key={i} className="comment-item">
-            <div className="comment-owner">{comment._from}</div>
-            <div className="comment-time">{calculateRelativeTime(comment.time)}</div> {/* Time field */}
+            <div className="comment-owner">By {comment._from}</div>
+            <div className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">{calculateRelativeTime(comment.time)}</div> {/* Time field */}
             <div className="comment-text">{comment.text}</div>
-            {user.username === comment._from && (
+            {/* {user.username === comment._from && (
               <div className="delete-comment-wrapper">
                 <FaTrash
                   className="delete-comment-icon"
                   onClick={() => removeComment(comment._id)}
                 />
               </div>
-            )}
+            )} */}
             {/* Reply icon */}
-            <FaReply className="reply-icon" onClick={() => handleReplyClick(comment._id)} />
+            {/* <FaReply className="reply-icon" onClick={() => handleReplyClick(comment._id)} /> */}
             {/* Reply section */}
-            {replyToCommentId === comment._id && (
+            {/* {replyToCommentId === comment._id && (
               <div className="reply-box">
                 <input
                   type="text"
@@ -86,7 +86,7 @@ export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
                 />
                 <button onClick={handleNewCommentSubmit}>Reply</button>
               </div>
-            )}
+            )} */}
           </li>
         ))}
       </ul>

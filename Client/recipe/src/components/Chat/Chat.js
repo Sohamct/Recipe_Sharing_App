@@ -78,7 +78,7 @@ export const Chat = () => {
                 <div className="Chat-container">
                     <h2>Chats</h2>
                     <div className="Chat-list">
-                        {!loading &&
+                        {!loading && chatsByUser &&
                             chatsByUser?.map((chat, ind) => {
                                 const online = checkOnlineStatus(chat);
                                 const chatMember = chat.members.find((member) => member !== username);

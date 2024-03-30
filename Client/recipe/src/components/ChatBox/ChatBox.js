@@ -6,6 +6,7 @@ import './ChatBox.css';
 import InputEmoji from 'react-input-emoji';
 import { addMessage } from '../../app/service/MessageApi';
 import ReactLoading from 'react-loading';
+import {format} from 'timeago.js'
 
 const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
     const [userData, setUserData] = useState(null);
@@ -25,18 +26,22 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
             try {
                 setIsLoadingUserData(true);
                 const otherUsername = chat.members.find(uname => uname !== username);
+                console.log(otherUsername);
                 const response = await AuthService.getDetails(otherUsername);
-                setUserData(response.data);
+                console.log(response.data.data);
+
+                setUserData(prevUserData => response.data.data); // Use functional update here
+                console.log(userData);
             } catch (error) {
                 console.error('Error fetching user details:', error);
             } finally {
                 setIsLoadingUserData(false);
             }
         };
-
-        if (chat) fetchData();
+    
+        fetchData();
     }, [chat, username]);
-
+    
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -78,36 +83,7 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
         setSendMessage({ ...message, recieverUsername });
 
     }
-    const timeAgo = (date) => {
-        
-        const now = new Date();
-        const past = new Date(date);
-        const seconds = Math.floor((now - past) / 1000);
-
-        let interval = Math.floor(seconds / 31536000);
-
-        if (interval >= 1) {
-            return interval + " year" + (interval === 1 ? "" : "s") + " ago";
-        }
-        interval = Math.floor(seconds / 2592000);
-        if (interval >= 1) {
-            return interval + " month" + (interval === 1 ? "" : "s") + " ago";
-        }
-        interval = Math.floor(seconds / 86400);
-        if (interval >= 1) {
-            return interval + " day" + (interval === 1 ? "" : "s") + " ago";
-        }
-        interval = Math.floor(seconds / 3600);
-        if (interval >= 1) {
-            return interval + " hour" + (interval === 1 ? "" : "s") + " ago";
-        }
-        interval = Math.floor(seconds / 60);
-        if (interval >= 1) {
-            return interval + " minute" + (interval === 1 ? "" : "s") + " ago";
-        }
-        return Math.floor(seconds) + " second" + (seconds === 1 ? "" : "s") + " ago";
-    }
-
+    
     // always scroll to the last message
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
@@ -121,16 +97,29 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                         <div className="chat-header p-0 m-0">
                             <div className="flex follower">
                                 {isLoadingUserData ? (
-                                    <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ReactLoading type="balls" color="#FFA500"
+                                    <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <ReactLoading type="balls" color="#FFA500"
                                         height={150} width={90} /></div>
                                 ) : (
                                     <>
                                         <div className='flex'>
-                                            <CgProfile
-                                                className="followerImage"
-                                                style={{ width: '40px', height: '40px' }}
-                                                alt="Profile Image"
-                                            />
+                                        {
+    userData?.profileImage?.url ? 
+    (
+        <img 
+            src={userData.profileImage.url} 
+            style={{ width: '40px', height: '40px' }}
+        />
+    ) : (
+        <CgProfile
+            className="followerImage"
+            style={{ width: '40px', height: '40px' }}
+            alt="Profile Image"
+        />
+    )
+}
+
+                                            
                                             <div className="name mt-2.5 px-2" style={{ fontSize: '0.8rem' }}>
                                                 <span>
                                                     {userData?.firstname} {userData?.lastname}
@@ -150,10 +139,10 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                                 messages.map((message) => (
                                     <div ref={scroll} className=
                                         {message.sender === username
-                                            ? "message own" : "message"}
+                                            ? "message own" : "message received"}
                                         key={message._id}>
                                         <span>{message.text}</span>
-                                        <span>{timeAgo(message.createdAt)}</span>
+                                        <span>{format(message.createdAt)}</span>
                                     </div>
                                 ))
                             )}

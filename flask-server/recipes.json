@@ -1,0 +1,1071 @@
+[
+    {
+        "image": {
+            "public_id": "RecipeImages/r32qkrxte2abkqoe8zby",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711533710/RecipeImages/r32qkrxte2abkqoe8zby.jpg"
+        },
+        "_id": "6603aba5389c912a6b06549d",
+        "title": "Panipuri",
+        "description": " Rinse coriander and mint leaves in water and take all the ingredients of pani.\r\nAdd mint leaves, coriander leaves, green chilli, ginger and lemon juice (lemon juice is added while grinding to prevent the mint leaves from turning dark) in the small chutney jar of a grinder.\r\nGrind until smooth paste (if required, add 1/4 cup water while grinding).\r\nTransfer them to a large bowl and add sugar, chaat masala powder, black salt and 4 cups water. Stir with a large spoon and mix it properly. Taste for the salt and add as required. Pani is ready; place it in a refrigerator for at least 1-hour before serving or use it at room temperature. If you like soft boondi, mix it now. If you like crispy taste of boondi then mix it at the time of serving.\r\n Take mashed potato, kala chana, red chilli powder, cumin-coriander powder, chaat masala powder, coriander leaves and salt (add only if you have not added while boiling the potatoes and chana) in a bowl.\r\n Mix them together with a spoon. Masala is ready.\r\n Take each puri and gently make a large hole on its top-middle side with a spoon or your index finger or thumb for stuffing.\r\n Stuff it with masala (more or less, as you like). Sprinkle onion and sev over it and drizzle a drop of date tamarind chutney over it. Take pani-puri water in a medium bowl. Dip each puri in water and enjoy\u2026",
+        "ingredients": [
+            {
+                "ingredient_name": "medium Onion",
+                "quantity": 1,
+                "quantity_type": "ml",
+                "_id": "6603aba5389c912a6b06549e"
+            },
+            {
+                "ingredient_name": "cup Sev",
+                "quantity": 0.5,
+                "quantity_type": "gm",
+                "_id": "6603aba5389c912a6b06549f"
+            },
+            {
+                "ingredient_name": "Mint Leaves",
+                "quantity": 300,
+                "quantity_type": "gm",
+                "_id": "6603aba5389c912a6b0654a0"
+            },
+            {
+                "ingredient_name": "Chaat Masala Powder(teaspoon )",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "6603aba5389c912a6b0654a1"
+            },
+            {
+                "ingredient_name": "medium size Lemon",
+                "quantity": 1.5,
+                "quantity_type": "unit",
+                "_id": "6603aba5389c912a6b0654a2"
+            },
+            {
+                "ingredient_name": "0.5 inch of pieces of Ginger",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "6603aba5389c912a6b0654a3"
+            },
+            {
+                "ingredient_name": "Red Chilli Powder(teaspoon )",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "6603aba5389c912a6b0654a4"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Indian",
+        "category": "Fast food",
+        "favorites": [
+            "65d4c1b9e60cc7b970254148",
+            "6605369a66779d49f72ed28d"
+        ],
+        "__v": 0,
+        "createdAt": "2024-03-27T14:13:03.875Z",
+        "updatedAt": "2024-03-29T05:37:28.108Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/tnfpep6bgzuiedu1yunq",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711541571/RecipeImages/tnfpep6bgzuiedu1yunq.jpg"
+        },
+        "_id": "6603aeb9389c912a6b065539",
+        "title": "Chocolate Ice cream",
+        "description": "Whip the cream till it is fluffy.\r\nCook cocoa powder in milk till mixed completely into a smooth consistency.\r\nAdd Nestl\u00e9 MILKMAID, cooked cocoa powder, vanilla essence, whipped cream & mix well.\r\nPour into a freezing tray and freeze till half set. \r\nRemove and beat with a whisk or electric beater until smooth. Doing so will help keep the texture of the ice cream soft and creamy while it sets.\r\nour back into tray and freeze till well set.",
+        "ingredients": [
+            {
+                "ingredient_name": "Cocoa powder",
+                "quantity": 400,
+                "quantity_type": "gm",
+                "_id": "6603aeb9389c912a6b06553a"
+            },
+            {
+                "ingredient_name": "whipping cream (cups)",
+                "quantity": 2.25,
+                "quantity_type": "unit",
+                "_id": "6603aeb9389c912a6b06553b"
+            },
+            {
+                "ingredient_name": "Milk(in cup)",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "6603aeb9389c912a6b06553c"
+            },
+            {
+                "ingredient_name": "brown sugar (in cup)",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "6603aeb9389c912a6b06553d"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Indian",
+        "category": "Ice cream",
+        "favorites": [
+            "65d4c1b9e60cc7b970254148",
+            null,
+            "6605369a66779d49f72ed28d"
+        ],
+        "__v": 0,
+        "createdAt": "2024-03-27T14:15:03.875Z",
+        "updatedAt": "2024-03-29T05:40:23.956Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/aw9t2rehbsimmnlnb5z8",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711541616/RecipeImages/aw9t2rehbsimmnlnb5z8.jpg"
+        },
+        "_id": "6603b054389c912a6b0655c2",
+        "title": "Dabeli",
+        "description": "1.firstly, in a pan take 1 tsp coriander seeds, \u00bd tsp cumin, \u00bd tsp fennel, \u00bd tsp pepper, \u00bd inch cinnamon, 1 pod black cardamom and 6 clove.\r\n 2. also, add 1 star anise, 1 bay leaf, 1 tsp sesame seed, 2 tbsp dry coconut and 3 dried red chilli.\r\n 3. dry roast on low flame until the spices turn aromatic.\r\n4. cool completely, and transfer to a small mixi jar.\r\n 5. add \u00bd tsp turmeric, 1 tsp aamchur, 1 tsp sugar and \u00bd tsp salt.\r\n6. blend to a fine powder and dabeli masala is ready. keep aside.\r\n7. firstly, in a large kadai heat 2 tbsp oil.\r\n8. now take 3 tsp of prepared dabeli masala into a small cup, along with 2 tbsp tamarind chutney and \u00bc cup water.\r\n9. mix well making sure there are no lumps. pour in the masala mixture into the hot oil.\r\n10. cook for 2 minutes or until it turns aromatic.\r\n11. further, add 3 potato, \u00bd tsp salt and mix well.\r\n12. mash and mix making sure everything are well combined.\r\n13. transfer the mixture into a plate.\r\n14. top with 1 tbsp coconut, 1 tbsp coriander, 2 tbsp sev, 2 tbsp pomegranate and 2 tbsp spiced peanut.",
+        "ingredients": [
+            {
+                "ingredient_name": " aloo chana chat",
+                "quantity": 700,
+                "quantity_type": "gm",
+                "_id": "6603b054389c912a6b0655c3"
+            },
+            {
+                "ingredient_name": "dahi papdi chaat",
+                "quantity": 800,
+                "quantity_type": "gm",
+                "_id": "6603b054389c912a6b0655c4"
+            },
+            {
+                "ingredient_name": "chur chur naan",
+                "quantity": 3,
+                "quantity_type": "unit",
+                "_id": "6603b054389c912a6b0655c5"
+            },
+            {
+                "ingredient_name": " peanut sundal",
+                "quantity": 100,
+                "quantity_type": "gm",
+                "_id": "6603b054389c912a6b0655c6"
+            },
+            {
+                "ingredient_name": "aloo paneer tikki",
+                "quantity": 2,
+                "quantity_type": "unit",
+                "_id": "6603b054389c912a6b0655c7"
+            },
+            {
+                "ingredient_name": "soya fried rice",
+                "quantity": 500,
+                "quantity_type": "gm",
+                "_id": "6603b054389c912a6b0655c8"
+            },
+            {
+                "ingredient_name": "chilli paneer",
+                "quantity": 600,
+                "quantity_type": "gm",
+                "_id": "6603b054389c912a6b0655c9"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Rajasthani",
+        "category": "Fast food",
+        "favorites": [
+            null,
+            "6605369a66779d49f72ed28d"
+        ],
+        "__v": 0,
+        "createdAt": "2024-03-24T14:18:03.875Z",
+        "updatedAt": "2024-03-29T05:42:53.518Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/ma3ysaoemrpwdbd9scre",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711541676/RecipeImages/ma3ysaoemrpwdbd9scre.jpg"
+        },
+        "_id": "6603b1d6389c912a6b0656dc",
+        "title": "Limbu soda",
+        "description": "1. Place ice in a tall glass and fill to the top with water.\r\n2. Combine lime juice, kala namak, and sugar in a small mixing bowl, and stir to completely dissolve solids.\r\n3. Drain water from glass, add lime juice mixture, fill glass almost to the top with soda water, and stir briefly. Top with splash of soda and serve.",
+        "ingredients": [
+            {
+                "ingredient_name": "limbu",
+                "quantity": 4,
+                "quantity_type": "unit",
+                "_id": "6603b1d6389c912a6b0656dd"
+            },
+            {
+                "ingredient_name": "Cold water ",
+                "quantity": 800,
+                "quantity_type": "ml",
+                "_id": "6603b1d6389c912a6b0656de"
+            },
+            {
+                "ingredient_name": "Wet ice",
+                "quantity": 4,
+                "quantity_type": "unit",
+                "_id": "6603b1d6389c912a6b0656df"
+            },
+            {
+                "ingredient_name": "Dhana jiru",
+                "quantity": 70,
+                "quantity_type": "gm",
+                "_id": "6603b1d6389c912a6b0656e0"
+            },
+            {
+                "ingredient_name": "Soda gas",
+                "quantity": 2,
+                "quantity_type": "unit",
+                "_id": "6603b1d6389c912a6b0656e1"
+            },
+            {
+                "ingredient_name": "Jaljira",
+                "quantity": 30,
+                "quantity_type": "gm",
+                "_id": "6603b1d6389c912a6b0656e2"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Indian",
+        "category": "Beverages",
+        "favorites": [],
+        "__v": 0,
+        "createdAt": "2024-03-24T14:18:03.875Z",
+        "updatedAt": "2024-03-30T11:09:50.733Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/gjowhmmmjhvtaznwooz7",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711534242/RecipeImages/gjowhmmmjhvtaznwooz7.jpg"
+        },
+        "_id": "6603b408389c912a6b065879",
+        "title": "Pau bhaji ",
+        "description": "1. Boil the veggies first and keep them ready.\r\n2. Heat 1 tablespoon of butter and oil in a large pot on medium heat. Once the butter melts and oil is hot, add the cumin seeds and let them sizzle.\r\n3. Add the chopped onions and mix. I like to use my food processor to chop them really fine.\r\n4. Cook the onions for around 4 minutes until golden brown in color. Add the finely chopped ginger, garlic and green chili. Again, I used my food processor to chop them really fine.\r\n5. Add chopped tomatoes and mix well. Let the tomatoes cook for 2 minutes.\r\n6. Add tomato puree, 1/4 cup water and 1/4 teaspoon salt. Cover the pan and let the tomato cook for 6 minutes until softened and completely cooked.\r\n7. Add the pav bhaji masala, Kashmiri red chili powder, red chili powder and remaining 1 teaspoon of salt. You may also add 1/2 teaspoon of sugar here (optional).\r\n8. Mix well and then add in 2 teaspoons of kasuri methi (dried fenugreek leaves).\r\n9. Stir in the boiled veggies and mix.\r\n10. Using a potato masher, mash the veggies until they are completely mixed with the masala.\r\n11. Add the remaining 3/4 \u2013 1 cup water and mix. I used an immersion blender to blend the veggies to a paste like consistency, this is optional. You may keep them as such.\r\n12. Open the pot and add in the remaining 2 tablespoons of butter.\r\n",
+        "ingredients": [
+            {
+                "ingredient_name": "Pav bhaji masala",
+                "quantity": 400,
+                "quantity_type": "gm",
+                "_id": "6603b408389c912a6b06587a"
+            },
+            {
+                "ingredient_name": "Butter",
+                "quantity": 500,
+                "quantity_type": "gm",
+                "_id": "6603b408389c912a6b06587b"
+            },
+            {
+                "ingredient_name": "Garnishes",
+                "quantity": 600,
+                "quantity_type": "gm",
+                "_id": "6603b408389c912a6b06587c"
+            },
+            {
+                "ingredient_name": "Kashmiri red chili powder",
+                "quantity": 680,
+                "quantity_type": "gm",
+                "_id": "6603b408389c912a6b06587d"
+            },
+            {
+                "ingredient_name": "dried red chilies",
+                "quantity": 5,
+                "quantity_type": "unit",
+                "_id": "6603b408389c912a6b06587e"
+            },
+            {
+                "ingredient_name": "2 tablespoon cumin seeds",
+                "quantity": 18,
+                "quantity_type": "gm",
+                "_id": "6603b408389c912a6b06587f"
+            },
+            {
+                "ingredient_name": "4 tablespoons coriander seeds",
+                "quantity": 20,
+                "quantity_type": "gm",
+                "_id": "6603b408389c912a6b065880"
+            },
+            {
+                "ingredient_name": "2 teaspoon black salt",
+                "quantity": 12,
+                "quantity_type": "gm",
+                "_id": "6603b408389c912a6b065881"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Indian",
+        "category": "Fast food",
+        "favorites": [],
+        "__v": 0,
+        "createdAt": "2024-03-25T12:54:24.278Z",
+        "updatedAT": "2024-03-25T12:54:24.278+00:00",
+        "updatedAt": "2024-03-30T13:14:50.535Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/hhreq9q6a0ih89ok2jzd",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711541696/RecipeImages/hhreq9q6a0ih89ok2jzd.jpg"
+        },
+        "_id": "6603c0857afabd9c104aa0f8",
+        "title": "Barfi",
+        "description": "Tasty Burfy",
+        "ingredients": [
+            {
+                "ingredient_name": "sugar",
+                "quantity": 22900,
+                "quantity_type": "gm",
+                "_id": "6603c0857afabd9c104aa0f9"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Italian",
+        "category": "Sweets",
+        "favorites": [
+            "660004274fc9848d1e0224fe"
+        ],
+        "__v": 0,
+        "createdAt": "2024-03-25T15:54:24.278Z",
+        "updatedAt": "2024-03-25T15:54:24.278Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/mctesqhhe0kres0xmmzt",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711549780/RecipeImages/mctesqhhe0kres0xmmzt.jpg"
+        },
+        "_id": "66042d3a71b99eea588e0e0b",
+        "title": "Manchurian",
+        "description": "1. Take the finely chopped or grated veggies in a bowl.  you will need \u00bd cup finely chopped red cabbage, \u00bd cup grated carrot, \u00bc cup finely chopped capsicum (green bell pepper), \u00bc cup finely chopped french beans and \u00bc cup finely chopped spring onions.\r\n2. Then add the dry ingredients \u2013 2 tablespoons corn starch, 2 tablespoons all purpose flour (maida), \u00bd teaspoon black pepper and \u00bd teaspoon salt or add as required.\r\n3. Mix and gather the whole mixture together. Then kind of mix and knead so that the veggies leave the water and you get a dough-like mixture. But do not knead like that a bread or roti dough. Gluten strands can form that will give a dense chewy texture in the fried veggie balls. So just mix very well and press so that the veggies release their juices.\r\n4. Then take a small portion of the mixture in your hands.\r\n5. Press and roll it in your palm and make a round veggie ball.\r\n6. Make all veggie balls this way and keep aside. You can spread some oil on your palms while making the vegetable balls.\r\n7. Heat oil for deep frying in a kadai or pan. Add a small piece of a ball to the hot oil. If the balls does not stick or settle down at the bottom of the pan, but comes up steadily the oil is ready for frying these veggie balls. If the balls break, then some more binding agent is required. So you can add 2 to 3 teaspoons of some more all-purpose flour (maida).\r\n8. Gently place the balls in the hot oil. The oil has to be medium hot. Too much heat and the manchurian balls will be browned from top and uncooked from inside. Less hot oil will make the balls absorb too much oil.\r\n9. When cooked from one side, turn the balls with a slotted spoon.\r\n10. Fry the balls till crisp and golden turning them over a couple of times. Remove them with a slotted or perforated spoon and drain as much as oil as possible.\r\n12. Place the fried manchurian balls on kitchen paper towels. For a low-fat version, you can cook the veggie balls in an appe-appam pan or \u00e6bleskiver pan. Fry the veg balls this way in batches and keep aside.",
+        "ingredients": [
+            {
+                "ingredient_name": "2 tablespoons corn starch",
+                "quantity": 2,
+                "quantity_type": "unit",
+                "_id": "66042d3a71b99eea588e0e0c"
+            },
+            {
+                "ingredient_name": " 2 tablespoons all purpose flour (maida)",
+                "quantity": 2,
+                "quantity_type": "unit",
+                "_id": "66042d3a71b99eea588e0e0d"
+            },
+            {
+                "ingredient_name": "\u00bd teaspoon black pepper",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "66042d3a71b99eea588e0e0e"
+            },
+            {
+                "ingredient_name": "\u00bd teaspoon salt",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "66042d3a71b99eea588e0e0f"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Chinese",
+        "category": "Fast food",
+        "favorites": [],
+        "updatedAt": "2024-03-27T14:29:14.269Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T14:29:14.269Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/bgdpwtrep7kipuyk6reg",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711550165/RecipeImages/bgdpwtrep7kipuyk6reg.jpg"
+        },
+        "_id": "66042eba71b99eea588e0e16",
+        "title": "Dosa",
+        "description": "1. Prepare Dosa Batter:Soak rice and urad dal in separate bowls for 4-6 hours. \r\n2. Process rice and urad dal mixture in commercial grinder or food processor. While grinding, add water a cup at a time until it reaches the consistency of pancake batter.\r\n3. Salt to taste.\r\n4. Cover mixture and let sit overnight. Do not refrigerate; it needs to ferment.\r\n5. Prepare Masala Dosa Filling: Add oil or ghee to a skillet.\r\n6. Add mustard seeds and chana dal.\r\n7. Shake mixture over the flame until golden brown.\r\n8. Add curry leaves (whole leaf), green chiles, and onions.\r\n9. Sprinkle turmeric powder and salt (for taste). Stir.\r\n10. Break up boiled potato into small chunks and add them to your mixture. Add water and stir.\r\n11. Prepare Masala Dosa: Pour refrigerated dosa mixture into a small bowl with a flat bottom.\r\n12. Pour batter into a greased skillet.\r\n13. Immediately, starting from the center, begin forming a circular shape with the batter using the flat-bottomed dish.\r\n14.  Brush on ghee (or regular butter) to frying dosa.\r\n15. Place filling near the center of the dosa.\r\n16. Lightly lift the edges of the dosa.\r\n17. Begin rolling from the edge of the dosa as you would a wrap.\r\n18. Remove dosa from hot top or skillet.\r\n19. Masala Dosa is typically served with coconut, cilantro and tomato chutney as well as sambar (vegetable lentil stew)",
+        "ingredients": [
+            {
+                "ingredient_name": "Chana Dal",
+                "quantity": 900,
+                "quantity_type": "gm",
+                "_id": "66042eba71b99eea588e0e17"
+            },
+            {
+                "ingredient_name": "Rice",
+                "quantity": 900,
+                "quantity_type": "gm",
+                "_id": "66042eba71b99eea588e0e18"
+            },
+            {
+                "ingredient_name": "Methi seeds",
+                "quantity": 100,
+                "quantity_type": "gm",
+                "_id": "66042eba71b99eea588e0e19"
+            },
+            {
+                "ingredient_name": "Poha",
+                "quantity": 800,
+                "quantity_type": "gm",
+                "_id": "66042eba71b99eea588e0e1a"
+            },
+            {
+                "ingredient_name": "Cold Filtered Water",
+                "quantity": 2,
+                "quantity_type": "litre",
+                "_id": "66042eba71b99eea588e0e1b"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "South Indian",
+        "category": "Fast food",
+        "favorites": [],
+        "updatedAt": "2024-03-27T14:35:38.924Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T14:35:38.924Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/ejayd7x9xbvv4go2l135",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711550660/RecipeImages/ejayd7x9xbvv4go2l135.jpg"
+        },
+        "_id": "660430aa71b99eea588e0e22",
+        "title": "Noodles",
+        "description": "1. First rinse and shred or chop all the veggies, then set aside. You will need 1 cup shredded cabbage, \u00bd shredded carrots, 8 to 10 french beans (thinly sliced or finely chopped), \u2153 sliced capsicum and \u2153 cup chopped spring onion whites.\r\n2.  Next heat 5 to 6 cups of water in a pan.\r\n3. Then when the water comes to a boil, add \u00bd teaspoon salt.\r\n4.  Next add \u00bd teaspoon oil and mix well. Add any neutral oil.\r\n5. Then add the noodles (about 200 grams). I have used whole wheat noodles. The recipe is customizable with any noodles \u2013 instant, ramen, soba, chow mein, udon, rice.\r\n6.  Now boil until the noodles are cooked al dente.\r\n7. Be sure to check the doneness throughout the noodles recipe by pressing a few noodles or tasting them. They should be softened, but still have a slight bite to them.\r\n8. Then drain the cooked noodles in a colander or sieve.\r\n9. Next rinse the noodles with fresh water.\r\n10. After that, set aside. You can even toss the noodles recipe with 2 to 3 teaspoons oil if desired.\r\n11. Now heat 2 to 3 tablespoons of toasted sesame oil in a wok or pan. Keep the heat to low or medium-low. Add 1 teaspoon finely chopped garlic and 1 teaspoon finely chopped ginger.\r\n12. Next stir-fry or saut\u00e9 for some seconds.\r\n13. Then increase the flame to high and add \u2153 cup chopped spring onions (scallions).\r\n14. After that, keep on stirring continuously and stir fry the onions until they become translucent.\r\n15. Then add thinly sliced french beans (about 8 to 10 beans which have been thinly sliced).\r\n16. Next continue to stir fry for 2 to 3 minutes on a medium to high heat.\r\n17. Then add the veggies: \u00bd cup shredded carrots, \u2153 cup thinly sliced capsicum and 1 cup shredded cabbage.\r\n18. Now continue to toss and stir fry on a medium to high heat until the veggies are almost cooked. If possible it is best to use a pan with handles as it is better to lift it while tossing. \r\n19. Some crunch should be there in the vegetables, so don\u2019t cook the vegetables until they become completely soft\r\n20. Then add 1 to 2 teaspoons of finely chopped celery. You can skip celery if you do not have it.",
+        "ingredients": [
+            {
+                "ingredient_name": "noodles",
+                "quantity": 200,
+                "quantity_type": "gm",
+                "_id": "660430aa71b99eea588e0e23"
+            },
+            {
+                "ingredient_name": "cups water",
+                "quantity": 5,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e24"
+            },
+            {
+                "ingredient_name": " teaspoon oil",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e25"
+            },
+            {
+                "ingredient_name": "teaspoon salt",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e26"
+            },
+            {
+                "ingredient_name": "cup shredded cabbage",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e27"
+            },
+            {
+                "ingredient_name": "cup shredded carrots",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e28"
+            },
+            {
+                "ingredient_name": "cup chopped spring onions",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e29"
+            },
+            {
+                "ingredient_name": "french beans",
+                "quantity": 9,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e2a"
+            },
+            {
+                "ingredient_name": " cup sliced capsicum",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e2b"
+            },
+            {
+                "ingredient_name": "teaspoon finely chopped garlic",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660430aa71b99eea588e0e2c"
+            },
+            {
+                "ingredient_name": "teaspoons finely chopped celery",
+                "quantity": 1,
+                "quantity_type": "ml",
+                "_id": "660430aa71b99eea588e0e2d"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Chinese",
+        "category": "Fast food",
+        "favorites": [],
+        "updatedAt": "2024-03-27T14:43:54.040Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T14:43:54.040Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/mbihvy0e0mtut7ctpxuv",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711551004/RecipeImages/mbihvy0e0mtut7ctpxuv.jpg"
+        },
+        "_id": "6604320271b99eea588e0e34",
+        "title": "Homemade Oreo Biscuits",
+        "description": "1. Cream the butter and sugar until well combined.\r\n2. Add the egg and vanilla and stir well.\r\n3. Combine the dry ingredients in a separate bowl, then gradually add them to the wet ingredients and stir until combined.\r\n4. Form the dough into two discs, then wrap in plastic. Place in the fridge to chill for at least one hour.\r\n5. Unwrap one disc of dough and roll it to 1/16-\u215b\u2033 thick on a lightly floured surface. Periodically use a spatula to scrape and loosen the dough as you roll to prevent it from sticking.\r\n6. If you\u2019d like to add a pattern to your cookies, use an embossed rolling pin or press an upside down grid-patterned cooling rack into your dough to create a diamond shape. You could also skip this step for texture-free cookies.\r\n7. Cut out the cookies with a small circle cookie cutter (I use 1 \u00be\u201d). Combine any scraps and re-roll after cutting. Repeat with the second disc of dough.\r\n8. Place the cookies on a parchment lined baking sheet, spacing 1\u2033 apart. Bake for 8-10 minutes at 450F.",
+        "ingredients": [
+            {
+                "ingredient_name": "unsalted butter, softened",
+                "quantity": 226,
+                "quantity_type": "gm",
+                "_id": "6604320271b99eea588e0e35"
+            },
+            {
+                "ingredient_name": "granulated sugar",
+                "quantity": 200,
+                "quantity_type": "gm",
+                "_id": "6604320271b99eea588e0e36"
+            },
+            {
+                "ingredient_name": "large egg ",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "6604320271b99eea588e0e37"
+            },
+            {
+                "ingredient_name": "teaspoon baking powder",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "6604320271b99eea588e0e38"
+            },
+            {
+                "ingredient_name": "teaspoon baking soda",
+                "quantity": 0.25,
+                "quantity_type": "unit",
+                "_id": "6604320271b99eea588e0e39"
+            },
+            {
+                "ingredient_name": "teaspoon salt",
+                "quantity": 0.75,
+                "quantity_type": "unit",
+                "_id": "6604320271b99eea588e0e3a"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Non-Veg",
+        "dishType": "Indian",
+        "category": "Cookies",
+        "favorites": [],
+        "updatedAt": "2024-03-27T14:49:38.430Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T14:49:38.430Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/ywkmabppuous1gfzvfxd",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711551485/RecipeImages/ywkmabppuous1gfzvfxd.jpg"
+        },
+        "_id": "660433e371b99eea588e0e41",
+        "title": "Idle Sambhar",
+        "description": "1. Pressure cook the arhar dal till it is soft and completely cooked.\r\n2. Heat oil and add hing and curry leaves. Let both of them splatter.\r\n3. Add onion, ladyfinger, brinjal, and tomatoes (In the same order as mentioned).\r\n4. Let all of them fry.\r\n5. Add turmeric and salt, cover and let them fry.\r\n6. Add the sambar masala powder. Keep frying till the raw smell of masala goes away.\r\n7. Add tamarind pulp and jaggery powder. Let it cook for another 3-5 minutes.\r\n8. Finally, add the pressure cook dal.\r\n9. Cover and let it cook for a good 8-10 minutes.\r\n10. You can adjust the water as per the sambar consistency you desire.\r\n11. Heat oil in a tempering pan.\r\n12. Add mustard seeds, urad dal, hing, and curry leaves.\r\n13. Let all of them splatter for a few seconds.\r\n14. Transfer the temper into the Kerala sambar idli pan and let the aromas dissolve for a good 5-7 minutes.\r\n15. Your tasty Kerala Idli Sambar is ready. This is one of the easiest and different idli sambar recipes\r\n16. where you can enjoy the authenticity of Kerala Idli Sambar.\r\n17. Your Kerala style Idli Sambar is all ready to be devoured with some soft, fluffy idlis. \r\n18. Good luck stopping your self from making more!",
+        "ingredients": [
+            {
+                "ingredient_name": "Cup Arhar Dal",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e42"
+            },
+            {
+                "ingredient_name": "Small Onion thin sliced",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e43"
+            },
+            {
+                "ingredient_name": "1 to 2 Pinch Hing",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e44"
+            },
+            {
+                "ingredient_name": "Lady Finger",
+                "quantity": 8,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e45"
+            },
+            {
+                "ingredient_name": "5-7 Brinjals",
+                "quantity": 6,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e46"
+            },
+            {
+                "ingredient_name": "small-sized tomatoes",
+                "quantity": 2,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e47"
+            },
+            {
+                "ingredient_name": " handful of curry leaves",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e48"
+            },
+            {
+                "ingredient_name": "Turmeric Powder",
+                "quantity": 20,
+                "quantity_type": "gm",
+                "_id": "660433e371b99eea588e0e49"
+            },
+            {
+                "ingredient_name": "2 tbsp of jaggery powder",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e4a"
+            },
+            {
+                "ingredient_name": "2.5 \u2013 3 cups of water",
+                "quantity": 3,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e4b"
+            },
+            {
+                "ingredient_name": "tablespoon of regular cooking oil",
+                "quantity": 2,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e4c"
+            },
+            {
+                "ingredient_name": "teaspoon mustard seeds",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e4d"
+            },
+            {
+                "ingredient_name": "teaspoon urad seeds",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e4e"
+            },
+            {
+                "ingredient_name": "handful of curry leaves",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e4f"
+            },
+            {
+                "ingredient_name": "dry red chilies",
+                "quantity": 2,
+                "quantity_type": "unit",
+                "_id": "660433e371b99eea588e0e50"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "South Indian",
+        "category": "Snacks",
+        "favorites": [
+            "65d4c1b9e60cc7b970254148"
+        ],
+        "updatedAt": "2024-03-27T14:57:39.099Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T14:57:39.099Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/yure0o5dmz7vlxfnsoip",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711551946/RecipeImages/yure0o5dmz7vlxfnsoip.jpg"
+        },
+        "_id": "660435b13563cf7d2fa13a64",
+        "title": "Pau Gathiya",
+        "description": "1. First, combine 1 cup of rice flour and \u00bd cup of gram flour (besan) in a large mixing bowl.\r\n2. Add the following spices and seeds:\r\n\u00bd teaspoon carom seeds\r\n\u00bd teaspoon cumin seeds\r\n1 tablespoon white sesame seeds\r\n\u00bc teaspoon turmeric powder\r\n1 teaspoon red chili powder\r\na generous pinch of asafoetida\r\nsalt as per taste\r\n3. Thoroughly mix the flours and seasonings with a spoon.\r\n4. Next, heat 2.5 tablespoons butter or oil in a bowl or small pan on medium low heat. You want the butter or oil to get to a slight simmer but not boil or burn.\r\n5. Add the hot butter or oil to flour mixture.\r\n6. First mix with a spoon. When the mixture becomes warm, then use your fingertips to thoroughly combine the hot butter or oil with the flour mixture. Set the bowl aside.\r\n7. Next, heat \u2154 to \u00be cup water in a medium saucepan until boiling.\r\n8. Working just a bit at a time, carefully add the boiling water to the dough. Mix gently with a spoon as you go.\r\n9. Continue adding hot water until the dough becomes damp but not saturated. It should not be sticky.\r\n10. Mix with a spoon and then use slightly damp hands to knead and form the dough.\r\n11. The chakli dough should be pliable, firm, and not crumbly. Cover and let the dough rest for 30 minutes at room temperature.\r\n12. Once the dough has rested, it\u2019s time to make the chakli! Start by applying some water in the chakli/murukku maker, and place a portion of the dough inside it.\r\n13.  Tighten the lid and press the chakli maker to prepare the chakli or use according to the manufacturer\u2019s instructions. Carefully move in rounds to get a spiral shape as the dough comes out.\r\n14. Fry it for approxx 50 secs.\r\n15 It is ready!",
+        "ingredients": [
+            {
+                "ingredient_name": "teaspoon carom seeds",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660435b13563cf7d2fa13a65"
+            },
+            {
+                "ingredient_name": "teaspoon cumin seeds",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660435b13563cf7d2fa13a66"
+            },
+            {
+                "ingredient_name": "tablespoon white sesame seeds",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660435b13563cf7d2fa13a67"
+            },
+            {
+                "ingredient_name": " teaspoon turmeric powder",
+                "quantity": 0.25,
+                "quantity_type": "unit",
+                "_id": "660435b13563cf7d2fa13a68"
+            },
+            {
+                "ingredient_name": "teaspoon red chili powder",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660435b13563cf7d2fa13a69"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Jammu Kashmiri",
+        "category": "Snacks",
+        "favorites": [],
+        "updatedAt": "2024-03-27T15:05:21.270Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T15:05:21.270Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/kpddv7b0bfnln2oxoqun",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711552178/RecipeImages/kpddv7b0bfnln2oxoqun.jpg"
+        },
+        "_id": "660436983563cf7d2fa13a70",
+        "title": "Pasta",
+        "description": "1. Boil raw pasta according to the direction given on the package or follow the directions given below.\r\n2. Boil approx. 6 cups water in a large pot/pan over medium flame. Add raw pasta, 1 teaspoon oil and salt (approx. 1 teaspoon).\r\n3. Stir well and let them boil until pastas are al dente (cooked but not very soft). It will take around 10-12 minutes. Stir in between occasionally to prevent sticking.\r\n4. To check whether pasta are cooked or not, bite one pasta. If it is too hard to bite or is white in the center, it is raw and requires cooking little longer. If it is slightly firm to bite, then it means it is cooked to al dente. If you want your pasta to be very soft, cook them for 2-3 minutes more once they are al dente.\r\n5. Drain the water by carefully transferring the cooked pasta to large strainer (or a colander).\r\n6. While pasta is cooking, you can make the red pasta sauce by following this red tomato pasta sauce recipe. Add sauce in a pan and heat it over medium flame.\r\n7. Add cooked pasta and mix well. Cook for 2-3 minutes. Turn off the flame. Tomato Pasta is now ready. Garnish with grated Parmesan cheese or feta cheese or grated mozzarella cheese.",
+        "ingredients": [
+            {
+                "ingredient_name": "cups Raw Penne Pasta or Fusilli Pasta",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660436983563cf7d2fa13a71"
+            },
+            {
+                "ingredient_name": "easpoon Oil, optional",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660436983563cf7d2fa13a72"
+            },
+            {
+                "ingredient_name": "Salt to taste",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "660436983563cf7d2fa13a73"
+            },
+            {
+                "ingredient_name": "Large Tomato",
+                "quantity": 6,
+                "quantity_type": "unit",
+                "_id": "660436983563cf7d2fa13a74"
+            },
+            {
+                "ingredient_name": "Parmesan Cheese",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660436983563cf7d2fa13a75"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Chinese",
+        "category": "Fast food",
+        "favorites": [],
+        "updatedAt": "2024-03-27T15:09:12.605Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T15:09:12.605Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/n0axhdpqokcow1he3ysy",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711552723/RecipeImages/n0axhdpqokcow1he3ysy.jpg"
+        },
+        "_id": "660438b93563cf7d2fa13a7c",
+        "title": "Strawbery Cake",
+        "description": "1. Divide the cream in half and set aside to use for frosting the outside of the cake. Take the other half of the whipped cream and mix with diced fresh strawberries.\r\n2. Layer your cake using the strawberries and cream as the filling.\r\n3. Frost the whole thing using the plain whipped cream set aside earlier. Then take a few extra berries and decorate the top of the strawberry cake.\r\n4. Refrigerate 4 hours to overnight to set completely (so it will cut nicely). Slice and serve.",
+        "ingredients": [
+            {
+                "ingredient_name": "self-raising flour",
+                "quantity": 210,
+                "quantity_type": "gm",
+                "_id": "660438b93563cf7d2fa13a7d"
+            },
+            {
+                "ingredient_name": "cornflour",
+                "quantity": 25,
+                "quantity_type": "gm",
+                "_id": "660438b93563cf7d2fa13a7e"
+            },
+            {
+                "ingredient_name": "golden caster sugar",
+                "quantity": 225,
+                "quantity_type": "gm",
+                "_id": "660438b93563cf7d2fa13a7f"
+            },
+            {
+                "ingredient_name": "baking powder tablespoon",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660438b93563cf7d2fa13a80"
+            },
+            {
+                "ingredient_name": "unsalted butter, at room temperature",
+                "quantity": 225,
+                "quantity_type": "gm",
+                "_id": "660438b93563cf7d2fa13a81"
+            },
+            {
+                "ingredient_name": "large eggs, free-range or organic",
+                "quantity": 4,
+                "quantity_type": "unit",
+                "_id": "660438b93563cf7d2fa13a82"
+            },
+            {
+                "ingredient_name": "good-quality vanilla extract tanlespoon",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660438b93563cf7d2fa13a83"
+            },
+            {
+                "ingredient_name": "fresh strawberries",
+                "quantity": 250,
+                "quantity_type": "gm",
+                "_id": "660438b93563cf7d2fa13a84"
+            },
+            {
+                "ingredient_name": "unsalted butter, at room temperature",
+                "quantity": 115,
+                "quantity_type": "gm",
+                "_id": "660438b93563cf7d2fa13a85"
+            },
+            {
+                "ingredient_name": "semi-skimmed milk",
+                "quantity": 60,
+                "quantity_type": "ml",
+                "_id": "660438b93563cf7d2fa13a86"
+            },
+            {
+                "ingredient_name": "good-quality vanilla extract tablespoon",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660438b93563cf7d2fa13a87"
+            },
+            {
+                "ingredient_name": "icing sugar",
+                "quantity": 500,
+                "quantity_type": "gm",
+                "_id": "660438b93563cf7d2fa13a88"
+            },
+            {
+                "ingredient_name": "strawberry jam tablespoon",
+                "quantity": 4,
+                "quantity_type": "unit",
+                "_id": "660438b93563cf7d2fa13a89"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Non-Veg",
+        "dishType": "American",
+        "category": "Ice cream cake",
+        "favorites": [
+            "660004274fc9848d1e0224fe",
+            "65d4c1b9e60cc7b970254148"
+        ],
+        "updatedAt": "2024-03-27T15:18:17.410Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T15:18:17.410Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/utvhsf24fk99s4k03ke7",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711553315/RecipeImages/utvhsf24fk99s4k03ke7.jpg"
+        },
+        "_id": "66043b093ab4401936ee0be2",
+        "title": "Gulab Jamun",
+        "description": "1. Take 1\u00bd cups sugar, 3-4 green cardamoms (or 1/4 teaspoon cardamom powder) and 8-10 saffron strands in a deep pan.\r\n2. Add 2\u00bd cups water and bring mixture to boil over high flame. When it comes to rolling boil, reduce flame to medium and cook until sugar syrup is little sticky, it will take around 10-12 minutes. Stir occasionally in between. Turn off the flame. Sugar syrup is ready. After deep frying jamuns in later step, heat the sugar syrup for 4-5 minutes.\r\n3. Prepare 1 cup mawa by following the recipe given above or use readymade mawa. Crumble it using hand or grate it using a grater. Add 1/8 teaspoon baking soda and 1/2 cup sifted maida.\r\n4. Mix them gently using a spoon.\r\n5. As you can see, the flour is easily mixed with mawa because of moisture in mawa.\r\n6. Knead all of them together until smooth dough is prepared. If required add a few teaspoons of milk to knead a smooth and soft dough (add one teaspoon milk at a time until smooth consistency of dough is achieved, do not add large amount in single go).\r\n7. Divide dough into 16-18 equal parts, grease hands with ghee and make smooth surfaced balls from it. Make sure that there is no crack on the surface of balls because it will make jamuns to crack open while deep frying. If you are not able to form crack-less balls, then you need to make dough bit softer. To do this, add milk in dough, knead it again and roll the balls again. Do not make very large balls because they will increase in size after deep frying and soaking in syrup.\r\n8. Heat ghee or oil (or 1/2 ghee and 1/2 oil) in a pan over medium flame. When ghee is medium hot, add a pinch of dough in hot ghee and if it comes upward immediately without changing it\u2019s color, ghee is ready. If it turns brown immediately, ghee is too hot. If it doesn\u2019t come upward, ghee is cold. Add prepared dough balls (4-6 at a time or depending on the size of a pan) and deep-fry them over low to medium flame. As you can see they will turn light golden and increase in size after a minute. If the jamuns turn dark brown immediately then the temperature of ghee is too hot, pour some cold ghee in to ghee to reduce the temperature.\r\n9. After 3-4 minutes, they will turn light golden brown.\r\n10. Deep fry them until they turn golden brown, it will take around 6-7 minutes. Cooking them evenly is the key to soft and textured gulab jamuns, increase or decrease flame intensity to keep the temperature of ghee even while frying them.\r\n11. Drain and transfer them over kitchen napkin and let them cool for 5-minutes. As you can see, the balls are increased in size after deep frying. Do not add them directly into warm sugar syrup.\r\n12. Add fried balls into warm sugar syrup (not hot syrup). If you add them into hot syrup, they will shrink in size.\r\n13. Soak them for at least 1-2 hours before serving. As you can see in the picture, the jammuns are increased to almost double in size. Gulab jamuns are ready for serving. Serve them warm or chilled.",
+        "ingredients": [
+            {
+                "ingredient_name": "cup Maida",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "66043b093ab4401936ee0be3"
+            },
+            {
+                "ingredient_name": "cup grated Mawa (Khoya) (225 grams)",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "66043b093ab4401936ee0be4"
+            },
+            {
+                "ingredient_name": "teaspoon Baking Soda",
+                "quantity": 0.124,
+                "quantity_type": "unit",
+                "_id": "66043b093ab4401936ee0be5"
+            },
+            {
+                "ingredient_name": "Green Cardamoms",
+                "quantity": 4,
+                "quantity_type": "unit",
+                "_id": "66043b093ab4401936ee0be6"
+            },
+            {
+                "ingredient_name": "Saffron Strands",
+                "quantity": 10,
+                "quantity_type": "unit",
+                "_id": "66043b093ab4401936ee0be7"
+            },
+            {
+                "ingredient_name": "cups Sugar",
+                "quantity": 1.5,
+                "quantity_type": "unit",
+                "_id": "66043b093ab4401936ee0be8"
+            },
+            {
+                "ingredient_name": "cups Water",
+                "quantity": 2.5,
+                "quantity_type": "unit",
+                "_id": "66043b093ab4401936ee0be9"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Veg",
+        "dishType": "Uttar predesh",
+        "category": "Sweets",
+        "favorites": [],
+        "updatedAt": "2024-03-27T15:28:09.122Z",
+        "__v": 0,
+        "createdAt": "2024-03-27T15:28:09.122Z"
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/bgtfdezblgysttacdgqt",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711607903/RecipeImages/bgtfdezblgysttacdgqt.jpg"
+        },
+        "_id": "660510449876e51523083066",
+        "title": "Cookie",
+        "description": "1. Using your electric mixer, combine both of the sugars and the butter.\r\n2. After the sugars and butter are mixed completely, turn the mixer on low and add the vanilla.\r\n3. Add the egg into the mixture and mix until it's just combined, but don't over mix this step.\r\n4. Now add the flour, baking soda and salt, mix until it has a crumbly texture.\r\n5. Add the chocolate chips and stir into the batter.\r\n6. Put into the refrigerator for an hour to chill.\r\n7. Roll 1 tbsp of batter into a ball and place on a baking sheet.\r\n8. Bake in an oven that's been preheated to 350\u00b0 for 9-11 minutes until the bottoms are golden brown.\r\n9. Remove from the oven and place on a wire rack to cool.\r\n10. If you make these, let me know what you think!",
+        "ingredients": [
+            {
+                "ingredient_name": "egg",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660510449876e51523083067"
+            },
+            {
+                "ingredient_name": "tsp salt",
+                "quantity": 0.5,
+                "quantity_type": "unit",
+                "_id": "66080a0814666bf24c06f530"
+            },
+            {
+                "ingredient_name": "tsp vanilla",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "66080a0814666bf24c06f531"
+            },
+            {
+                "ingredient_name": "tsp baking soda",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "66080a0814666bf24c06f532"
+            },
+            {
+                "ingredient_name": "brown sugar",
+                "quantity": 20,
+                "quantity_type": "gm",
+                "_id": "66080a0814666bf24c06f533"
+            },
+            {
+                "ingredient_name": "sugar",
+                "quantity": 35,
+                "quantity_type": "gm",
+                "_id": "66080a0814666bf24c06f534"
+            },
+            {
+                "ingredient_name": "chocolate chips",
+                "quantity": 1,
+                "quantity_type": "ml",
+                "_id": "66080a0814666bf24c06f535"
+            },
+            {
+                "ingredient_name": "tbsp unsalted butter",
+                "quantity": 8,
+                "quantity_type": "unit",
+                "_id": "66080a0814666bf24c06f536"
+            }
+        ],
+        "owner": "soham",
+        "vegNonVeg": "Non-Veg",
+        "dishType": "Indian",
+        "category": "Ice cream",
+        "favorites": [],
+        "createdAt": "2024-03-28T06:37:56.223Z",
+        "updatedAt": "2024-03-30T12:48:08.744Z",
+        "__v": 0
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/blwutwxlidxkrxkr1q8l",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711611519/RecipeImages/blwutwxlidxkrxkr1q8l.jpg"
+        },
+        "_id": "66051e6466bdc0e92f74602f",
+        "title": "pizzq",
+        "description": "description",
+        "ingredients": [
+            {
+                "ingredient_name": "fvfv",
+                "quantity": 2,
+                "quantity_type": "ml",
+                "_id": "66051e6466bdc0e92f746030"
+            }
+        ],
+        "owner": "kevint11",
+        "vegNonVeg": "Veg",
+        "dishType": "Mexican",
+        "category": "Fast food",
+        "favorites": [],
+        "createdAt": "2024-03-28T07:38:12.284Z",
+        "updatedAt": "2024-03-28T07:38:32.059Z",
+        "__v": 0
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/hwalikwx6gruinhqcm1l",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711611597/RecipeImages/hwalikwx6gruinhqcm1l.jpg"
+        },
+        "_id": "66051eb266bdc0e92f747003",
+        "title": "fvfv",
+        "description": "vf",
+        "ingredients": [
+            {
+                "ingredient_name": "fvfv",
+                "quantity": 22,
+                "quantity_type": "ml",
+                "_id": "66051eb266bdc0e92f747004"
+            }
+        ],
+        "owner": "kevint11",
+        "vegNonVeg": "Veg",
+        "dishType": "Indian",
+        "category": "Sweets",
+        "favorites": [],
+        "createdAt": "2024-03-28T07:39:30.706Z",
+        "updatedAt": "2024-03-28T07:39:30.711Z",
+        "__v": 0
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/npznzkabdohnucsihs1s",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711617852/RecipeImages/npznzkabdohnucsihs1s.jpg"
+        },
+        "_id": "6605373d66779d49f72f24d5",
+        "title": "bfdbdf",
+        "description": "bfdbfdbfbr",
+        "ingredients": [
+            {
+                "ingredient_name": "bgfdf",
+                "quantity": 50,
+                "quantity_type": "ml",
+                "_id": "6605373d66779d49f72f24d6"
+            }
+        ],
+        "owner": "kevint11",
+        "vegNonVeg": "Veg",
+        "dishType": "American",
+        "category": "Breakfast",
+        "favorites": [],
+        "createdAt": "2024-03-28T09:24:13.014Z",
+        "updatedAt": "2024-03-28T09:24:13.026Z",
+        "__v": 0
+    }
+]

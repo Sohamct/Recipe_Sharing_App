@@ -13,6 +13,8 @@ import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
 import { useProgress } from '../../../../features/ProgressContext';
 import {TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon, WhatsappShareButton, WhatsappIcon} from 'react-share';
+import { RecipeItem } from './RecipeItem';
+import {format} from 'timeago.js';
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
@@ -24,10 +26,13 @@ export const RecipeShow = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [suggestedRecipesIds, setSuggestedRecipesIds] = useState([]);
+  const [suggestedRecipes, setSuggestedRecipes] = useState([]);
+  const [isSuggestionLoaded, setIsSuggestionLoaded] = useState(false);
   const recipeId = params.id;
 
   const recipes = useSelector((state) => state.recipes.recipes);
-  console.log(recipes);
+  // console.log(recipes);
   const status = useSelector((state) => state.recipes.status);
   const error = useSelector((state) => state.recipes.error);
 
@@ -36,6 +41,41 @@ export const RecipeShow = () => {
       dispatch(fetchRecipesAsync(updateProgress));
     }
   }, [dispatch, recipes.length]);
+
+  useEffect(() => {
+    let result = [];
+    for(const rId of suggestedRecipesIds){
+      for (const recipe of recipes){
+        if(recipe?._id === rId){
+          result.push(recipe);
+          break;
+        }
+      }
+    }
+    setSuggestedRecipes(result);
+    console.log(suggestedRecipes);
+  }, [suggestedRecipesIds])
+  useEffect(() => {
+    setIsSuggestionLoaded(false);
+    // console.log(recipes);
+    fetch("http://localhost:5000/get_recommondation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({recipeId})
+    }).then(
+      res => res.json()
+    ).then(
+      data => {
+        console.log("Response from Flask server:", data);
+        setSuggestedRecipesIds(data.recomondations);
+        setIsSuggestionLoaded(true);
+      }
+    ).catch((error) => {
+      console.error("Error sending data", error);
+    })
+  }, [recipes])
 
   useEffect(() => {
     const r = recipes.find((r) => r._id === recipeId);
@@ -49,7 +89,8 @@ export const RecipeShow = () => {
       addComment: state.addComment,
       fetchComment: state.fetchComment,
     })
-  ); console.log(commentByRecipe);
+  ); 
+  // console.log(commentByRecipe);
 
   // Loading state while fetching data
   if (userLoading || !recipe) {
@@ -57,33 +98,6 @@ export const RecipeShow = () => {
   }
 
   const { _id, title, description, updatedAt, ingredients, owner, image, createdAt, category, vegNonVeg, dishType } = recipe;
-
-  console.log(user)
-  console.log(params.id);
-  const calculateRelativeTime = (timestamp) => {
-    const now = new Date();
-    const commentTime = new Date(timestamp);
-    const timeDifference = now - commentTime;
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(months / 12);
-    if (years > 0) {
-      return `${years} year${years > 1 ? 's' : ''} ago`;
-    } else if (months > 0) {
-      return `${months} month${months > 1 ? 's' : ''} ago`;
-    } else if (days > 0) {
-      return `${days} day${days > 1 ? 's' : ''} ago`;
-    } else if (hours > 0) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else {
-      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
-    }
-  };
 
   const handleDeleteClick = () => {
     setDeleteClick(true);
@@ -104,9 +118,9 @@ export const RecipeShow = () => {
 
     dispatch(deleteRecipeAsync({ data, updateProgress }))
       .then(response => {
-        console.log(response);
+        // console.log(response);
         updateProgress(100);
-        console.log(status);
+        // console.log(status);
         if (status.delete === 'failed') {
           toast.error(error.deleteError, { autoClose: 2000, theme: "colored" });
         }
@@ -143,7 +157,7 @@ export const RecipeShow = () => {
   const makeNewChat = async (owner) => {
     try {
       const response = await addChat({ sender: user?.username, receiver: owner });
-      console.log(response)
+      // console.log(response)
       if (response.data) {
         navigate('/chat')
       } else {
@@ -185,7 +199,7 @@ export const RecipeShow = () => {
                       <span className="text-red-500 mr-2">Non veg</span>
                     )}
                     <p className="text-gray-600">
-                      <small>{imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + calculateRelativeTime(updatedAt)) : ('Created ' + calculateRelativeTime(createdAt))) : ''}</small>
+                      <small>{imageLoaded ? (updatedAt !== createdAt ? ('Updated ' + format(updatedAt)) : ('Created ' + format(createdAt))) : ''}</small>
                     </p>
                   </div>
                 </div>
@@ -210,18 +224,17 @@ export const RecipeShow = () => {
                   url={`Image: ${image.url}\nRecipe Link: ${window.location.href}`}
                   quote={`Unleash the chef in you and create magic in the kitchen with our irresistible and tasty ${dishType} ${title}`}
                   hashtag={`#${dishType}${title} ${category}`}>
-                  <FacebookIcon widths={42} height={42} logoFillColor="white" round={true}></FacebookIcon>
+                  <FacebookIcon widths={42} height={42}  round={true}></FacebookIcon>
                 </FacebookShareButton>
                 <WhatsappShareButton
-                  imageUrl={image.url}
                   title={`Elevate your taste buds with our mouthwatering ${dishType} ${title}`}
                   url={`Image: ${image.url} \nRecipe Link: ${window.location.href}`}
                   hashtag={title}
                   >
-                  <WhatsappIcon widths={42} height={42} logoFillColor="white" round={true}></WhatsappIcon>
+                  <WhatsappIcon widths={42} height={42}  round={true}></WhatsappIcon>
                 </WhatsappShareButton>
                 <TwitterShareButton>
-                  <TwitterIcon widths={42} height={42} logoFillColor="white" round={true}></TwitterIcon>
+                  <TwitterIcon widths={42} height={42}  round={true}></TwitterIcon>
                 </TwitterShareButton>
               </div>
               {!isRecipeOwner && (
@@ -268,11 +281,20 @@ export const RecipeShow = () => {
                 </ul>
               </h6>
             </div>
-
+            <div className="mt-3">
+  <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
+  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-5 mb-10">
+    {isSuggestionLoaded && suggestedRecipes.map((recipe, index) => (
+      <RecipeItem key={index} {...recipe} />
+    ))}
+  </div>
+</div>
           </div>
         </div>
       </div>
-    </div>
+      
+</div>
+
   );
 }
 

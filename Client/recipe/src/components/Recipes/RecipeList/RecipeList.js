@@ -73,9 +73,9 @@ import { FilterContext } from '../../../features/FilterContext';
 export const RecipeList = () => {
   const dispatch = useDispatch();
   const recipesState = useSelector((state) => state.recipes);
-  
-  const {updateProgress}= useProgress();
-  const {filterData} = useContext(FilterContext);
+
+  const { updateProgress } = useProgress();
+  const { filterData } = useContext(FilterContext);
 
   const fetchData = useCallback(async () => {
     try {
@@ -86,7 +86,7 @@ export const RecipeList = () => {
 
       setTimeout(() => {
         updateProgress(100);
-      }, timeoutDuration/30);
+      }, timeoutDuration / 30);
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
@@ -95,9 +95,36 @@ export const RecipeList = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  
+
   useEffect(() => {
   }, [filterData])
+
+  useEffect(() => {
+    if(recipesState?.recipes?.length > 0){
+      fetch("http://localhost:5000/recommend", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "recipes": recipesState.recipes
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('There was a problem with your fetch operation:', error);
+      });
+    }
+    
+  }, [recipesState])
 
   if (recipesState.status === 'loading') {
     return <h3>Loading...</h3>;
@@ -116,15 +143,15 @@ export const RecipeList = () => {
       (filterData.dishTypes.length > 0 && !filterData.dishTypes.includes(recipe.dishType)) ||
       (filterData.categories.length > 0 && !filterData.categories.includes(recipe.category))
     ) {
-      return false; 
+      return false;
     }
     return true;
   }).sort((a, b) => {
-    if(filterData.favoritism === "high to low"){
+    if (filterData.favoritism === "high to low") {
       return b.favorites.length - a.favorites.length;
-    }else if(filterData.favoritism === "low to high"){
+    } else if (filterData.favoritism === "low to high") {
       return a.favorites.length - b.favorites.length;
-    }else{
+    } else {
       return 0;
     }
   })
@@ -133,7 +160,7 @@ export const RecipeList = () => {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
       {filteredRecipes.map((recipe) => (
-        <RecipeItem key={recipe._id} {...recipe}/>
+        <RecipeItem key={recipe._id} {...recipe} />
       ))}
     </div>
   );

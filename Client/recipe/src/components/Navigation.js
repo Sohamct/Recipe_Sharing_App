@@ -90,7 +90,7 @@ export const Navigation = () => {
               </li>
               <li>
                 <Link
-                  to="/newrecipe"
+                  to="/chat"
                   className={`text-lg font-semibold text-blue-900 hover:text-blue-800 no-underline ${selectedSection === 'newrecipe' ? 'underline' : ''
                     }`}
                 >

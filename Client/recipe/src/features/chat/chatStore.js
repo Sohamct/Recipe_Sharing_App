@@ -5,7 +5,7 @@ import { getChats } from '../../app/service/ChatApi';
 export const useChatStore = create(
     devtools(
         persist((set) => ({
-            chatsByUser: {}, // Initialize chatsByUser as an empty object
+            chatsByUser: [], // Initialize chatsByUser as an empty object
             fetchChats: async () => {
                 try {
                     const chats = await getChats();
