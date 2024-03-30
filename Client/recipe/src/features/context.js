@@ -29,7 +29,7 @@ export const UserProvider = ({children}) => {
         setUsername(user.username);
         setUserDetails(user);
         
-        console.log("User to store:", user);
+        // console.log("User to store:", user);
         localStorage.setItem('username', user.username);
         localStorage.setItem('user', JSON.stringify(user)); // Convert user object to JSON string before storing
     };

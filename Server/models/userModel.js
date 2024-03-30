@@ -28,11 +28,11 @@ const userSchema = new mongoose.Schema({
     profileImage:{ 
         public_id: {
           type: String,
-          required: true  
+          required: false
         },
         url: {
           type: String,
-          required: true
+          required: false
         }
       },
     instagramHandle: {

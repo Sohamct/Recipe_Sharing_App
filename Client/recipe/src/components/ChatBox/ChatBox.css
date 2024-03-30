@@ -51,6 +51,13 @@
     background: linear-gradient(98.63deg, #24e4f0 0%, #358ff9 100%);
 }
 
+.message.received {
+    align-self: flex-start;
+    border-radius: 1rem 1rem 1rem 0;
+    background: #3498db;
+    color: white;
+}
+
 
 .chat-sender {
     background: white;

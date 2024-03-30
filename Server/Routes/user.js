@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 const fetchUser = require('../middleware/fetchUser');
+const Comment = require('../models/commentModel');
+const Recipe = require('../models/recipeModel');
+const Message = require('../models/messageModel');
 
 // Endpoint to handle the /api/user/details route
 router.get('/details', fetchUser, async (req, res) => {
@@ -26,8 +29,7 @@ router.get('/detailsbyusername', async (req, res) => {
   try {
     const { username } = req.query;
     console.log(username);
-    // Fetch user details from the database based on the username
-    // const user = await User.findOne({ username });
+    
     const user = await User.findOne({ username }).select('-password');
     console.log(user);
     if (!user) {
@@ -44,28 +46,24 @@ router.get('/detailsbyusername', async (req, res) => {
 
 router.put('/update-details', fetchUser, async (req, res) => {
   try {
-    // Check if req.user is defined
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ error: "User not authenticated" });
-    }
-
-    // Retrieve user details from the request body
     const { email, firstname, lastname, username, instagramHandle, linkedinHandle, twitterHandle } = req.body;
 
-    // Validate required fields
     if (!email || !firstname || !lastname) {
       return res.status(400).json({ error: "Email, firstname, and lastname are required fields" });
     }
 
-    // Find the user in the database based on the ID stored in req.user
     const userToUpdate = await User.findById(req.user._id);
 
-    // Check if the user exists
     if (!userToUpdate) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Update user details
+    const isSimillarUsernameOrEmailExists = await User.findOne({email: email, username: username});
+
+    if(isSimillarUsernameOrEmailExists){
+      return res.status(400).json({error: "Simillar User Exist with username or email"});
+    }
+
     userToUpdate.email = email;
     userToUpdate.firstname = firstname;
     userToUpdate.lastname = lastname;
@@ -74,10 +72,13 @@ router.put('/update-details', fetchUser, async (req, res) => {
     userToUpdate.linkedinHandle = linkedinHandle;
     userToUpdate.twitterHandle = twitterHandle;
 
-    // Save the updated user details to the database
     await userToUpdate.save();
+    console.log(req.user.username, username);
 
-    // Respond with success message and updated user details
+    await Comment.updateMany({_from: req.user.username}, {_from: username});
+    await Message.updateMany({sender: req.user.username}, {sender: username});
+    await Recipe.updateMany({owner: req.user.username}, {owner: username});
+    console.log("Updated the 3 schemas");
     res.json({ success: true, message: "User details updated successfully", user: userToUpdate });
   } catch (error) {
     console.error("Error updating user details:", error);

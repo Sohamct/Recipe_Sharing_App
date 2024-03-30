@@ -1,3 +1,4 @@
 node_modules
 /Client/recipe/node_modules/
 /Server/node_modules
+/Flask-Server/venv

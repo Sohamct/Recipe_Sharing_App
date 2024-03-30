@@ -12,7 +12,7 @@ export const addChat = async(newChat) =>{
             body: JSON.stringify(newChat),
         })
             if(!response.ok){
-                throw new Error(`Failed to fetch comments. Status: ${response.status}`);
+                throw new Error(`Failed to create chat ${response.status}`);
             }
             const data = await response.json();
             // console.log(data);

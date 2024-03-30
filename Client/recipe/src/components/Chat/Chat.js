@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Chat.css';
-import { Link } from 'react-router-dom';
 import { useUser } from '../../features/context';
 import useChatStore from '../../features/chat/chatStore';
 import { Conversation } from './Conversation';
-import { IoNotifications } from 'react-icons/io5';
-import { FaCommentAlt } from 'react-icons/fa';
 import './RightSide/RightSide.css';
-import { IoMdHome } from 'react-icons/io';
 import ChatBox from '../ChatBox/ChatBox';
 import { io } from 'socket.io-client';
 
@@ -82,8 +78,8 @@ export const Chat = () => {
                 <div className="Chat-container">
                     <h2>Chats</h2>
                     <div className="Chat-list">
-                        {!loading &&
-                            chatsByUser.map((chat, ind) => {
+                        {!loading && chatsByUser &&
+                            chatsByUser?.map((chat, ind) => {
                                 const online = checkOnlineStatus(chat);
                                 const chatMember = chat.members.find((member) => member !== username);
 
@@ -103,17 +99,8 @@ export const Chat = () => {
                     </div>
                 </div>
             </div>
-            {/* Right side */}
-            <div className="Right-side-chat">
-                <div>
-                    <div className="navIcons p-2 ">
-                        <Link to="/">
-                            <IoMdHome />
-                        </Link>
-                        <IoNotifications/>
-                        <FaCommentAlt />
-                    </div>
-                </div>
+            <div className="Right-side-chat my-3">
+ 
                 <ChatBox chat={currentChat} username={username} setSendMessage={setSendMessage} recieveMessage={recieveMessage} />
             </div>
         </div>

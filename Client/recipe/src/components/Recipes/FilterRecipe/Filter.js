@@ -14,6 +14,12 @@ const Filter = ({ isOpen, onClose }) => {
   const ref = useRef(null);
 
   useEffect(() => {
+    setFavoritism('');
+    setVegNonVeg('');
+    setSelectedCategories([]);
+    setSelectedDishTypes([]);
+  }, [window.location.href])
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         onClose();
@@ -211,7 +217,7 @@ const Filter = ({ isOpen, onClose }) => {
             </button>
             <button
               type="button"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
               onClick={onApplyFilter}
             >
               Apply

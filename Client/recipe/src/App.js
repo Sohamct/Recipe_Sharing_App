@@ -14,8 +14,8 @@ import UserProfile from  './components/User/userProfile';
 import FavoriteRecipesPage from './components/Favorites/FavoriteRecipePage.js';
 import { SearchResults } from './components/Recipes/SearchRecipe/SearchResults.js';
 import { SearchRecipe } from './components/Recipes/SearchRecipe/SearchRecipe.js';
-import { MyRecipe } from './components/MyRecipe/MyRecipe';
-
+import {MyRecipe} from './components/MyRecipe/MyRecipe';
+ 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -23,11 +23,13 @@ const router = createBrowserRouter(
       <Route path="/recipe" element={<RootLayout />}/>
       <Route path="newrecipe" element={<CreateRecipe />} />
       <Route path="/editrecipe/:id" element={<CreateRecipe/>}/>
+      <Route path="/recipe" element={<RootLayout />}/>
+      <Route path="newrecipe" element={<CreateRecipe />} />
+      <Route path="/editrecipe/:id" element={<CreateRecipe/>}/>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/logout" element={<LogoutInfoPage/>}/>
       <Route path="/user-profile/:username" element={<UserProfile/>} />
-      <Route path="/chat" element={<Chat/>} />
       <Route path="viewrecipe/:id" element={<RecipeShow />}/>
       <Route path="/search-results" element={<SearchResults/>} />
       <Route path="/favorite" element={<FavoriteRecipesPage />} />
