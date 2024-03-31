@@ -40,32 +40,32 @@ export const RecipeList = () => {
   useEffect(() => {
   }, [filterData])
 
-  useEffect(() => {
-    if(recipesState?.recipes?.length > 0){
-      fetch("http://localhost:5000/recommend", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "recipes": recipesState.recipes
-      })
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-      });
-    }
+  // useEffect(() => {
+  //   if(recipesState?.recipes?.length > 0){
+  //     fetch("http://localhost:5000/recommend", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({
+  //       "recipes": recipesState.recipes
+  //     })
+  //   })
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       console.log(data);
+  //     })
+  //     .catch(error => {
+  //       console.error('There was a problem with your fetch operation:', error);
+  //     });
+  //   }
     
-  }, [recipesState])
+  // }, [recipesState])
 
   if (recipesState.status === 'loading') {
     return <h3>Loading...</h3>;

@@ -13,7 +13,6 @@ app.use(cors({
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 }));
-console.log("Comming");
 app.use(bodyParser.json()); 
 app.use(express.json()); 
 
@@ -24,7 +23,6 @@ try{
 }catch(error){
   console.log(error);
 }
-console.log("Comming 2");
 // Routes
 app.use('/api/auth', require('./Routes/auth'));
 app.use('/api/recipe', require('./Routes/recipe'));

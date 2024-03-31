@@ -6,6 +6,7 @@ import { Navigation } from '../../Navigation';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useProgress } from '../../../features/ProgressContext';
 import { useUser } from '../../../features/context';
+import axios from 'axios';
 
 const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];
 const categories = ['Breakfast', 'Fast food', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
@@ -40,51 +41,40 @@ export const CreateRecipe = () => {
     if(user ===  null){
 
     }else{
+      console.log(isEditing);
+      let recipeToEdit;
       if (isEditing) {
+        recipeToEdit = recipesState?.recipes?.find((recipe) => recipe._id === params.id);
         console.log("checking editing recipe");
-       const recipeToEdit = recipesState.recipes.find((recipe) => recipe._id === params.id);
-       console.log(recipeToEdit);
-       if (!recipeToEdit) {
+        console.log(recipeToEdit);
+       if (recipeToEdit === null || recipeToEdit === undefined || !recipeToEdit) {
          toast.error("Recipe does not exist!", { autoClose: 2000, theme: "colored" });
          navigate('/');
          return ;
-       } else if (user?.username !== recipeToEdit.owner) {
+       } 
+       else if (user?.username !== recipeToEdit.owner) {
+        console.log(user?.username);
+        console.log(recipeToEdit?.owner)
          toast.error("You don't have permission to edit this recipe!", { autoClose: 2000, theme: "colored" });
          navigate('/');
          return ;
        } else {
          setFormData({
-           title: recipeToEdit.title,
-           description: recipeToEdit.description,
-           image: recipeToEdit.image,
-           ingredients: recipeToEdit.ingredients,
-           owner: recipeToEdit.owner,
-           category: recipeToEdit.category,
-           vegNonVeg: recipeToEdit.vegNonVeg,
-           dishType: recipeToEdit.dishType
+           title: recipeToEdit?.title,
+           description: recipeToEdit?.description,
+           image: recipeToEdit?.image,
+           ingredients: recipeToEdit?.ingredients,
+           owner: recipeToEdit?.owner,
+           category: recipeToEdit?.category,
+           vegNonVeg: recipeToEdit?.vegNonVeg,
+           dishType: recipeToEdit?.dishType
          });
        }
-        console.log(recipesState.recipes);
-        const recipes = recipesState.recipes;
-        fetch("http://localhost:5000/recommend", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({recipes})
-        }).then(
-          res => res.json()
-        ).then(
-          data => {
-            console.log("Response from Flask server:", data);
-          }
-        ).catch((error) => {
-          console.error("Error sending data", error);
-        })
+        // console.log(recipesState.recipes);
     }
     
     }
-  }, [loading, isEditing, params.id, recipesState, user?.username, navigate]);
+  }, [user, loading, isEditing, params.id, recipesState, user?.username, navigate]);
 
   // const { status, error } = useSelector((state) => state.recipes)
   const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
@@ -148,28 +138,34 @@ export const CreateRecipe = () => {
     console.log('Form submitted:', formData);
 
     if (isEditing) {
-      // If editing, dispatch editRecipeAsync
 
       const recipeData = {_id: params.id, ...formData}
       dispatch(editRecipeAsync({recipeData, updateProgress}))
 
         .then((response) => {
           updateProgress(100);
-          console.log(response);
+          // console.log(response);
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
-              navigate(`/viewrecipe/${params.id}`)
+            axios.put('http://localhost:5000/updateRecipe', {recipe: response.payload.data})
+              .then(() => {
+                console.log("Request to /editRecipe completed successfully");
+                navigate(`/viewrecipe/${params.id}`);
+              }).catch((error) => {
+                console.error("Error making reuest to /editRecipe: ", error)
+              });
           }
         })
         .catch((error) => {
           console.error('Error updating recipe:', error);
         });
+        updateProgress(100);
     } else {
       console.log(formData);
       dispatch(createRecipeAsync({formData, updateProgress}))
         .then((response) => {
-          updateProgress(100);
+          updateProgress(85);
           if (response.type === 'recipe/createRecipe/fulfilled') {
             createRecipeNotify();
             setFormData({
@@ -181,13 +177,21 @@ export const CreateRecipe = () => {
               dishType: '',
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-              navigate(`/viewrecipe/${response.payload._id}`);
-
+            // console.log(response.payload);
+            axios.post('http://localhost:5000/addRecipe', {"recipe": response.payload})
+              .then(() => {
+                console.log("Request to /addRecipe completed successfully");
+                navigate(`/viewrecipe/${response.payload._id}`);
+              }).catch((error) => {
+                console.error("Error making request to /addRecipe:", error);
+              });
+            
           }
         })
         .catch((error) => {
           console.error('Error creating recipe:', error);
         });
+        updateProgress(100);
     }
 
   };
