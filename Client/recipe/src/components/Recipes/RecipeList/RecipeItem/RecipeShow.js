@@ -12,9 +12,13 @@ import { deleteRecipeAsync, fetchRecipesAsync } from '../../../../features/recip
 import { IoChatboxEllipses } from "react-icons/io5";
 import { addChat } from '../../../../app/service/ChatApi';
 import { useProgress } from '../../../../features/ProgressContext';
-import {TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon, WhatsappShareButton, WhatsappIcon} from 'react-share';
+import { TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon, WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { RecipeItem } from './RecipeItem';
-import {format} from 'timeago.js';
+import { format } from 'timeago.js';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { fetchUserDetailsbyUsername } from '../../../../app/service/userApi';
+import axios from 'axios';
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
@@ -30,7 +34,7 @@ export const RecipeShow = () => {
   const params = useParams();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [suggestedRecipesIds, setSuggestedRecipesIds] = useState([]);
-  const [suggestedRecipes, setSuggestedRecipes] = useState([]);
+  const [suggestedRecipes, setSuggestedRecipes] = useState(new Array(6).fill(null));
   const [isSuggestionLoaded, setIsSuggestionLoaded] = useState(false);
   const recipeId = params.id;
 
@@ -48,9 +52,9 @@ export const RecipeShow = () => {
 
   useEffect(() => {
     let result = [];
-    for(const rId of suggestedRecipesIds){
-      for (const recipe of recipes){
-        if(recipe?._id === rId){
+    for (const rId of suggestedRecipesIds) {
+      for (const recipe of recipes) {
+        if (recipe?._id === rId) {
           result.push(recipe);
           break;
         }
@@ -60,14 +64,14 @@ export const RecipeShow = () => {
     console.log(suggestedRecipes);
   }, [suggestedRecipesIds])
   useEffect(() => {
+    window.scrollTo(0, 0)
     setIsSuggestionLoaded(false);
-    // console.log(recipes);
-    fetch("http://localhost:5000/get_recommondation", {
-      method: "POST",
+    console.log(recipeId);
+    fetch(`http://localhost:5000/get_recommondation?recipeId=${recipeId}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify({recipeId})
+      }
     }).then(
       res => res.json()
     ).then(
@@ -79,7 +83,7 @@ export const RecipeShow = () => {
     ).catch((error) => {
       console.error("Error sending data", error);
     })
-  }, [recipes])
+  }, [recipes, window.location.pathname])
 
   useEffect(() => {
     const r = recipes.find((r) => r._id === recipeId);
@@ -110,7 +114,7 @@ export const RecipeShow = () => {
       addComment: state.addComment,
       fetchComment: state.fetchComment,
     })
-  ); 
+  );
   // console.log(commentByRecipe);
 
   // Loading state while fetching data
@@ -141,25 +145,34 @@ export const RecipeShow = () => {
       recipeId: _id,
       owner: owner
     };
-
     dispatch(deleteRecipeAsync({ data, updateProgress }))
-      .then(response => {
-        // console.log(response);
-        updateProgress(100);
-        // console.log(status);
+    .then(response => {
+        console.log(response);
+        if (response.type === 'recipe/deleteRecipe/fulfilled') {
+          updateProgress(90);
+        console.log(recipeId)
+        axios.delete(`http://localhost:5000/deleteRecipe?recipeId=${recipeId}`)
+          .then(response => {
+            console.log(response.data.message);
+          })
+          .catch(error => {
+            console.error("Error deleting recipe: ", error);
+          })
+        }
+    
         if (status.delete === 'failed') {
           toast.error(error.deleteError, { autoClose: 2000, theme: "colored" });
         }
         else if (status.delete === 'success') {
           toast.success(response.payload.message, { autoClose: 2000, theme: "colored" });
         }
-      })
-      .catch(error => {
+    })
+    .catch(error => {
         toast.error(error, { autoClose: 2000, theme: "colored" });
-      });
+    })
     setDeleteClick(false);
     navigate('/');
-  };
+};
 
   // Function to handle comment submit
   const handleCommentSubmit = () => {
@@ -218,7 +231,7 @@ export const RecipeShow = () => {
                 )}
                 <h3 className="text-3xl font-semibold">{title}</h3>
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="text-2xl font-semibold">{dishType}</h3><br/>
+                  <h3 className="text-2xl font-semibold">{dishType}</h3><br />
                   <h3 className="text-2xl font-semibold">({category})</h3>
                   <div className="flex items-center">
                     {vegNonVeg === 'Veg' ? (
@@ -248,21 +261,21 @@ export const RecipeShow = () => {
                 )}
               </div>
               <div>
-                <FacebookShareButton 
+                <FacebookShareButton
                   url={`Image: ${image.url}\nRecipe Link: ${window.location.href}`}
                   quote={`Unleash the chef in you and create magic in the kitchen with our irresistible and tasty ${dishType} ${title}`}
                   hashtag={`#${dishType}${title} ${category}`}>
-                  <FacebookIcon widths={42} height={42}  round={true}></FacebookIcon>
+                  <FacebookIcon widths={42} height={42} round={true}></FacebookIcon>
                 </FacebookShareButton>
                 <WhatsappShareButton
                   title={`Elevate your taste buds with our mouthwatering ${dishType} ${title}`}
                   url={`Image: ${image.url} \nRecipe Link: ${window.location.href}`}
                   hashtag={title}
-                  >
-                  <WhatsappIcon widths={42} height={42}  round={true}></WhatsappIcon>
+                >
+                  <WhatsappIcon widths={42} height={42} round={true}></WhatsappIcon>
                 </WhatsappShareButton>
                 <TwitterShareButton>
-                  <TwitterIcon widths={42} height={42}  round={true}></TwitterIcon>
+                  <TwitterIcon widths={42} height={42} round={true}></TwitterIcon>
                 </TwitterShareButton>
               </div>
               {!isRecipeOwner && (
@@ -310,18 +323,18 @@ export const RecipeShow = () => {
               </h6>
             </div>
             <div className="mt-3">
-  <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
-  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-5 mb-10">
-    {isSuggestionLoaded && suggestedRecipes.map((recipe, index) => (
-      <RecipeItem key={index} {...recipe} />
-    ))}
-  </div>
-</div>
+              <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-5 mb-10">
+                {isSuggestionLoaded ? suggestedRecipes.map((recipe, index) => (
+                  <RecipeItem key={index} {...recipe} />
+                )) : <h5>Loading ...</h5>}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      
-</div>
+
+    </div>
 
   );
 

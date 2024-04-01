@@ -227,7 +227,7 @@
         "favorites": [],
         "__v": 0,
         "createdAt": "2024-03-24T14:18:03.875Z",
-        "updatedAt": "2024-03-30T11:09:50.733Z"
+        "updatedAt": "2024-03-31T13:37:21.684Z"
     },
     {
         "image": {
@@ -991,81 +991,6 @@
         "favorites": [],
         "createdAt": "2024-03-28T06:37:56.223Z",
         "updatedAt": "2024-03-30T12:48:08.744Z",
-        "__v": 0
-    },
-    {
-        "image": {
-            "public_id": "RecipeImages/blwutwxlidxkrxkr1q8l",
-            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711611519/RecipeImages/blwutwxlidxkrxkr1q8l.jpg"
-        },
-        "_id": "66051e6466bdc0e92f74602f",
-        "title": "pizzq",
-        "description": "description",
-        "ingredients": [
-            {
-                "ingredient_name": "fvfv",
-                "quantity": 2,
-                "quantity_type": "ml",
-                "_id": "66051e6466bdc0e92f746030"
-            }
-        ],
-        "owner": "kevint11",
-        "vegNonVeg": "Veg",
-        "dishType": "Mexican",
-        "category": "Fast food",
-        "favorites": [],
-        "createdAt": "2024-03-28T07:38:12.284Z",
-        "updatedAt": "2024-03-28T07:38:32.059Z",
-        "__v": 0
-    },
-    {
-        "image": {
-            "public_id": "RecipeImages/hwalikwx6gruinhqcm1l",
-            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711611597/RecipeImages/hwalikwx6gruinhqcm1l.jpg"
-        },
-        "_id": "66051eb266bdc0e92f747003",
-        "title": "fvfv",
-        "description": "vf",
-        "ingredients": [
-            {
-                "ingredient_name": "fvfv",
-                "quantity": 22,
-                "quantity_type": "ml",
-                "_id": "66051eb266bdc0e92f747004"
-            }
-        ],
-        "owner": "kevint11",
-        "vegNonVeg": "Veg",
-        "dishType": "Indian",
-        "category": "Sweets",
-        "favorites": [],
-        "createdAt": "2024-03-28T07:39:30.706Z",
-        "updatedAt": "2024-03-28T07:39:30.711Z",
-        "__v": 0
-    },
-    {
-        "image": {
-            "public_id": "RecipeImages/npznzkabdohnucsihs1s",
-            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711617852/RecipeImages/npznzkabdohnucsihs1s.jpg"
-        },
-        "_id": "6605373d66779d49f72f24d5",
-        "title": "bfdbdf",
-        "description": "bfdbfdbfbr",
-        "ingredients": [
-            {
-                "ingredient_name": "bgfdf",
-                "quantity": 50,
-                "quantity_type": "ml",
-                "_id": "6605373d66779d49f72f24d6"
-            }
-        ],
-        "owner": "kevint11",
-        "vegNonVeg": "Veg",
-        "dishType": "American",
-        "category": "Breakfast",
-        "favorites": [],
-        "createdAt": "2024-03-28T09:24:13.014Z",
-        "updatedAt": "2024-03-28T09:24:13.026Z",
         "__v": 0
     }
 ]
