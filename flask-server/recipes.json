@@ -992,5 +992,86 @@
         "createdAt": "2024-03-28T06:37:56.223Z",
         "updatedAt": "2024-03-30T12:48:08.744Z",
         "__v": 0
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/kfnpweexumkwjepnv6q3",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711979103/RecipeImages/kfnpweexumkwjepnv6q3.jpg"
+        },
+        "title": "Kiwi shake",
+        "description": "Very good recipe with sugar and milk",
+        "ingredients": [
+            {
+                "ingredient_name": "kiwi",
+                "quantity": 10,
+                "quantity_type": "unit",
+                "_id": "660aba3eceea1ab97677ca67"
+            },
+            {
+                "ingredient_name": "milk",
+                "quantity": 600,
+                "quantity_type": "ml",
+                "_id": "660aba3eceea1ab97677ca68"
+            }
+        ],
+        "owner": "kevint11",
+        "vegNonVeg": "Veg",
+        "dishType": "Punjabi",
+        "category": "Beverages",
+        "favorites": [],
+        "createdAt": "2024-04-01T13:44:30.279Z",
+        "_id": "660aba3eceea1ab97677ca66",
+        "updatedAt": "2024-04-01T13:44:30.292Z",
+        "__v": 0
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/k2ucmdy3lfnbnb7e0dqi",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711981295/RecipeImages/k2ucmdy3lfnbnb7e0dqi.jpg"
+        },
+        "title": "Beat juice",
+        "description": "Veru good beat juice",
+        "ingredients": [
+            {
+                "ingredient_name": "beat",
+                "quantity": 3,
+                "quantity_type": "unit",
+                "_id": "660ac2ceceea1ab97677e0f7"
+            }
+        ],
+        "owner": "kevint11",
+        "vegNonVeg": "Veg",
+        "dishType": "Indian",
+        "category": "Beverages",
+        "favorites": [],
+        "createdAt": "2024-04-01T14:21:02.739Z",
+        "_id": "660ac2ceceea1ab97677e0f6",
+        "updatedAt": "2024-04-01T14:21:02.779Z",
+        "__v": 0
+    },
+    {
+        "image": {
+            "public_id": "RecipeImages/wudfdry1yjwlktw1ghdm",
+            "url": "https://res.cloudinary.com/dtx3ee4ox/image/upload/v1711988454/RecipeImages/wudfdry1yjwlktw1ghdm.jpg"
+        },
+        "title": "Poha",
+        "description": "bery good poha",
+        "ingredients": [
+            {
+                "ingredient_name": "poha",
+                "quantity": 1,
+                "quantity_type": "unit",
+                "_id": "660adec5e97362e39ba931d4"
+            }
+        ],
+        "owner": "kevint11",
+        "vegNonVeg": "Veg",
+        "dishType": "Indian",
+        "category": "Snacks",
+        "favorites": [],
+        "createdAt": "2024-04-01T16:20:21.740Z",
+        "_id": "660adec5e97362e39ba931d3",
+        "updatedAt": "2024-04-01T16:20:21.762Z",
+        "__v": 0
     }
 ]
