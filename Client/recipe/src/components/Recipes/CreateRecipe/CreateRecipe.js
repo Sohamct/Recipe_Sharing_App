@@ -148,13 +148,13 @@ export const CreateRecipe = () => {
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
-            axios.put('http://localhost:5000/updateRecipe', {recipe: response.payload.data})
-              .then(() => {
-                console.log("Request to /editRecipe completed successfully");
-                navigate(`/viewrecipe/${params.id}`);
-              }).catch((error) => {
-                console.error("Error making reuest to /editRecipe: ", error)
-              });
+            // axios.put('http://localhost:5000/updateRecipe', {recipe: response.payload.data})
+            //   .then(() => {
+            //     console.log("Request to /editRecipe completed successfully");
+            //     navigate(`/viewrecipe/${params.id}`);
+            //   }).catch((error) => {
+            //     console.error("Error making reuest to /editRecipe: ", error)
+            //   });
           }
         })
         .catch((error) => {
@@ -178,15 +178,19 @@ export const CreateRecipe = () => {
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
             // console.log(response.payload);
-            axios.post('http://localhost:5000/addRecipe', {"recipe": response.payload})
-              .then(() => {
-                console.log("Request to /addRecipe completed successfully");
-                navigate(`/viewrecipe/${response.payload._id}`);
-              }).catch((error) => {
-                console.error("Error making request to /addRecipe:", error);
-              });
+            // axios.post('http://localhost:5000/addRecipe', {"recipe": response.payload})
+            //   .then(() => {
+            //     console.log("Request to /addRecipe completed successfully");
+            //     navigate(`/viewrecipe/${response.payload._id}`);
+            //   }).catch((error) => {
+            //     console.error("Error making request to /addRecipe:", error);
+            //   });
             
+          }else if(response.type === 'recipe/createRecipe/rejected') {
+            console.log(response);
+            toast.error("Recipe Creation failed", { theme: "light",autoClose: 2000 });
           }
+
         })
         .catch((error) => {
           console.error('Error creating recipe:', error);

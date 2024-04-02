@@ -61,29 +61,32 @@ export const RecipeShow = () => {
       }
     }
     setSuggestedRecipes(result);
-    console.log(suggestedRecipes);
+    // console.log(result);
   }, [suggestedRecipesIds])
-  useEffect(() => {
+
+  const onLoad = () => {
     window.scrollTo(0, 0)
     setIsSuggestionLoaded(false);
     console.log(recipeId);
-    fetch(`http://localhost:5000/get_recommondation?recipeId=${recipeId}`, {
-      method: "GET",
+    console.log(recipes)
+    fetch(`http://localhost:5000/get_recommondation`, {
+      method: "POST",
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({"recipeId": recipeId, "recipes": recipes})
     }).then(
       res => res.json()
     ).then(
       data => {
-        console.log("Response from Flask server:", data);
-        setSuggestedRecipesIds(data.recomondations);
+        console.log("Response from Flask server:", data.recommendations);
+        setSuggestedRecipesIds(data.recommendations);
         setIsSuggestionLoaded(true);
       }
     ).catch((error) => {
       console.error("Error sending data", error);
     })
-  }, [recipes, window.location.pathname])
+  }
 
   useEffect(() => {
     const r = recipes.find((r) => r._id === recipeId);
@@ -137,6 +140,7 @@ export const RecipeShow = () => {
   // Function to handle image load
   const handleImageLoad = () => {
     setImageLoaded(true);
+    onLoad()
   };
 
   // Function to handle confirm delete
@@ -151,13 +155,13 @@ export const RecipeShow = () => {
         if (response.type === 'recipe/deleteRecipe/fulfilled') {
           updateProgress(90);
         console.log(recipeId)
-        axios.delete(`http://localhost:5000/deleteRecipe?recipeId=${recipeId}`)
-          .then(response => {
-            console.log(response.data.message);
-          })
-          .catch(error => {
-            console.error("Error deleting recipe: ", error);
-          })
+        // axios.delete(`http://localhost:5000/deleteRecipe?recipeId=${recipeId}`)
+        //   .then(response => {
+        //     console.log(response.data.message);
+        //   })
+        //   .catch(error => {
+        //     console.error("Error deleting recipe: ", error);
+        //   })
         }
     
         if (status.delete === 'failed') {
