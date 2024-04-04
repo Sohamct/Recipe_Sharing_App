@@ -19,14 +19,13 @@ const cloudinary = require('../cloudinary');
 router.post('/createrecipe', [fetchUser], async (req, res) => {
 
   try {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     
     const { title, description, ingredients, category, vegNonVeg, dishType} = req.body;
-    
+
     const result = await cloudinary.uploader.upload( req.files ? req.files.image.tempFilePath : null, {
       folder: "RecipeImages",
     })
@@ -55,7 +54,7 @@ router.post('/createrecipe', [fetchUser], async (req, res) => {
     res.status(201).json({ message: 'Recipe created successfully', data: recipe });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Unexpected error occurred');
+    res.status(500).send('Unexpected error .... occurred');
   }
 });
 

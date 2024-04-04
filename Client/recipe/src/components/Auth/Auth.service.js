@@ -63,6 +63,7 @@ const AuthService = {
     signup: async (username, password, email, firstname, lastname, gender, profilePic, instagramHandle, linkedinHandle, twitterHandle) => {
         try {
             const formData = new FormData();
+            console.log(firstname, lastname, username, password, profilePic, email, gender, instagramHandle);
             formData.append('profilePic', profilePic);
             formData.append('username', username);
             formData.append('password', password);
@@ -73,7 +74,7 @@ const AuthService = {
             formData.append('instagramHandle', instagramHandle);
             formData.append('linkedinHandle', linkedinHandle);
             formData.append('twitterHandle', twitterHandle);
-    
+            console.log(formData);
             const resp = await fetch(`${API}/auth/createuser`, {
                 method: 'POST',
                 body: formData,

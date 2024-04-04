@@ -8,7 +8,7 @@ const ingredientSchema = new mongoose.Schema({
   });
 
   const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];
-  const categories = ['Breakfast', 'Fast food', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
+  const categories = ['Breakfast', 'Fast food', 'Subji', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
   const vegNonVegOptions = ['Veg', 'Non-Veg'];
   const recipeSchema = new mongoose.Schema({
     image: { 
