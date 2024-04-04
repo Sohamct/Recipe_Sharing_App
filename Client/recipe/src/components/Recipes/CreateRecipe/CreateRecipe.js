@@ -8,7 +8,7 @@ import { useProgress } from '../../../features/ProgressContext';
 import { useUser } from '../../../features/context';
 
 const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];
-const categories = ['Breakfast', 'Fast food', 'Subji', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
+const categories = ['Breakfast', 'Fast food', 'Sabji', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
 const vegNonVegOptions = ['Veg', 'Non-Veg'];
 
 export const CreateRecipe = () => {
@@ -147,6 +147,7 @@ export const CreateRecipe = () => {
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
+            navigate(`/viewrecipe/${response.payload._id}`)
           }
         })
         .catch((error) => {
@@ -168,7 +169,9 @@ export const CreateRecipe = () => {
               vegNonVeg: '',
               dishType: '',
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
+              
             });
+            navigate(`/viewrecipe/${response.payload._id}`)
           }else if(response.type === 'recipe/createRecipe/rejected') {
             console.log(response);
             toast.error("Recipe Creation failed", { theme: "light",autoClose: 2000 });
