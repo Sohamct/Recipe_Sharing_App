@@ -9,21 +9,19 @@ const api = {
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
-      formDataToSend.append("image", formData.image);
       formDataToSend.append("category", formData.category);
       formDataToSend.append("dishType", formData.dishType);
       formDataToSend.append("vegNonVeg", formData.vegNonVeg);
-  console.log(formDataToSend);
-
-      formDataToSend.append("ingredients", JSON.stringify(formData.ingredients))
-
+      formDataToSend.append("ingredients", JSON.stringify(formData.ingredients));
+      formDataToSend.append("image", formData.image); // Assuming formData.image is an array with one file
+  
       const response = await axios.post(`${uri}/createrecipe`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"), // Use Authorization header for the token
         },
       });
-
+  
       if (response.status === 201) {
         console.log("Recipe created successfully");
         return response.data;

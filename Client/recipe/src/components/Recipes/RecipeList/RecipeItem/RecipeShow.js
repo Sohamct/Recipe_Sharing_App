@@ -381,7 +381,7 @@ export const RecipeShow = () => {
               </h6>
             </div>
             <div className="mt-3">
-              <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
+              <h2 className="text-2xl font-semibold mb-2">Recommended Recipes : </h2>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-5 mb-10">
                 {isSuggestionLoaded ? suggestedRecipes.map((recipe, index) => (
                   <RecipeItem key={index} {...recipe} />

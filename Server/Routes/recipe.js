@@ -12,6 +12,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const cloudinary = require('../cloudinary');
+const { log } = require("console");
 
 
 //  -----------------------------------------------------
@@ -26,6 +27,8 @@ router.post('/createrecipe', [fetchUser], async (req, res) => {
     
     const { title, description, ingredients, category, vegNonVeg, dishType} = req.body;
 
+    console.log(req.body);
+    console.log(req.files);
     const result = await cloudinary.uploader.upload( req.files ? req.files.image.tempFilePath : null, {
       folder: "RecipeImages",
     })
@@ -350,4 +353,3 @@ router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
 });
 
 module.exports = router;
-
