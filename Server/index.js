@@ -16,13 +16,6 @@ app.use(cors({
 app.use(bodyParser.json()); 
 app.use(express.json()); 
 
-try{
-  app.use(fileUpload({
-    useTempFiles: true
-  }));
-}catch(error){
-  console.log(error);
-}
 
 // Routes
 app.use('/api/auth', require('./Routes/auth'));
