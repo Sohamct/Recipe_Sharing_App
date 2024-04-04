@@ -5,6 +5,7 @@ const uri = 'http://localhost:5501/api/recipe';
 const api = {
   addRecipeAsync: async (formData) => {
     try {
+      console.log(formData);
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);

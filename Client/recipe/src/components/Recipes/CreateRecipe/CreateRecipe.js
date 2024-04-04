@@ -6,10 +6,9 @@ import { Navigation } from '../../Navigation';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useProgress } from '../../../features/ProgressContext';
 import { useUser } from '../../../features/context';
-import axios from 'axios';
 
 const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];
-const categories = ['Breakfast', 'Fast food', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
+const categories = ['Breakfast', 'Fast food', 'Subji', 'Ice cream', 'Ice cream cake', 'Beverages', 'Snacks', 'Sweets', 'Jain', 'Deserts', 'Cookies'];
 const vegNonVegOptions = ['Veg', 'Non-Veg'];
 
 export const CreateRecipe = () => {
@@ -48,14 +47,14 @@ export const CreateRecipe = () => {
         console.log("checking editing recipe");
         console.log(recipeToEdit);
        if (recipeToEdit === null || recipeToEdit === undefined || !recipeToEdit) {
-         toast.error("Recipe does not exist!", { autoClose: 2000, theme: "colored" });
+         toast.error("Recipe does not exist!", { autoClose: 5000, theme: "colored" });
          navigate('/');
          return ;
        } 
        else if (user?.username !== recipeToEdit.owner) {
         console.log(user?.username);
         console.log(recipeToEdit?.owner)
-         toast.error("You don't have permission to edit this recipe!", { autoClose: 2000, theme: "colored" });
+         toast.error("You don't have permission to edit this recipe!", { autoClose: 5000, theme: "colored" });
          navigate('/');
          return ;
        } else {
@@ -77,8 +76,8 @@ export const CreateRecipe = () => {
   }, [user, loading, isEditing, params.id, recipesState, user?.username, navigate]);
 
   // const { status, error } = useSelector((state) => state.recipes)
-  const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 2000, theme: "colored" });
-  const editRecipeNotify = () => toast.success("Recipe edited successfully", { autoClose: 2000, theme: "colored" });
+  const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 5000, theme: "colored" });
+  const editRecipeNotify = () => toast.success("Recipe edited successfully", { autoClose: 5000, theme: "colored" });
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -148,13 +147,6 @@ export const CreateRecipe = () => {
           if (response.type === 'recipe/editrecipe/fulfilled') {
             console.log('Recipe updated successfully');
             editRecipeNotify();
-            // axios.put('http://localhost:5000/updateRecipe', {recipe: response.payload.data})
-            //   .then(() => {
-            //     console.log("Request to /editRecipe completed successfully");
-            //     navigate(`/viewrecipe/${params.id}`);
-            //   }).catch((error) => {
-            //     console.error("Error making reuest to /editRecipe: ", error)
-            //   });
           }
         })
         .catch((error) => {
@@ -177,20 +169,10 @@ export const CreateRecipe = () => {
               dishType: '',
               ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
             });
-            // console.log(response.payload);
-            // axios.post('http://localhost:5000/addRecipe', {"recipe": response.payload})
-            //   .then(() => {
-            //     console.log("Request to /addRecipe completed successfully");
-            //     navigate(`/viewrecipe/${response.payload._id}`);
-            //   }).catch((error) => {
-            //     console.error("Error making request to /addRecipe:", error);
-            //   });
-            
           }else if(response.type === 'recipe/createRecipe/rejected') {
             console.log(response);
             toast.error("Recipe Creation failed", { theme: "light",autoClose: 2000 });
           }
-
         })
         .catch((error) => {
           console.error('Error creating recipe:', error);

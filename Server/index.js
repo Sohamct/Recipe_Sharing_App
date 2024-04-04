@@ -8,6 +8,13 @@ const fileUpload = require('express-fileupload');
 connectToMongo();
 
 // Middleware setup
+try{
+  app.use(fileUpload({
+    useTempFiles: true
+  }));
+}catch(error){
+  console.log(error);
+}
 app.use(cors({
   origin: 'http://localhost:3000',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
