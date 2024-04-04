@@ -13,9 +13,7 @@ const api = {
       formDataToSend.append("dishType", formData.dishType);
       formDataToSend.append("vegNonVeg", formData.vegNonVeg);
       formDataToSend.append("ingredients", JSON.stringify(formData.ingredients));
-      
-      // Append image file
-      formDataToSend.append("image", formData.image[0]); // Assuming formData.image is an array with one file
+      formDataToSend.append("image", formData.image); // Assuming formData.image is an array with one file
   
       const response = await axios.post(`${uri}/createrecipe`, formDataToSend, {
         headers: {

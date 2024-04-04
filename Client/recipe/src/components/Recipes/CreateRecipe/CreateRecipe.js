@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createRecipeAsync, editRecipeAsync } from '../../../features/recipe/Slice/recipe_slice';
 import { toast } from 'react-toastify';
@@ -18,9 +18,11 @@ export const CreateRecipe = () => {
   const location = useLocation();
   const params = useParams();
 
-  const {user, loading} = useUser();
-  const {updateProgress} = useProgress();
+  const { user, loading } = useUser();
+  const { updateProgress } = useProgress();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   useEffect(() => {
     setIsEditing(location.pathname.includes('/editrecipe'));
@@ -37,45 +39,37 @@ export const CreateRecipe = () => {
   });
 
   useEffect(() => {
-    if(user ===  null){
+    if (user === null) {
 
-    }else{
-      // console.log(isEditing);
+    } else {
       let recipeToEdit;
       if (isEditing) {
         recipeToEdit = recipesState?.recipes?.find((recipe) => recipe._id === params.id);
-        console.log("checking editing recipe");
-        console.log(recipeToEdit);
-       if (recipeToEdit === null || recipeToEdit === undefined || !recipeToEdit) {
-         toast.error("Recipe does not exist!", { autoClose: 5000, theme: "colored" });
-         navigate('/');
-         return ;
-       } 
-       else if (user?.username !== recipeToEdit.owner) {
-        console.log(user?.username);
-        console.log(recipeToEdit?.owner)
-         toast.error("You don't have permission to edit this recipe!", { autoClose: 5000, theme: "colored" });
-         navigate('/');
-         return ;
-       } else {
-         setFormData({
-           title: recipeToEdit?.title,
-           description: recipeToEdit?.description,
-           image: recipeToEdit?.image,
-           ingredients: recipeToEdit?.ingredients,
-           owner: recipeToEdit?.owner,
-           category: recipeToEdit?.category,
-           vegNonVeg: recipeToEdit?.vegNonVeg,
-           dishType: recipeToEdit?.dishType
-         });
-       }
-        // console.log(recipesState.recipes);
-    }
-    
+        if (recipeToEdit === null || recipeToEdit === undefined || !recipeToEdit) {
+          toast.error("Recipe does not exist!", { autoClose: 5000, theme: "colored" });
+          navigate('/');
+          return;
+        }
+        else if (user?.username !== recipeToEdit.owner) {
+          toast.error("You don't have permission to edit this recipe!", { autoClose: 5000, theme: "colored" });
+          navigate('/');
+          return;
+        } else {
+          setFormData({
+            title: recipeToEdit?.title,
+            description: recipeToEdit?.description,
+            image: recipeToEdit?.image,
+            ingredients: recipeToEdit?.ingredients,
+            owner: recipeToEdit?.owner,
+            category: recipeToEdit?.category,
+            vegNonVeg: recipeToEdit?.vegNonVeg,
+            dishType: recipeToEdit?.dishType
+          });
+        }
+      }
     }
   }, [user, loading, isEditing, params.id, recipesState, user?.username, navigate]);
 
-  // const { status, error } = useSelector((state) => state.recipes)
   const createRecipeNotify = () => toast.success("Recipe created successfully", { autoClose: 5000, theme: "colored" });
   const editRecipeNotify = () => toast.success("Recipe edited successfully", { autoClose: 5000, theme: "colored" });
 
@@ -84,8 +78,8 @@ export const CreateRecipe = () => {
     setFormData(prevFormData => {
       const newIngredients = [...prevFormData.ingredients];
       newIngredients[index] = {
-        ...newIngredients[index], 
-        [name]: value 
+        ...newIngredients[index],
+        [name]: value
       };
       return {
         ...prevFormData,
@@ -93,6 +87,7 @@ export const CreateRecipe = () => {
       };
     });
   };
+
   const _handleChange = (e) => {
     const { name, value, files } = e.target;
     const newValue = (name === "image" ? files[0] : (value || ''));
@@ -121,12 +116,14 @@ export const CreateRecipe = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (isFormSubmitted) return; // Prevent multiple submissions
+
+    setIsFormSubmitted(true);
     const isValid = formData.ingredients.every(ingredient => {
-      return ingredient.ingredient_name.trim() !== ''
-        && ingredient.quantity !== '';
+      return ingredient.ingredient_name.trim() !== '' && ingredient.quantity !== '';
     });
 
     if (!isValid) {
@@ -134,53 +131,49 @@ export const CreateRecipe = () => {
       return;
     }
 
-    console.log('Form submitted:', formData);
+    setIsLoading(true); // Set loading state to true before submission
 
     if (isEditing) {
-
-      const recipeData = {_id: params.id, ...formData}
-      dispatch(editRecipeAsync({recipeData, updateProgress}))
-
-        .then((response) => {
-          updateProgress(100);
-          // console.log(response);
-          if (response.type === 'recipe/editrecipe/fulfilled') {
-            console.log('Recipe updated successfully');
-            editRecipeNotify();
-          }
-        })
-        .catch((error) => {
-          console.error('Error updating recipe:', error);
-        });
+      const recipeData = { _id: params.id, ...formData };
+      try {
+        const response = await dispatch(editRecipeAsync({ recipeData, updateProgress }));
         updateProgress(100);
+        if (response.type === 'recipe/editrecipe/fulfilled') {
+          console.log('Recipe updated successfully');
+          editRecipeNotify();
+          navigate('/recipe');
+        }
+      } catch (error) {
+        console.error('Error updating recipe:', error);
+      }
+      setIsLoading(false); // Reset loading state after submission
     } else {
-      console.log(formData);
-      dispatch(createRecipeAsync({formData, updateProgress}))
-        .then((response) => {
-          updateProgress(85);
-          if (response.type === 'recipe/createRecipe/fulfilled') {
-            createRecipeNotify();
-            setFormData({
-              title: '',
-              description: '',
-              image: null,
-              category: '',
-              vegNonVeg: '',
-              dishType: '',
-              ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
-            });
-          }else if(response.type === 'recipe/createRecipe/rejected') {
-            console.log(response);
-            toast.error("Recipe Creation failed", { theme: "light",autoClose: 2000 });
-          }
-        })
-        .catch((error) => {
-          console.error('Error creating recipe:', error);
-        });
-        updateProgress(100);
+      try {
+        const response = await dispatch(createRecipeAsync({ formData, updateProgress }));
+        updateProgress(85);
+        if (response.type === 'recipe/createRecipe/fulfilled') {
+          createRecipeNotify();
+          setFormData({
+            title: '',
+            description: '',
+            image: null,
+            category: '',
+            vegNonVeg: '',
+            dishType: '',
+            ingredients: [{ ingredient_name: '', quantity: '', quantity_type: 'ml' }],
+          });
+          navigate('/recipe');
+        } else if (response.type === 'recipe/createRecipe/rejected') {
+          console.log(response);
+          toast.error("Recipe Creation failed", { theme: "light", autoClose: 2000 });
+        }
+      } catch (error) {
+        console.error('Error creating recipe:', error);
+      }
+      setIsLoading(false); // Reset loading state after submission
     }
-
   };
+
   const isFormEmpty = () => {
     return (
       formData.title.trim() === '' ||
@@ -229,65 +222,53 @@ export const CreateRecipe = () => {
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          {/* <div className="mb-4">
-            <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image URL:</label>
-            <input
-              type="text"
-              id="image"
-              name="image"
-              value={formData.image}
+          <div className="mb-4">
+            <label htmlFor="dishType" className="block text-sm font-medium text-gray-700">Dish Type:</label>
+            <select
+              id="dishType"
+              name="dishType"
+              value={formData.dishType}
               onChange={_handleChange}
               className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div> */}
+            >
+              <option value="">Select Dish Type</option>
+              {dishTypes.map((type, index) => (
+                <option key={index} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
 
           <div className="mb-4">
-          <label htmlFor="dishType" className="block text-sm font-medium text-gray-700">Dish Type:</label>
-          <select
-            id="dishType"
-            name="dishType"
-            value={formData.dishType}
-            onChange={_handleChange}
-            className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">Select Dish Type</option>
-            {dishTypes.map((type, index) => (
-              <option key={index} value={type}>{type}</option>
-            ))}
-          </select>
-        </div>
+            <label htmlFor="vegNonVeg" className="block text-sm font-medium text-gray-700">Veg-Non Veg:</label>
+            <select
+              id="vegNonVeg"
+              name="vegNonVeg"
+              value={formData.vegNonVeg}
+              onChange={_handleChange}
+              className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Select Option</option>
+              {vegNonVegOptions.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="vegNonVeg" className="block text-sm font-medium text-gray-700">Veg-Non Veg:</label>
-          <select
-            id="vegNonVeg"
-            name="vegNonVeg"
-            value={formData.vegNonVeg}
-            onChange={_handleChange}
-            className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">Select Option</option>
-            {vegNonVegOptions.map((option, index) => (
-              <option key={index} value={option}>{option}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category:</label>
-          <select
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={_handleChange}
-            className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">Select Category</option>
-            {categories.map((category, index) => (
-              <option key={index} value={category}>{category}</option>
-            ))}
-          </select>
-        </div>
+          <div className="mb-4">
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category:</label>
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={_handleChange}
+              className="mt-1 px-4 py-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Select Category</option>
+              {categories.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
 
           <div className="mb-4">
             <label htmlFor="image" className="block text-sm font-medium text-gray-700">
@@ -357,7 +338,7 @@ export const CreateRecipe = () => {
             className="block px-3 py-2 text-sm text-white font-medium bg-blue-500 rounded-md hover:bg-blue-600"
             disabled={isFormEmpty()}
           >
-            {isEditing ? 'Update Recipe' : 'Submit'}
+            {isLoading ? (isEditing ? 'Updating...' : 'Submitting...') : (isEditing ? 'Update Recipe' : 'Submit')}
           </button>
         </form>
       </div>
