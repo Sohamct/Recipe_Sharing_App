@@ -41,7 +41,7 @@ export const CreateRecipe = () => {
     if(user ===  null){
 
     }else{
-      console.log(isEditing);
+      // console.log(isEditing);
       let recipeToEdit;
       if (isEditing) {
         recipeToEdit = recipesState?.recipes?.find((recipe) => recipe._id === params.id);

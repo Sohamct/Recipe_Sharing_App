@@ -100,7 +100,6 @@ export const Chat = () => {
                 </div>
             </div>
             <div className="Right-side-chat my-3">
- 
                 <ChatBox chat={currentChat} username={username} setSendMessage={setSendMessage} recieveMessage={recieveMessage} />
             </div>
         </div>

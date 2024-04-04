@@ -6,7 +6,7 @@ import './ChatBox.css';
 import InputEmoji from 'react-input-emoji';
 import { addMessage } from '../../app/service/MessageApi';
 import ReactLoading from 'react-loading';
-import {format} from 'timeago.js'
+import { format } from 'timeago.js'
 
 const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
     const [userData, setUserData] = useState(null);
@@ -21,10 +21,13 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
             setMessages([...messages, recieveMessage])
         }
     }, [recieveMessage])
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoadingUserData(true);
+                // Check if chat is defined before accessing its members
+                if (!chat) return;
                 const otherUsername = chat.members.find(uname => uname !== username);
                 console.log(otherUsername);
                 const response = await AuthService.getDetails(otherUsername);
@@ -38,10 +41,10 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                 setIsLoadingUserData(false);
             }
         };
-    
+
         fetchData();
     }, [chat, username]);
-    
+
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -83,7 +86,7 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
         setSendMessage({ ...message, recieverUsername });
 
     }
-    
+
     // always scroll to the last message
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
@@ -98,33 +101,29 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                             <div className="flex follower">
                                 {isLoadingUserData ? (
                                     <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <ReactLoading type="balls" color="#FFA500"
-                                        height={150} width={90} /></div>
+                                        <ReactLoading type="balls" color="#FFA500"
+                                            height={150} width={90} /></div>
                                 ) : (
                                     <>
-                                        <div className='flex'>
-                                        {
-    userData?.profileImage?.url ? 
-    (
-        <img 
-            src={userData.profileImage.url} 
-            style={{ width: '40px', height: '40px' }}
-        />
-    ) : (
-        <CgProfile
-            className="followerImage"
-            style={{ width: '40px', height: '40px' }}
-            alt="Profile Image"
-        />
-    )
-}
-
-                                            
+                                        <div className='flex items-center'>
+                                            {
+                                                userData?.profileImage?.url ?
+                                                    (
+                                                        <img
+                                                            src={userData.profileImage.url}
+                                                            className="rounded-full w-10 h-10"
+                                                        />
+                                                    ) : (
+                                                        <CgProfile
+                                                            className="followerImage rounded-full w-10 h-10"
+                                                            alt="Profile Image"
+                                                        />
+                                                    )
+                                            }
                                             <div className="name mt-2.5 px-2" style={{ fontSize: '0.8rem' }}>
                                                 <span>
                                                     {userData?.firstname} {userData?.lastname}
                                                 </span>
-
                                             </div>
                                         </div>
                                     </>
@@ -146,9 +145,7 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                                     </div>
                                 ))
                             )}
-
                         </div>
-
                         {/* chat sender */}
                         <div className="chat-sender">
                             <div>+</div>
@@ -161,12 +158,11 @@ const ChatBox = ({ chat, username, setSendMessage, recieveMessage }) => {
                             </button>
                         </div>
                     </>
+                ) : (
+                    <span className='chatbox-empty-message'>
+                        Tap on a chat to start convesation...
+                    </span>
                 )
-                    : (
-                        <span className='chatbox-empty-message'>
-                            Tap on a chat to start convesation...
-                        </span>
-                    )
             }
 
         </div>

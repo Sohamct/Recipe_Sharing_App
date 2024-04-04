@@ -351,4 +351,3 @@ router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
 });
 
 module.exports = router;
-
