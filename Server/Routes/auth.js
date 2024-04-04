@@ -148,7 +148,7 @@ router.get('/getDetails/:uname', fetchUser, async (req, resp) => {
     let user = await User.findOne({ username });
 
     if (!user) {
-      return resp.status(400).json({ success, errors: "Username is not registered!" });
+      return resp.status(400).json({ success, errors: "Username not Exist!" });
     }
     success = true;
     return resp.json({ success: success, data: user });
