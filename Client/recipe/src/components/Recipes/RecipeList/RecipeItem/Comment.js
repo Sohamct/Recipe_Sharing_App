@@ -1,123 +1,194 @@
 import React, { useState } from 'react';
 import './comment.css';
-import { FaReply, FaTrash } from 'react-icons/fa';
 import { useUser } from '../../../../features/context';
-import loadingGif from '../../../../../src/loading.gif'
+import { format } from 'timeago.js';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
-export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
-  const [replyToCommentId, setReplyToCommentId] = useState(null);
-  const [newComment, setNewComment] = useState('');
+export const Comment = ({ commentByRecipe, recipeId, removeComment, updateComment }) => {
+  const [editedComments, setEditedComments] = useState({});
+  const [showAllComments, setShowAllComments] = useState(false); // State to track whether to show all comments
   const { user } = useUser();
 
-  // console.log(commentByRecipe);
+  const handleEditComment = (commentId, text) => {
+    setEditedComments((prevEditedComments) => ({
+      ...prevEditedComments,
+      [commentId]: text || '',
+    }));
+  };
 
-  // Function to calculate relative time
-  const calculateRelativeTime = (timestamp) => {
-    const now = new Date();
-    const commentTime = new Date(timestamp);
-    const timeDifference = now - commentTime;
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(months / 12);
-    if (years > 0) {
-      return `${years} year${years > 1 ? 's' : ''} ago`;
-    } else if (months > 0) {
-      return `${months} month${months > 1 ? 's' : ''} ago`;
-    } else if (days > 0) {
-      return `${days} day${days > 1 ? 's' : ''} ago`;
-    } else if (hours > 0) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else {
-      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+  const handleCancelEdit = (commentId) => {
+    setEditedComments((prevEditedComments) => ({
+      ...prevEditedComments,
+      [commentId]: undefined,
+    }));
+  };
+
+  const handleUpdateComment = async (commentId) => {
+    try {
+      await updateComment(recipeId, commentId, editedComments[commentId]);
+      handleCancelEdit(commentId);
+    } catch (error) {
+      console.log('Error updating comment:', error);
     }
   };
 
-  const handleNewCommentChange = (e) => {
-    setNewComment(e.target.value);
-  };
+  const renderComments = () => {
+    const commentsToDisplay = showAllComments
+      ? commentByRecipe[recipeId]
+      : commentByRecipe[recipeId].slice(0, 3); // Show only the first 3 comments if showAllComments is false
 
-  const handleReplyClick = (commentId) => {
-    setReplyToCommentId(commentId);
-  };
-
-  const handleNewCommentSubmit = () => {
-    // Logic to submit new comment
-    console.log('Replying to comment:', replyToCommentId, 'with:', newComment);
-    // Clear input field after submitting
-    setNewComment('');
-    // Reset replyToCommentId
-    setReplyToCommentId(null);
-    console.log(user.username);
-  };
-  return (
-    <div className="comment-container">
-    {commentByRecipe[recipeId] === undefined ? (
-      ''
-    ) : (
+    return (
       <ul className="comment-list">
-        {commentByRecipe[recipeId].map((comment, i) => (
-          <li key={i} className="comment-item">
-            <div className="comment-owner">By {comment._from}</div>
-            <div className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">{calculateRelativeTime(comment.time)}</div> {/* Time field */}
+        {commentsToDisplay.map((comment) => (
+          <li key={comment._id} className="comment-item">
+            <div className="comment-owner">
+              By {comment._from === user.username ? 'You' : comment._from}
+            </div>
+            <div className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">
+              {comment.updatedAt !== null ? (
+                <span> updated {format(comment.updatedAt)} </span>
+              ) : (
+                <span>{format(comment.time)} </span>
+              )}
+            </div>
             <div className="comment-text">{comment.text}</div>
-            {/* {user.username === comment._from && (
-              <div className="delete-comment-wrapper">
+            {user.username === comment._from && (
+              <div className="flex items-center space-x-2">
+                <FaEdit
+                  className="delete-comment-icon text-blue-600 cursor-pointer hover:opacity-80"
+                  onClick={() => handleEditComment(comment._id, comment.text)}
+                />
                 <FaTrash
-                  className="delete-comment-icon"
-                  onClick={() => removeComment(comment._id)}
+                  className="delete-comment-icon text-red-600 cursor-pointer hover:opacity-80"
+                  onClick={() => removeComment(recipeId, comment._id)}
                 />
               </div>
-            )} */}
-            {/* Reply icon */}
-            {/* <FaReply className="reply-icon" onClick={() => handleReplyClick(comment._id)} /> */}
-            {/* Reply section */}
-            {/* {replyToCommentId === comment._id && (
-              <div className="reply-box">
-                <input
-                  type="text"
-                  placeholder="Write your reply..."
-                  value={newComment}
-                  onChange={handleNewCommentChange}
+            )}
+            {editedComments[comment._id] !== undefined && (
+              <div>
+                <textarea
+                  autoFocus={true}
+                  className="edit-comment-textarea"
+                  value={editedComments[comment._id]}
+                  onChange={(e) => handleEditComment(comment._id, e.target.value)}
                 />
-                <button onClick={handleNewCommentSubmit}>Reply</button>
+                <button
+                  className="update-comment-btn small bg-red-500 hover:bg-red-60 text-white py-2 px-2 rounded mx-2"
+                  onClick={() => handleCancelEdit(comment._id)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="update-comment-btn small bg-blue-500 hover:bg-blue-60 text-white py-2 px-2 rounded"
+                  onClick={() => handleUpdateComment(comment._id)}
+                >
+                  Update
+                </button>
               </div>
-            )} */}
+            )}
           </li>
         ))}
       </ul>
+    );
+  };
+
+  return (
+    <div className="comment-container">
+      {commentByRecipe[recipeId] && (
+        <>
+          {renderComments()}
+          {!showAllComments && commentByRecipe[recipeId].length > 3 && (
+            <button
+              className="more-comments-btn text-blue-600 cursor-pointer"
+              onClick={() => setShowAllComments(true)}
+            >
+              More Comments...
+            </button>
+          )}
+        </>
       )}
     </div>
   );
 };
 
-// import React from 'react';
-// import '../../../../../src/loading.css';
+export default Comment;
 
-// export const Comment = ({ commentByRecipe, recipeId, removeComment }) => {
-//   console.log('Inside the Comment.js');
-//   console.log('\n' + commentByRecipe[recipeId]);
+// import React, { useState } from 'react';
+// import './comment.css';
+// import { useUser } from '../../../../features/context';
+// import { format } from 'timeago.js';
+// import { FaEdit, FaTrash } from 'react-icons/fa';
+
+// export const Comment = ({ commentByRecipe, recipeId, removeComment, updateComment}) => {
+//   const [editedComments, setEditedComments] = useState({});
+//   const { user } = useUser();
+
+//   console.log(commentByRecipe);
+
+//   const handleEditComment = (commentId, text) => {
+//       setEditedComments((prevEditedComments) => ({
+//         ...prevEditedComments,
+//         [commentId] : text || '',
+//       }))
+//   };
+//   const handleCancelEdit = (commentId) => {
+//     setEditedComments((prevEditedComments) => ({
+//       ...prevEditedComments,
+//       [commentId] : undefined,
+//     }));
+//   };
+//   const handleUpdateComment = async (commentId) => {
+//     try {
+//       await updateComment(recipeId, commentId, editedComments[commentId]);
+//       handleCancelEdit(commentId);
+//     } catch (error) {
+//       console.log('Error updating comment:', error);
+//     }
+//   }
 
 //   return (
-//     <div>
+//     <div className="comment-container">
 //       {commentByRecipe[recipeId] === undefined ? (
-//         <div className="loading-spinner">
-//         </div>
+//         ''
 //       ) : (
-//         <ul className="list-group">
+//         <ul className="comment-list">
 //           {commentByRecipe[recipeId].map((comment, i) => (
-//             <li key={i} className="list-group-item border-start-0 border-end-0 border-top-0">
-//               {comment.text}
-//               <span
-//                 className='mx-5'
-//                 style={{ cursor: 'pointer', color: 'red' }}
-//                 onClick={() => removeComment(comment._id)}>
-//                 X
-//               </span>
+//             <li key={i} className="comment-item">
+//               <div className="comment-owner">By {comment._from === user.username ? 'You' : comment._from}</div>
+//               <div className="block font-sans text-sm antialiased font-light leading-relaxed text-inherit">{comment.updatedAt !== null ? <span> updated {format(comment.updatedAt)} </span>: <span>{format(comment.time)} </span>}</div> 
+//               <div className="comment-text">{comment.text}</div>
+//               {user.username === comment._from && (
+//                 <div className="flex items-center space-x-2">
+//                   <FaEdit
+//                     className="delete-comment-icon text-blue-600 cursor-pointer hover:opacity-80"
+//                     onClick={() => handleEditComment(comment._id, comment.text)}
+//                   />
+//                   <FaTrash
+//                     className="delete-comment-icon text-red-600 cursor-pointer hover:opacity-80"
+//                     onClick={() => removeComment(recipeId, comment._id)}
+//                   />
+//                 </div>
+//               )}
+//               {editedComments[comment._id] !== undefined && (
+//                 <div>
+//                   <textarea
+//                   autoFocus={true}
+//                     className="edit-comment-textarea"
+//                     value={editedComments[comment._id]}
+//                     onChange={(e) => handleEditComment(comment._id, e.target.value)}
+//                   />
+//                   <button 
+//                   className="update-comment-btn small bg-red-500 hover:bg-red-60 text-white py-2 px-2 rounded mx-2"
+//                   onClick={() => handleCancelEdit(comment._id)}>
+//                     Cancel
+//                   </button>
+//                   <button 
+//                   className="update-comment-btn small bg-blue-500 hover:bg-blue-60 text-white py-2 px-2 rounded"
+//                   onClick={() => handleUpdateComment(comment._id)}>
+//                     Update
+//                   </button>
+//                 </div>
+//               )}
 //             </li>
 //           ))}
 //         </ul>

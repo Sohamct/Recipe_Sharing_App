@@ -5,12 +5,15 @@ const { check, body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const fetchUser = require("../middleware/fetchUser");
 const router = express.Router();
+const AuthActivity = require('../models/authActivity')
 
 const cloudinary = require('../cloudinary');
+const authActivity = require('../models/authActivity');
 
 
 // Route-1: POST create a user using: '/api/auth/createuser'
-router.post('/createuser',  [
+router.post('/createuser', 
+ [
   check('username')
     .trim().notEmpty().withMessage('Username cannot be empty')
     .isLength({ min: 3 }).withMessage('Username must consist of 3 or more characters'),
@@ -21,13 +24,15 @@ router.post('/createuser',  [
     .notEmpty().withMessage('Password cannot be empty')
     .isLength({ min: 5 }).withMessage('Password must consist of at least 5 characters'),
   body('gender', 'Enter a valid gender').isIn(['male', 'female', 'other']),
-], async (req, resp) => {
+], 
+async (req, resp) => {
   try {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {``
+    if (!errors.isEmpty()) {
       return resp.status(400).json({ errors: errors.array() });
     }
-
+    console.log("body", req.body);
+    console.log("file", req.files);
     const userExists = await User.findOne({ $or: [{ email: req.body.email }, { username: req.body.username }] });
 
     if (userExists) {
@@ -63,6 +68,12 @@ router.post('/createuser',  [
       linkedinHandle: req.body.linkedinHandle,
       twitterHandle: req.body.twitterHandle,
     });
+    await AuthActivity.create({
+      userId: newUser._id,
+      activityType: 'Signup',
+      status: 'Successful'
+    })
+    
 
     const data = {
       user: {
@@ -77,6 +88,10 @@ router.post('/createuser',  [
     resp.json({ success: true, authtoken });
   } catch (error) {
     console.error(error);
+    await AuthActivity.create({
+      activityType: 'Signup',
+      status: 'Failure'
+    })
     resp.status(500).send("Unexpected error occurred");
   }
 });
@@ -129,12 +144,21 @@ router.post('/login', [
         favoriteRecipes : user.favoriteRecipes,
       }
     };
+    await AuthActivity.create({
+      userId: data.user.id,
+      activityType: 'Login',
+      status: 'Successful'
+    })
 
     const authtoken = jwt.sign(data, process.env.JWT_SECRET);
     success = true;
     return resp.json({ success, authtoken, user : user });
     // console.log(authtoken)
   } catch (err) {
+    await AuthActivity.create({
+      activityType: 'Login',
+      status: 'Failure'
+    })
     return resp.status(500).send("Internal server error");
   }
 });

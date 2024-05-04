@@ -91,6 +91,7 @@ const Filter = ({ isOpen, onClose }) => {
       dishTypes: [],
       favoritism: '',
     });
+    onClose();
   };
   const onApplyFilter = () => {
     setFilterData({

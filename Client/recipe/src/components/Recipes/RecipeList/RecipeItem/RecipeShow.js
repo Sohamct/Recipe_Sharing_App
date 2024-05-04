@@ -90,6 +90,8 @@ export const RecipeShow = () => {
   useEffect(() => {
     const r = recipes.find((r) => r._id === recipeId);
     setRecipe(r);
+    fetchComment(recipeId)
+
   }, [recipes, recipeId]);
 
   useEffect(() => {
@@ -109,12 +111,13 @@ export const RecipeShow = () => {
     }
   }, [recipe]);
 
-  const { commentByRecipe, addComment, removeComment, fetchComment } = useCommentStore(
+  const { commentByRecipe, addComment, removeComment, fetchComment, updateComment } = useCommentStore(
     (state) => ({
       commentByRecipe: state.commentByRecipe,
       removeComment: state.removeComment,
       addComment: state.addComment,
       fetchComment: state.fetchComment,
+      updateComment: state.updateComment
     })
   );
   // console.log(commentByRecipe);
@@ -376,12 +379,12 @@ export const RecipeShow = () => {
             <div className="mt-3">
               <h6 className="card-subtitle list-group-flush">
                 <ul className="list-grroup list-group-flush">
-                  <Comment recipeId={params.id} commentByRecipe={commentByRecipe} removeComment={removeComment} addComment={addComment} />
+                  <Comment recipeId={params.id} commentByRecipe={commentByRecipe} removeComment={removeComment} addComment={addComment} updateComment={updateComment}/>
                 </ul>
               </h6>
             </div>
             <div className="mt-3">
-              <h2 className="text-2xl font-semibold mb-2">Suggested Recipes</h2>
+              <h2 className="text-2xl font-semibold mb-2">Recommended Recipes : </h2>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-5 mb-10">
                 {isSuggestionLoaded ? suggestedRecipes.map((recipe, index) => (
                   <RecipeItem key={index} {...recipe} />

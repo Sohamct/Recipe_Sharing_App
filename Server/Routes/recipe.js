@@ -8,10 +8,11 @@ const validateRecipe = require('../middleware/validateRecipeMiddleware');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const { addFavoriteRecipe, removeFavoriteRecipe, checkIfRecipeIsFavorite } = require('../Services/recipeService');
-const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const cloudinary = require('../cloudinary');
+const { log } = require("console");
+// const Visitor = require('../models/visitorModel');
 
 
 //  -----------------------------------------------------
@@ -26,6 +27,8 @@ router.post('/createrecipe', [fetchUser], async (req, res) => {
     
     const { title, description, ingredients, category, vegNonVeg, dishType} = req.body;
 
+    console.log(req.body);
+    console.log(req.files);
     const result = await cloudinary.uploader.upload( req.files ? req.files.image.tempFilePath : null, {
       folder: "RecipeImages",
     })
@@ -349,5 +352,33 @@ router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
   }
 });
 
-module.exports = router;
+// router.get('/recipe-details', async (req, resp) => {
+//   try{
+//     const recipes = await Recipe.find({}, 'ingreddients.quantity_type dishType category vegNonVeg');
+//     const result = recipes.map((recipe) => ({
+//       ingredients: recipe.ingredients.map((ingredient) => ({
+//         quantity_type: ingredient.quantity_type
+//       })),
+//       dishType: recipe.dishType,
+//       category: recipe.category,
+//       vegNonVeg: recipe.vegNonVeg
+//     }))
+//     console.log(result)
+//     resp.status(200).json({message: 'Fetched quantity units successfully!', result: result})
+//   }catch(error){
+//     resp.status(500).json({ error: 'Internal Server Error' });
+//   }
+// })
 
+// router.post('/addVisitor', [fetchUser], async (req, resp) => {
+//   try{
+//     await Visitor.create({
+//       userId: req.user.id,
+//       recipeId : req.body.recipeId
+//     })
+//   }catch(error){
+
+//   }
+// })
+
+module.exports = router;

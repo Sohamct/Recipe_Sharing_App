@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const ingredientSchema = new mongoose.Schema({
     ingredient_name: { type: String, required: true },
     quantity: { type: Number, required: true },
-    quantity_type: { type: String, enum: ['ml', 'litre', 'gm', 'kg', 'unit'], required: true },
+    quantity_type: { type: String, enum: ['ml', 'litre', 'gm', 'kg', 'unit', 'tablespoon'], required: true },
   });
 
   const dishTypes = ['Italian', 'American', 'Chinese', 'Mexican', 'Kathiyawadi', 'Rajasthani', 'South Indian', 'Punjabi', 'Hydrabadi', 'Gujrati', 'Maharashtriyan', 'Indian', 'Jammu Kashmiri', 'Uttar predesh'];
@@ -38,4 +38,4 @@ const ingredientSchema = new mongoose.Schema({
     updatedAt: {type: Date, default: Date.now}
   }, {timestamps: false});
   
-module.exports = mongoose.model('Recipe', recipeSchema);
+module.exports = mongoose.model('Recipe', recipeSchema)

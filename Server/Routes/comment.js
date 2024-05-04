@@ -10,7 +10,6 @@ const router = express.Router();
 
 // Route-1: create a user using: '/api/comment/addComment'
 router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
-  // console.log('Adding new comment', req.body, req.header);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -40,14 +39,75 @@ router.post('/addComment', [fetchUser, validateComment], async (req, resp) => {
       _from : username,
       repliedTo,
       _to,
+      time: new Date(),
     });
-    // console.log("comment created: ",comment);
+    console.log(comment);
     resp.status(200).json({ message: 'Comment created successfully', data: comment });
   } catch (error) {
     console.error(error);
     resp.status(500).send('Unexpected error occurred');
   }
 });
+
+
+router.delete('/deleteComment', [fetchUser], async (req, resp) => {
+  try {
+    const errors = validationResult(req);
+    console.log("Helllo deleting comment...............................")
+    if (!errors.isEmpty()) {
+      return resp.status(400).json({ errors: errors.array() });
+    }
+    const { commentId } = req.body;
+
+    if (!req.user) {
+      return resp.status(401).json({ message: 'Unauthorized access' });
+    }
+    try{
+        await Comment.deleteOne({_id : commentId})
+    }catch(err){
+      return resp.status(401).json({ message: 'Unexpected reply' });
+    }
+    
+    resp.status(200).json({ message: 'Comment deleted successfully', data: {success: true} });
+  } catch (error) {
+    console.error(error);
+    resp.status(500).send('Unexpected error occurred');
+  }
+});
+
+
+router.put('/updateComment', [fetchUser], async (req, resp) => {
+  try {
+    const errors = validationResult(req);
+    console.log("Helllo updating comment...............................")
+    if (!errors.isEmpty()) {
+      return resp.status(400).json({ errors: errors.array() });
+    }
+    const { commentId, updatedText } = req.body;
+
+    if (!req.user) {
+      return resp.status(401).json({ message: 'Unauthorized access' });
+    }
+    console.log(commentId, updatedText)
+    try{
+       const comment = await Comment.findOneAndUpdate(
+          {_id : commentId, _from : req.user.username}, 
+          {text: updatedText, updatedAt: new Date()},
+          {new : true}
+        );
+        if (!comment) {
+          return resp.status(404).json({ message: 'Comment not found or unauthorized' });
+        }
+        resp.status(200).json({ message: 'Comment updated successfully', data: comment });
+    }catch(err){
+      return resp.status(401).json({ message: 'Unexpected reply' });
+    }
+  } catch (error) {
+    console.error(error);
+    resp.status(500).send('Unexpected error occurred');
+  }
+});
+
 
 
 router.get('/fetchComments/:id', fetchUser, async (req, resp) => {

@@ -49,3 +49,53 @@ export const addComment = async (newComment) => {
         throw error;
     }
 }
+
+export const deleteComment = async (commentId) => {
+    try {
+        console.log(commentId)
+        const response = await fetch(`${uri}/deleteComment`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': localStorage.getItem('token'),
+            },
+            body: JSON.stringify({commentId : commentId})
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to delete comment. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("deleted commented returned data: ", data);
+        return data;
+    } catch (error) {
+        console.log("Error deleting comment: ", error.message);
+        throw error;
+    }
+}
+
+
+export const updateComment = async (commentId, updatedText) => {
+    try {
+        const response = await fetch(`${uri}/updateComment`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': localStorage.getItem('token'),
+            },
+            body: JSON.stringify({commentId : commentId, updatedText: updatedText})
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update comment. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("updated commented returned data: ", data);
+        return data;
+    } catch (error) {
+        console.log("Error updating comment: ", error.message);
+        throw error;
+    }
+}

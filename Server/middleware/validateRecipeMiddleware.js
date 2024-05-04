@@ -7,7 +7,7 @@ const validateRecipe = [
 
   body('ingredients.*.ingredient_name').trim().notEmpty().withMessage('Ingredient name cannot be empty'),
   body('ingredients.*.quantity').isNumeric().withMessage('Quantity must be a number'),
-  body('ingredients.*.quantity_type').isIn(['ml', 'litre', 'gm', 'kg']).withMessage('Invalid quantity type'),
+  body('ingredients.*.quantity_type').isIn(['ml', 'litre', 'gm', 'kg', 'tablespoon', 'unit']).withMessage('Invalid quantity type'),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
