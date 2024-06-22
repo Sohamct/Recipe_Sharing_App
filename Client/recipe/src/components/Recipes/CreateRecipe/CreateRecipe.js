@@ -336,13 +336,12 @@ export const CreateRecipe = () => {
           <button
             type="submit"
             className="block px-3 py-2 text-sm text-white font-medium bg-blue-500 rounded-md hover:bg-blue-600"
-            disabled={isFormEmpty()}
+            disabled={isFormEmpty() || isLoading}
           >
             {isLoading ? (isEditing ? 'Updating...' : 'Submitting...') : (isEditing ? 'Update Recipe' : 'Submit')}
-          </button>
+          </button>
         </form>
       </div>
     </div>
-
   )
 }

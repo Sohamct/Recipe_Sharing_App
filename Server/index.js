@@ -8,20 +8,24 @@ const fileUpload = require('express-fileupload');
 connectToMongo();
 
 // Middleware setup
-try{
+try {
   app.use(fileUpload({
     useTempFiles: true
   }));
-}catch(error){
+} catch (error) {
   console.log(error);
 }
+
+
 app.use(cors({
   origin: 'http://localhost:3000',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 }));
-app.use(bodyParser.json()); 
-app.use(express.json()); 
+
+
+app.use(bodyParser.json());
+app.use(express.json());
 
 
 // Routes
@@ -33,9 +37,9 @@ app.use('/api/chat', require('./Routes/chat'));
 app.use('/api/message', require('./Routes/message'));
 
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(404).send({
-    msg : "Sorry, something is wrong up with our server"
+    msg: "Sorry, something is wrong up with our server"
   });
 });
 

@@ -14,14 +14,14 @@ const api = {
       formDataToSend.append("vegNonVeg", formData.vegNonVeg);
       formDataToSend.append("ingredients", JSON.stringify(formData.ingredients));
       formDataToSend.append("image", formData.image); // Assuming formData.image is an array with one file
-  
+
       const response = await axios.post(`${uri}/createrecipe`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           "auth-token": localStorage.getItem("token"), // Use Authorization header for the token
         },
       });
-  
+
       if (response.status === 201) {
         console.log("Recipe created successfully");
         return response.data;
@@ -34,7 +34,7 @@ const api = {
       throw new Error(error.message);
     }
   },
-  
+
   editRecipeAsync: async (formData) => {
     try {
       console.log(formData);
@@ -98,26 +98,26 @@ const api = {
 
   fetchRecipesByOwnerAsync: async (ownerName) => {
     try {
-        const response = await fetch(`${uri}/fetchrecipesbyowner?owner=${ownerName}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'auth-token': localStorage.getItem('token'),
-            },
-        });
+      const response = await fetch(`${uri}/fetchrecipesbyowner?owner=${ownerName}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': localStorage.getItem('token'),
+        },
+      });
 
-        const data = await response.json();
-        // console.log(data);
+      const data = await response.json();
+      // console.log(data);
 
-        if (response.ok) {
-            return data; // Return the payload if the response is successful
-        } else {
-            throw new Error(data.errors[0].msg); // Throw an error if the response indicates an error
-        }
+      if (response.ok) {
+        return data; // Return the payload if the response is successful
+      } else {
+        throw new Error(data.errors[0].msg); // Throw an error if the response indicates an error
+      }
     } catch (error) {
-        throw new Error('Failed to fetch recipes by owner'); // Throw a generic error if something goes wrong
+      throw new Error('Failed to fetch recipes by owner'); // Throw a generic error if something goes wrong
     }
-},
+  },
 
 
   deleteRecipeAsync: async (deleteInfo) => {

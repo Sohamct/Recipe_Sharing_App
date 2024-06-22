@@ -78,6 +78,7 @@ router.put('/update-details', fetchUser, async (req, res) => {
     await Comment.updateMany({_from: req.user.username}, {_from: username});
     await Message.updateMany({sender: req.user.username}, {sender: username});
     await Recipe.updateMany({owner: req.user.username}, {owner: username});
+
     console.log("Updated the 3 schemas");
     res.json({ success: true, message: "User details updated successfully", user: userToUpdate });
   } catch (error) {

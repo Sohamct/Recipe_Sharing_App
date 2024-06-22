@@ -3,14 +3,16 @@ const Recipe = require('../models/recipeModel');
 
 async function addFavoriteRecipe(userId, recipeId) {
   try {
+    //updating the user document to add the recipeId to the fav list array
     const user = await User.findByIdAndUpdate(userId, { $addToSet: { favoriteRecipes: recipeId } }, { new: true });
+    
+    //updating the recipes document to add the userId to the fav list array
     const recipe = await Recipe.findByIdAndUpdate(
       recipeId,
       { $addToSet: { favorites: userId } },
       { new: true, omitUndefined: true, fields: { updatedAt: 0 } }
     );
     
-
     return {user, recipe};
   } catch (error) {
     console.error('Error adding recipe to favorites:', error.message);

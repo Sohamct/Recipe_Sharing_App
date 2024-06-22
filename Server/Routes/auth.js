@@ -46,8 +46,6 @@ router.post('/createuser',  [
     })
 
 
-
-
     const newUser = await User.create({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
