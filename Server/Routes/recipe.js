@@ -12,10 +12,8 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const cloudinary = require('../cloudinary');
-const { log } = require("console");
 
 
-//  -----------------------------------------------------
 // Route-1: POST create a recipe using: '/api/auth/createrecipe'
 router.post('/createrecipe', [fetchUser], async (req, res) => {
 
@@ -27,8 +25,8 @@ router.post('/createrecipe', [fetchUser], async (req, res) => {
     
     const { title, description, ingredients, category, vegNonVeg, dishType} = req.body;
 
-    console.log(req.body);
-    console.log(req.files);
+    // console.log(req.body);
+    // console.log(req.files);
     const result = await cloudinary.uploader.upload( req.files ? req.files.image.tempFilePath : null, {
       folder: "RecipeImages",
     })
@@ -69,7 +67,6 @@ router.put('/editrecipe', [fetchUser], async (req, resp) => {
       return resp.status(400).json({ errors: errors.array() });
     }
 
-
     const { title, _id, description, ingredients, owner, category, vegNonVeg, dishType} = req.body;
 
 
@@ -102,7 +99,6 @@ router.put('/editrecipe', [fetchUser], async (req, resp) => {
       };
     }
 
-
     const recipe = await Recipe.findOneAndUpdate(
       { _id: _id, owner: username },
       updateObject,
@@ -122,8 +118,6 @@ router.put('/editrecipe', [fetchUser], async (req, resp) => {
 });
 
 router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
-
-
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -150,7 +144,6 @@ router.delete('/deleterecipe', [fetchUser], async (req, resp) => {
     if(recipeToDelete.image && recipeToDelete.image.public_id){
       const public_id = recipeToDelete.image.public_id;
       await cloudinary.uploader.destroy(public_id);
-
 
     }
 
@@ -264,7 +257,6 @@ router.get('/suggestions', async (req, res) => {
         owner: recipe.owner,
         description: recipe.description,
         ingredients: recipe.ingredients.map((ingredient) => ingredient.ingredient_name),
-        // Add more details as needed
       }));
 
     res.json({ suggestions });
@@ -315,6 +307,7 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
       // console.log(userId);
       const user = await User.findById(userId);
 
+      // Extract favorite recipe IDs(array) from the user object
       const favoriteRecipeIds = user.favoriteRecipes || [];
       // console.log(favoriteRecipeIds);
 
@@ -332,7 +325,6 @@ router.get('/getFavorites', fetchUser, async (req, res) => {
 
 router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
   const { recipeId } = req.body;
-
 
   try {
     if (!req.user) {

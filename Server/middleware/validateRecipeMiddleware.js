@@ -15,7 +15,6 @@ const validateRecipe = [
       console.error(errors);
       return res.status(400).json({ errors: errors.array() });
     }
-
     next();
   },
 ];

@@ -73,7 +73,7 @@ const numFollowings = followings.length;
         <a className='pr-5 text-gray-950 transition duration-400 ease-in-out hover:text-blue-900' href={userDetails?.linkedinHandle} target="_blank" rel="noreferrer">
           <LinkedInIcon sx={{ fontSize: 30 }} />
         </a>
-        <a className='pr-5 text-gray-950 transition duration-400 ease-in-out hover:text-blue-900' href="#" onClick={handleEmailClick}>
+        <a className='pr-5 text-gray-950 transition duration-400 ease-in-out hover:text-blue-900' href={userDetails?.email} onClick={handleEmailClick}>
           <MailIcon sx={{ fontSize: 30 }} />
         </a>
       </div>
