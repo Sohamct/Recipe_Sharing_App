@@ -4,14 +4,10 @@ const User = require('../models/userModel');
 const Comment = require('../models/commentModel');
 const fetchUser = require('../middleware/fetchUser');
 const Recipe = require('../models/recipeModel');
-const validateRecipe = require('../middleware/validateRecipeMiddleware');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const { addFavoriteRecipe, removeFavoriteRecipe, checkIfRecipeIsFavorite } = require('../Services/recipeService');
-const fs = require('fs');
-const path = require('path');
 const cloudinary = require('../cloudinary');
-const { log } = require("console");
 // const Visitor = require('../models/visitorModel');
 
 
@@ -359,7 +355,7 @@ router.post('/checkIfRecipeIsFavorite', fetchUser, async (req, res) => {
 //       ingredients: recipe.ingredients.map((ingredient) => ({
 //         quantity_type: ingredient.quantity_type
 //       })),
-//       dishType: recipe.dishType,
+//       dishType: recipe.dishTyper,
 //       category: recipe.category,
 //       vegNonVeg: recipe.vegNonVeg
 //     }))

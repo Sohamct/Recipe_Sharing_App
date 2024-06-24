@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../features/context';
+// import { useUser } from '../../features/context';
 
 export const RecipeCardForUser = ({ recipe }) => {
 
-  const { username } = useUser();
+  console.log(recipe);
+
+  // const { username } = useUser();
   const navigate = useNavigate();
   
   if (!recipe || typeof recipe !== 'object' || !('_id' in recipe)) {
@@ -24,13 +26,13 @@ export const RecipeCardForUser = ({ recipe }) => {
         {recipe?.image.url ? (
         <img
           src={recipe?.image.url}
-          alt="card-image"
+          alt="recipeImage"
           className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
         />
       ) : (
         <img
           src={require(`../../components/Uploads/default.png`)}
-          alt="card-image"
+          alt="DefaultRecipe"
           className="object-cover w-full h-full rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
         />
       )}

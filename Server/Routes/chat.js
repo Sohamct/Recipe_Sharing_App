@@ -21,7 +21,6 @@ router.post('/', fetchUser, async(req, resp) => {
         if(isChatExist){
             return resp.status(200).json({message: "Chat is opened!", isNew: false, data:true, status:true})
         }
-Ch
         const newChat = new chatModel({
             members: [req.body.sender, req.body.receiver]
         });

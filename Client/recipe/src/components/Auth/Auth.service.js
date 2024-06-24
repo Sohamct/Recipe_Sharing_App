@@ -76,7 +76,7 @@ const AuthService = {
             formData.append('linkedinHandle', linkedinHandle);
             formData.append('twitterHandle', twitterHandle);
             console.log(formData);
-            const resp = await axios(`${API}/auth/createuser`, {
+            const resp = await fetch(`${API}/auth/createuser`, {
                 method: 'POST',
                 body: formData,
             });

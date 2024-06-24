@@ -3,12 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../app/service/RecipeApi';
 import { useUser } from '../../features/context';
 import { RecipeItem } from '../Recipes/RecipeList/RecipeItem/RecipeItem';
+import { Navigation } from '../Navigation';
+import { useLocation } from 'react-router-dom';
 
 export const MyRecipe = () => {
   const { user } = useUser();
   const [userRecipes, setUserRecipes] = useState(new Array(16).fill(null));
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // const goBack = () => {
+  //   navigate(-1); // Navigate back to the previous page
+  // };
+
+  useEffect(() => {
+    if(!user){
+      navigate('/login');
+    }
+  }, [user, location.pathname, navigate]);
 
   useEffect(() => {
     let isMounted = true;
@@ -47,8 +60,9 @@ export const MyRecipe = () => {
 
   return (
     <>
-      <div>
-        <div className='flex items-center mx-4 pl-9 mb-3 pt-2'>
+    <Navigation/>
+      <div className='content-padding'>
+        {/* <div className='flex items-center mx-4 pl-9 mb-3 pt-2'>
           <h3 className='pt-4 text-gray-800 '>  <span className='text-3.5xl bg-center'>&#x2BAB;</span> Recipes owned by you...</h3>
           <button
             className='ml-auto mr-6 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded'
@@ -57,9 +71,9 @@ export const MyRecipe = () => {
             Go Back
           </button>
         </div>
-        <hr />
+        <hr /> */}
         {loading ? (
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5'>
+          <div className='grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-4 mx-5 mb-3'>
             {userRecipes.map((recipe, index) => (
               <RecipeItem key={index} {...recipe} />
             ))}
@@ -69,7 +83,7 @@ export const MyRecipe = () => {
             {userRecipes.length === 0 ? (
               <p className='container ml-8 text-xl text-center'>No Recipe Found</p>
             ) : (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
+              <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-4 mx-5 mb-3">
                 {userRecipes.map((recipe) => (
                   <RecipeItem key={recipe._id} {...recipe} />
                 ))}

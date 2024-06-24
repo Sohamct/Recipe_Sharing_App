@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import AuthService from "./Auth.service";
 import './login.css'
 import { useUser } from "../../features/context";
@@ -10,10 +10,9 @@ import { useUser } from "../../features/context";
 export const Login = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const {setUser} = useUser();
-  const { setUserdetails } = useUser();
 
   const notify = () =>
-    toast.success("signed in successfully!", {
+    toast.success("Logged in successfully!", {
       autoClose: 2000,
       theme: "colored",
     });
@@ -59,37 +58,38 @@ export const Login = () => {
 
 
   return (
-    <div>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
         onSubmit={handleClick}
-        className="w-1/3 shadow-sm absolute p-12 border-2 mx-auto my-32 right-0 left-0 text-black rounded-lg bg-opacity-80">
-        <p className="my-3 font-semibold text-3xl">Login To Continue Recipe Book</p>
+        className="w-full max-w-md sm:w-2/3 md:w-1/3 shadow-sm p-6 sm:p-12 border-2 mx-4 my-16 sm:my-32 text-black rounded-lg bg-opacity-80 bg-white">
+        <p className="my-3 font-semibold text-xl sm:text-2xl md:text-3xl">Login To Continue Recipe Book</p>
         <input
           type="text"
           name="username"
           placeholder="Username"
-          className="p-2.5 border-2 my-4 w-full rounded-lg block"
+          className="p-2 border-2 my-2 sm:my-4 w-full rounded-lg block"
         />
         <input
           type="password"
           name="password"
-          placeholder="Password "
-          className="p-2.5 border-2 my-4 w-full rounded-lg block"
+          placeholder="Password"
+          className="p-2 border-2 my-2 sm:my-4 w-full rounded-lg block"
         />
         <button type="submit" 
-        className="p-2.5 border-2 my-3 text-white font-semibold bg-blue-700 w-full rounded-lg block button"
-        disabled={isButtonDisabled}>
+          className="p-2 border-2 my-2 sm:my-3 text-white font-semibold bg-blue-700 w-full rounded-lg block button"
+          disabled={isButtonDisabled}>
           {isButtonDisabled ? 'Logging in...' : 'Login'}
         </button>
-        <div className="text-center">
-              Not registered ?{" "}
-              <span
-                onClick={gotoSignupPage}
-                className="text-red-600 font-semibold decoration-red-600 hover:text-red-800 hover:underline cursor-pointer">
-                Sign Up now
-              </span>
+        <div className="text-center mt-4">
+          Not registered ?{" "}
+          <span
+            onClick={gotoSignupPage}
+            className="text-red-600 font-semibold decoration-red-600 hover:text-red-800 hover:underline cursor-pointer">
+            Sign Up now
+          </span>
         </div>
       </form>
     </div>
   );
+  
 };

@@ -15,10 +15,11 @@ import { useProgress } from '../../../../features/ProgressContext';
 import { TwitterShareButton, TwitterIcon, FacebookShareButton, FacebookIcon, WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { RecipeItem } from './RecipeItem';
 import { format } from 'timeago.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { fetchUserDetailsbyUsername } from '../../../../app/service/userApi';
+import '../../../../components/style.css'
 
 export const RecipeShow = () => {
   const [CommentText, setCommentText] = useState("");
@@ -42,6 +43,19 @@ export const RecipeShow = () => {
   // console.log(recipes);
   const status = useSelector((state) => state.recipes.status);
   const error = useSelector((state) => state.recipes.error);
+
+  
+  const location = useLocation();
+
+  // const goBack = () => {
+  //   navigate(-1); // Navigate back to the previous page
+  // };
+
+  useEffect(() => {
+    if(!user){
+      navigate('/login');
+    }
+  }, [user, location.pathname, navigate])
 
   useEffect(() => {
     if (!recipes.length) {
@@ -209,6 +223,7 @@ export const RecipeShow = () => {
   // Function to create new chat
   const makeNewChat = async (owner) => {
     try {
+      console.log(user?.username, owner);
       const response = await addChat({ sender: user?.username, receiver: owner });
       // console.log(response)
       if (response.data) {
@@ -231,7 +246,7 @@ export const RecipeShow = () => {
       <div>
         <Navigation />
       </div>
-      <div className='pt-7'>
+      <div className='content-padding pt-7'>
 
         <div className="mx-auto block w-3/4 px-4 pt-6 text-sm border border-gray-300 rounded-lg shadow-md p-4 relative">
           <div>
@@ -243,7 +258,7 @@ export const RecipeShow = () => {
                       {userDetails?.profileImage ? (
                         <img
                           src={userDetails?.profileImage.url}
-                          alt="card-image"
+                          alt="ProfileImage"
                           className="object-cover w-full h-full rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
                         />
                       ) : (
@@ -314,14 +329,14 @@ export const RecipeShow = () => {
                       <img
                         src={image.url}
                         onLoad={handleImageLoad}
-                        alt="card-image"
+                        alt="RecipeImage"
                         className=" border-1 border-gray-300 object-cover w-3/4 h-72 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
                       />
                     ) : (
                       <img
                         src={require(`../../../../components/Uploads/default.png`)}
                         onLoad={handleImageLoad}
-                        alt="card-image"
+                        alt="RecipeLoading"
                         className="object-cover w-3/4 h-full rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
                       />
                     )}
@@ -385,7 +400,7 @@ export const RecipeShow = () => {
             </div>
             <div className="mt-3">
               <h2 className="text-2xl font-semibold mb-2">Recommended Recipes : </h2>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-5 mb-10">
+              <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-1 mb-10">
                 {isSuggestionLoaded ? suggestedRecipes.map((recipe, index) => (
                   <RecipeItem key={index} {...recipe} />
                 )) : <h5>Loading ...</h5>}
@@ -400,20 +415,3 @@ export const RecipeShow = () => {
   );
 
 }
-
-function useDebounce(value, delay) {
-  const [debounceValue, setDebouncedValue] = useState(value);
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    }
-
-  }, [value, delay])
-  return debounceValue;
-}
-
-export default RecipeShow;

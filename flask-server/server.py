@@ -61,8 +61,8 @@ def Recomendate(recipes_data):
                    recipes_df["description"].apply(lambda x: ' '.join(x)) + " " + 
                    recipes_df["ingredients"].apply(lambda x: ' '.join(x)) + " " + 
                    (recipes_df["dishType"] + " ") * 20+
-                   (recipes_df["category"] + " ") * 6 + 
-                   (recipes_df["vegNonVeg"] + " ") * 10 +
+                   (recipes_df["category"] + " ") * 40 + 
+                   (recipes_df["vegNonVeg"] + " ") * 1 +
                    recipes_df["vegNonVeg"] + " " + 
                    recipes_df["dishType"] + " " + 
                    recipes_df["category"])

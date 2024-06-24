@@ -56,7 +56,7 @@ export const Conversation = ({ chat, online, uniqueUsernames }) => {
                     {userData && userData.profileImage ? (
                         <img
                             src={userData.profileImage.url}
-                            alt="Profile Image"
+                            alt="ProfileImage"
                             className="followerImage w-12 h-12 rounded-full"
                         />
                     ) : (

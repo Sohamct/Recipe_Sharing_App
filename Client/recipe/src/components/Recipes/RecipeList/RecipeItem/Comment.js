@@ -102,7 +102,7 @@ export const Comment = ({ commentByRecipe, recipeId, removeComment, updateCommen
               className="more-comments-btn text-blue-600 cursor-pointer"
               onClick={() => setShowAllComments(true)}
             >
-              More Comments...
+              View more comments...
             </button>
           )}
         </>

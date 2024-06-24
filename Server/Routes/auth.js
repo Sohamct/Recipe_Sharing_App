@@ -10,10 +10,8 @@ const AuthActivity = require('../models/authActivity')
 const cloudinary = require('../cloudinary');
 const authActivity = require('../models/authActivity');
 
-
 // Route-1: POST create a user using: '/api/auth/createuser'
-router.post('/createuser', 
- [
+router.post('/createuser',  [
   check('username')
     .trim().notEmpty().withMessage('Username cannot be empty')
     .isLength({ min: 3 }).withMessage('Username must consist of 3 or more characters'),
@@ -24,15 +22,13 @@ router.post('/createuser',
     .notEmpty().withMessage('Password cannot be empty')
     .isLength({ min: 5 }).withMessage('Password must consist of at least 5 characters'),
   body('gender', 'Enter a valid gender').isIn(['male', 'female', 'other']),
-], 
-async (req, resp) => {
+], async (req, resp) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return resp.status(400).json({ errors: errors.array() });
     }
-    console.log("body", req.body);
-    console.log("file", req.files);
+    console.log(req.body);
     const userExists = await User.findOne({ $or: [{ email: req.body.email }, { username: req.body.username }] });
 
     if (userExists) {
@@ -50,9 +46,8 @@ async (req, resp) => {
       folder: "ProfileImages",
     })
 
-
-
-
+    console.log(result.public_id, result.secure_url);
+    
     const newUser = await User.create({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -68,12 +63,6 @@ async (req, resp) => {
       linkedinHandle: req.body.linkedinHandle,
       twitterHandle: req.body.twitterHandle,
     });
-    await AuthActivity.create({
-      userId: newUser._id,
-      activityType: 'Signup',
-      status: 'Successful'
-    })
-    
 
     const data = {
       user: {
@@ -88,13 +77,94 @@ async (req, resp) => {
     resp.json({ success: true, authtoken });
   } catch (error) {
     console.error(error);
-    await AuthActivity.create({
-      activityType: 'Signup',
-      status: 'Failure'
-    })
     resp.status(500).send("Unexpected error occurred");
   }
 });
+
+// // Route-1: POST create a user using: '/api/auth/createuser'
+// router.post('/createuser', 
+// //  [
+// //   check('username')
+// //     .trim().notEmpty().withMessage('Username cannot be empty')
+// //     .isLength({ min: 3 }).withMessage('Username must consist of 3 or more characters'),
+// //   body('email', 'Enter a valid email address').isEmail(),
+// //   body('firstname', 'Enter a valid firstname').isLength({ min: 2 }),
+// //   body('lastname', 'Enter a valid lastname').isLength({ min: 2 }),
+// //   body('password')
+// //     .notEmpty().withMessage('Password cannot be empty')
+// //     .isLength({ min: 5 }).withMessage('Password must consist of at least 5 characters'),
+// //   body('gender', 'Enter a valid gender').isIn(['male', 'female', 'other']),
+// // ], 
+// async (req, resp) => {
+//   try {
+//     // const errors = validationResult(req);
+//     // if (!errors.isEmpty()) {
+//     //   return resp.status(400).json({ errors: errors.array() });
+//     // }
+//     console.log("body", req.body);
+//     console.log("file", req);
+//     const userExists = await User.findOne({ $or: [{ email: req.body.email }, { username: req.body.username }] });
+
+//     if (userExists) {
+//       return resp.status(400).json({ errors: "A user with this email or username already exists!" });
+//     }
+
+//     const saltRounds = parseInt(process.env.SALT_ROUND);
+//     const salt = await bcrypt.genSalt(saltRounds);
+//     const securedPassword = await bcrypt.hash(req.body.password, salt);
+
+//     console.log(req.files);
+//     const profileImagePath = req.files ? req.files.profilePic.tempFilePath : null;
+
+//     const result = await cloudinary.uploader.upload(profileImagePath, {
+//       folder: "ProfileImages",
+//     })
+
+
+
+
+//     const newUser = await User.create({
+//       firstname: req.body.firstname,
+//       lastname: req.body.lastname,
+//       username: req.body.username,
+//       email: req.body.email,
+//       password: securedPassword,
+//       profileImage: {
+//         public_id: result.public_id,
+//         url: result.secure_url
+//       },
+
+//       instagramHandle: req.body.instagramHandle,
+//       linkedinHandle: req.body.linkedinHandle,
+//       twitterHandle: req.body.twitterHandle,
+//     });
+//     await AuthActivity.create({
+//       userId: newUser._id,
+//       activityType: 'Signup',
+//       status: 'Successful'
+//     })
+    
+
+//     const data = {
+//       user: {
+//         id: newUser.id,
+//         username: newUser.username,
+//         email: newUser.email,
+//       }
+//     };
+
+//     const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+
+//     resp.json({ success: true, authtoken });
+//   } catch (error) {
+//     console.error(error);
+//     await AuthActivity.create({
+//       activityType: 'Signup',
+//       status: 'Failure'
+//     })
+//     resp.status(500).send("Unexpected error occurred");
+//   }
+// });
 
 router.post('/login', [
   check('username')

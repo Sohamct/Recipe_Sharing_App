@@ -9,7 +9,7 @@ function Header({ ownerName, onFollowToggle }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
-  const [profilePic, setProfilePic] = useState(null);
+  // const [profilePic, setProfilePic] = useState(null);
   const [reloadComponent, setReloadComponent] = useState(false); // State to trigger component reload
   const { username } = useUser();
   // console.log(UserProfile);
@@ -76,7 +76,7 @@ function Header({ ownerName, onFollowToggle }) {
             {userDetails?.profileImage ? (
               <img
                 src={userDetails?.profileImage.url}
-                alt="card-image"
+                alt="cardimage"
                 className="object-cover w-full h-full rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md"
               />
             ) : (

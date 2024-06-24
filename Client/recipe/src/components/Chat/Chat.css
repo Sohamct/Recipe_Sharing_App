@@ -1,76 +1,86 @@
 .Chat {
-    position: relative;
-    display: grid;
-    grid-template-columns: 22% auto;
-    gap: 1rem;
-  }
-  
-  .Left-side-chat {
-    display: flex;
+  position: relative;
+  display: flex;
+  gap: 1rem;
+}
+
+.Left-side-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  cursor: grab;
+}
+
+.Left-side-chat:active {
+  cursor: grabbing;
+}
+
+.Chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--cardColor);
+  border-radius: 1rem;
+  padding: 1rem;
+  height: auto;
+  min-height: 80vh;
+  overflow: scroll;
+}
+
+.Chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.Right-side-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.divider {
+  width: 5px;
+  cursor: col-resize;
+  background-color: #808080;
+}
+
+.conversation:hover {
+  background: #80808038;
+  cursor: pointer;
+}
+
+.conversation {
+  border-radius: 0.5rem;
+  padding: 10px;
+}
+
+.conversation > div {
+  position: relative;
+}
+
+.online-dot {
+  background-color: greenyellow;
+  border-radius: 50%;
+  position: absolute;
+  left: 2rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.chatbox-empty-message {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+@media screen and (max-width: 500px) {
+  .Chat {
     flex-direction: column;
-    gap: 1rem;
   }
-  
-  .Chat-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    background: var(--cardColor);
-    border-radius: 1rem;
-    padding: 1rem;
-    height: auto;
-    min-height: 80vh;
-    overflow: scroll;
+
+  .follower.conversation > div > .name {
+    display: none;
   }
-  
-  .Chat-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .Right-side-chat {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .conversation:hover {
-    background: #80808038;
-    cursor: pointer;
-  }
-  
-  .conversation {
-    border-radius: 0.5rem;
-    padding: 10px;
-  }
-  
-  .conversation > div {
-    position: relative;
-  }
-  
-  .online-dot {
-    background-color: greenyellow;
-    border-radius: 50%;
-    position: absolute;
-    left: 2rem;
-    width: 1rem;
-    height: 1rem;
-  }
-  
-  
-  .chatbox-empty-message {
-    display: flex;
-    align-self: center;
-    justify-content: center;
-    font-size: 20px;
-  }
-  
-  
-  @media screen and (max-width: 768px) {
-   .Chat {
-      grid-template-columns: 16% auto;
-    }
-     .follower.conversation>div>.name{
-      display: none;
-     }
-  }
+}

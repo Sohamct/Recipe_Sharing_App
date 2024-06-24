@@ -7,13 +7,15 @@ import { useUser } from '../../features/context';
 const RecipeOwnedUser = ({ ownerName }) => {
     const [recipes, setRecipes] = useState([]);
     
-    const { username: loggedInUsername } = useUser();
+    const { user } = useUser();
 
     useEffect(() => {
+        console.log('user card componenet');
         const fetchData = async () => {
             try {
                 const data = await api.fetchRecipesByOwnerAsync(ownerName);
                 setRecipes(data.data); // Assuming the data property contains the recipes array
+                console.log(data.data);
             } catch (error) {
                 console.error('Error fetching recipes:', error.message);
             }

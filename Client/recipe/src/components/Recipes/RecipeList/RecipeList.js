@@ -1,16 +1,12 @@
-
-
 import React, { useEffect, useCallback, useContext } from 'react';
 import { RecipeItem } from './RecipeItem/RecipeItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRecipesAsync } from '../../../features/recipe/Slice/recipe_slice';
 import { useProgress } from '../../../features/ProgressContext';
 import { FilterContext } from '../../../features/FilterContext';
-import { useLocation } from 'react-router-dom';
 
 
 export const RecipeList = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const recipesState = useSelector((state) => state.recipes);
 
@@ -39,33 +35,6 @@ export const RecipeList = () => {
 
   useEffect(() => {
   }, [filterData])
-
-  // useEffect(() => {
-  //   if(recipesState?.recipes?.length > 0){
-  //     fetch("http://localhost:5000/recommend", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify({
-  //       "recipes": recipesState.recipes
-  //     })
-  //   })
-  //     .then(response => {
-  //       if (!response.ok) {
-  //         throw new Error('Network response was not ok');
-  //       }
-  //       return response.json();
-  //     })
-  //     .then(data => {
-  //       console.log(data);
-  //     })
-  //     .catch(error => {
-  //       console.error('There was a problem with your fetch operation:', error);
-  //     });
-  //   }
-    
-  // }, [recipesState])
 
   if (recipesState.status === 'loading') {
     return <h3>Loading...</h3>;
@@ -99,8 +68,8 @@ export const RecipeList = () => {
   // console.log(recipes);
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-10">
-      {filteredRecipes.map((recipe) => (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5 mb-3">
+      {filteredRecipes.map((recipe) => (  
         <RecipeItem key={recipe._id} {...recipe} />
       ))}
     </div>

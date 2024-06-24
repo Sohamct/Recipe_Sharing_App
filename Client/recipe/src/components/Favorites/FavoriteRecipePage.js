@@ -2,17 +2,27 @@ import React, { useState, useEffect } from 'react';
 import api from '../../app/service/RecipeApi';
 import { RecipeItem } from '../Recipes/RecipeList/RecipeItem/RecipeItem';
 import { useNavigate } from 'react-router-dom';
-
+import { Navigation } from '../Navigation';
+import { useLocation } from 'react-router-dom';
+import { useUser } from '../../features/context';
 
 const FavoriteRecipePage = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState(new Array(16).fill(null));
   const [loading, setLoading] = useState(true);
+  const {user} = useUser();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const goBack = () => {
-    navigate(-1); // Navigate back to the previous page
-  };
+  // const goBack = () => {
+  //   navigate(-1); // Navigate back to the previous page
+  // };
+
+  useEffect(() => {
+    if(!user){
+      navigate('/login');
+    }
+  }, [user, location.pathname, navigate])
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
@@ -36,30 +46,22 @@ const FavoriteRecipePage = () => {
     fetchFavoriteRecipes();
   }, []);
 
+
   return (
-    <div className='p-4 m-auto'>
-      <div className='flex items-center mx-4 pl-9 mb-3'>
-        <h2> <span className='text-3.5xl bg-center'>&#x2BAB;</span> Your Favorite Recipes  :</h2>
-        <button
-          className='ml-auto mr-6 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded'
-          onClick={goBack}
-        >
-          Go Back
-        </button>
-      </div>
-      <hr />
-      
-      <div>
+    <div>
+    <Navigation/>
+    <div className='content-padding'>
+        <div>
         {loading ? (
-          <>
-          {favoriteRecipes.map((recipe, index) => (
-                  <RecipeItem key={index} {...recipe} />
-                ))}
-          </>
+          <div className='grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-4 mx-5 mb-3'>
+            {favoriteRecipes.map((recipe, index) => (
+              <RecipeItem key={index} {...recipe} />
+            ))}
+          </div>
         ) : (
           <>
             {favoriteRecipes.length > 0 ? (
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 mx-5'>
+              <div className='grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-4 mx-5 mb-3'>
                 {favoriteRecipes.map((recipe) => (
                   <RecipeItem key={recipe._id} {...recipe} />
                 ))}
@@ -70,6 +72,7 @@ const FavoriteRecipePage = () => {
           </>
         )}
       </div>
+    </div>
     </div>
   );
 };
